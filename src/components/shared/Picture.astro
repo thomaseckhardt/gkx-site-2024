@@ -1,0 +1,33 @@
+---
+import { getImage, inferRemoteSize } from 'astro:assets'
+
+interface Props {
+  fallback: {
+    filename: string
+    width: number
+    height: number
+  }
+  alt: string
+}
+
+const { fallback, alt = '' } = Astro.props
+
+const { width, height } = await inferRemoteSize(fallback?.filename)
+
+const fallbackImage = await getImage({
+  src: fallback?.filename,
+  format: 'webp',
+  width,
+  height,
+})
+---
+
+<picture>
+  <img
+    alt={alt}
+    src={fallbackImage.src}
+    width={width}
+    height={height}
+    loading="lazy"
+  />
+</picture>

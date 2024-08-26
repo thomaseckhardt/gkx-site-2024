@@ -1,0 +1,30 @@
+---
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+
+export type Props = {
+  title: string
+  fallbackTitle: string
+  description: string
+  fallbackDescription: string
+  canonicalUrl: string
+}
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
+const props = Astro.props
+const title = props.title || props.fallbackTitle
+const description = props.description || props.fallbackDescription
+const canonicalUrl = props.canonicalUrl
+---
+
+{
+  title && (
+    <title>
+      {title}
+      {t('meta.titleSuffix')}
+    </title>
+  )
+}
+{description && <meta name="description" content={description} />}
+{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}

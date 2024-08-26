@@ -1,0 +1,509 @@
+{
+  "components": [
+    {
+      "name": "Gallery",
+      "display_name": null,
+      "created_at": "2024-08-16T08:05:05.677Z",
+      "updated_at": "2024-08-16T08:20:33.727Z",
+      "id": 6174276,
+      "schema": {
+        "slides": {
+          "type": "bloks",
+          "pos": 0,
+          "restrict_type": "",
+          "restrict_components": true,
+          "component_whitelist": [
+            "GallerySlide"
+          ],
+          "minimum": 1
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "Gallery",
+      "component_group_uuid": null,
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "GallerySlide",
+      "display_name": null,
+      "created_at": "2024-08-16T08:19:34.615Z",
+      "updated_at": "2024-08-22T08:13:37.692Z",
+      "id": 6174298,
+      "schema": {
+        "image": {
+          "type": "asset",
+          "pos": 0,
+          "filetypes": [
+            "images"
+          ],
+          "asset_folder_id": 628032
+        },
+        "caption": {
+          "type": "richtext",
+          "pos": 1,
+          "customize_toolbar": true,
+          "toolbar": [
+            "link",
+            "unset"
+          ]
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "GallerySlide",
+      "component_group_uuid": null,
+      "color": "#2db47d",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "Headline",
+      "display_name": null,
+      "created_at": "2024-08-16T07:54:36.520Z",
+      "updated_at": "2024-08-16T08:11:22.515Z",
+      "id": 6174261,
+      "schema": {
+        "text": {
+          "type": "textarea",
+          "pos": 0,
+          "required": true
+        },
+        "headingOrder": {
+          "type": "number",
+          "pos": 1,
+          "min_value": 1,
+          "max_value": 1,
+          "default_value": "2",
+          "required": true
+        },
+        "textSize": {
+          "type": "option",
+          "pos": 2,
+          "use_uuid": true,
+          "options": [
+            {
+              "_uid": "644e9ed5-c925-46b3-8fe4-70e74d37245a",
+              "name": "Normal",
+              "value": "normal"
+            },
+            {
+              "_uid": "894511c0-bbc8-478b-aaba-1da0732dcccc",
+              "value": "large",
+              "name": "Large"
+            },
+            {
+              "_uid": "b71516e4-05ec-4143-98be-b53f11c067e0",
+              "value": "display",
+              "name": "Display"
+            }
+          ],
+          "default_value": "large",
+          "required": true
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "Headline",
+      "component_group_uuid": null,
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "HeroSlide",
+      "display_name": null,
+      "created_at": "2024-08-14T14:04:11.521Z",
+      "updated_at": "2024-08-22T08:13:27.462Z",
+      "id": 6167970,
+      "schema": {
+        "title": {
+          "type": "textarea",
+          "pos": 0,
+          "key": "heading"
+        },
+        "description": {
+          "type": "richtext",
+          "pos": 1,
+          "key": "description",
+          "customize_toolbar": true,
+          "toolbar": [
+            "link"
+          ]
+        },
+        "imagePortrait": {
+          "type": "asset",
+          "pos": 2,
+          "filetypes": [
+            "images"
+          ],
+          "key": "imagePortrait",
+          "asset_folder_id": 628032
+        },
+        "imageLandscape": {
+          "type": "asset",
+          "pos": 3,
+          "filetypes": [
+            "images"
+          ],
+          "key": "imageLandscape",
+          "asset_folder_id": 628032
+        },
+        "videoPortraitID": {
+          "type": "text",
+          "pos": 4
+        },
+        "videoLandscapeID": {
+          "type": "text",
+          "pos": 5
+        },
+        "variant": {
+          "type": "option",
+          "pos": 6,
+          "use_uuid": true,
+          "options": [
+            {
+              "_uid": "61823ead-f490-4e2f-81f7-fc0189b4fdfc",
+              "name": "Fullscreen",
+              "value": "fullscreen"
+            },
+            {
+              "_uid": "6d1d9658-eb15-4c2e-b3b8-7698da92cdeb",
+              "value": "backgroundColor",
+              "name": "Background Color"
+            },
+            {
+              "_uid": "510ef38d-5982-4c03-8342-b2b8ec2ed19a",
+              "value": "backgroundImage",
+              "name": "Background Image"
+            }
+          ],
+          "default_value": "fullscreen",
+          "required": true,
+          "key": "variant"
+        },
+        "backgroundColor": {
+          "type": "custom",
+          "pos": 7,
+          "field_type": "storyblok-colorpicker",
+          "options": [],
+          "key": "backgroundColor",
+          "description": "Used with variant \"Background Color\""
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "HeroSlide",
+      "component_group_uuid": null,
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "Page",
+      "display_name": null,
+      "created_at": "2024-08-14T09:32:15.503Z",
+      "updated_at": "2024-08-14T12:36:06.492Z",
+      "id": 6166872,
+      "schema": {
+        "body": {
+          "type": "bloks"
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": true,
+      "preview_tmpl": null,
+      "is_nestable": false,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "Page",
+      "component_group_uuid": null,
+      "color": "#395ece",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "Project",
+      "display_name": null,
+      "created_at": "2024-08-14T12:38:44.158Z",
+      "updated_at": "2024-08-16T08:08:09.524Z",
+      "id": 6167499,
+      "schema": {
+        "title": {
+          "type": "textarea",
+          "pos": 0,
+          "key": "title"
+        },
+        "subtitle": {
+          "type": "textarea",
+          "pos": 1,
+          "key": "subtitle"
+        },
+        "heroSlides": {
+          "type": "bloks",
+          "pos": 2,
+          "restrict_type": "",
+          "restrict_components": true,
+          "component_whitelist": [
+            "HeroSlide"
+          ],
+          "minimum": 1,
+          "required": true,
+          "key": "gallery"
+        },
+        "information": {
+          "type": "bloks",
+          "pos": 3,
+          "restrict_type": "",
+          "restrict_components": true,
+          "component_whitelist": [
+            "Gallery",
+            "Headline",
+            "Storefront",
+            "Text",
+            "VideoPlayer"
+          ]
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": true,
+      "preview_tmpl": null,
+      "is_nestable": false,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "Project",
+      "component_group_uuid": null,
+      "color": "#395ece",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "Storefront",
+      "display_name": null,
+      "created_at": "2024-08-16T07:59:47.024Z",
+      "updated_at": "2024-08-16T08:03:30.443Z",
+      "id": 6174268,
+      "schema": {
+        "headline": {
+          "type": "text",
+          "pos": 0,
+          "default_value": "Shop"
+        },
+        "ctaLabel": {
+          "type": "text",
+          "pos": 1,
+          "description": "",
+          "default_value": "Shop"
+        },
+        "ctaUrl": {
+          "type": "multilink",
+          "pos": 2
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "Storefront",
+      "component_group_uuid": null,
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "StoreProduct",
+      "display_name": null,
+      "created_at": "2024-08-16T08:01:36.749Z",
+      "updated_at": "2024-08-22T08:23:41.234Z",
+      "id": 6174271,
+      "schema": {
+        "image": {
+          "type": "asset",
+          "pos": 0,
+          "filetypes": [
+            "images"
+          ],
+          "asset_folder_id": 628030,
+          "required": true
+        },
+        "title": {
+          "type": "textarea",
+          "pos": 1,
+          "key": "title",
+          "required": true
+        },
+        "soldOut": {
+          "type": "boolean",
+          "pos": 2,
+          "inline_label": true,
+          "default_value": false,
+          "description": "",
+          "key": "available"
+        },
+        "link": {
+          "type": "multilink",
+          "pos": 3,
+          "required": true
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": true,
+      "preview_tmpl": null,
+      "is_nestable": false,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "StoreProduct",
+      "component_group_uuid": null,
+      "color": "#395ece",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "Text",
+      "display_name": null,
+      "created_at": "2024-08-16T07:55:47.234Z",
+      "updated_at": "2024-08-16T07:57:29.048Z",
+      "id": 6174262,
+      "schema": {
+        "text": {
+          "type": "richtext",
+          "pos": 0,
+          "required": true,
+          "customize_toolbar": true,
+          "toolbar": [
+            "unset",
+            "link",
+            "italic",
+            "bold"
+          ]
+        },
+        "textSize": {
+          "type": "option",
+          "pos": 1,
+          "use_uuid": true,
+          "options": [
+            {
+              "_uid": "c4b530be-0b66-48e2-a965-3d06c0b1a8ee",
+              "name": "Normal",
+              "value": "normal"
+            },
+            {
+              "_uid": "d8a41c7b-0382-4305-be29-cdee3bba452c",
+              "value": "large",
+              "name": "Large"
+            }
+          ],
+          "default_value": "normal",
+          "required": true
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "Text",
+      "component_group_uuid": null,
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "VideoPlayer",
+      "display_name": null,
+      "created_at": "2024-08-16T08:05:53.547Z",
+      "updated_at": "2024-08-19T08:23:20.848Z",
+      "id": 6174278,
+      "schema": {
+        "videoID": {
+          "type": "text",
+          "pos": 0,
+          "description": "Bunny.net video ID",
+          "required": true,
+          "display_name": "Video ID"
+        },
+        "aspectRatio": {
+          "type": "option",
+          "pos": 1,
+          "use_uuid": true,
+          "options": [
+            {
+              "_uid": "b7756292-3f3f-4715-8456-daeff741371d",
+              "name": "16:9",
+              "value": "16:9"
+            },
+            {
+              "_uid": "7305db8b-1898-45ff-a454-89ed79c9e0b3",
+              "value": "9:16",
+              "name": "9:16"
+            }
+          ],
+          "default_value": "16:9",
+          "required": true
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "VideoPlayer",
+      "component_group_uuid": null,
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    }
+  ]
+}

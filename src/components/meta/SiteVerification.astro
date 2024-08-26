@@ -1,0 +1,12 @@
+---
+export type Props = Record<string, never>
+
+const googleSiteVerificationId = import.meta.env
+  .PUBLIC_GOOGLE_SITE_VERIFICATION_ID
+---
+
+{
+  googleSiteVerificationId && (
+    <meta name="google-site-verification" content={googleSiteVerificationId} />
+  )
+}

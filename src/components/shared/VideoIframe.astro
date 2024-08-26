@@ -1,0 +1,96 @@
+---
+import clsx from 'clsx'
+
+// Landspace: de93e5b7-de47-47e2-869b-66115f27be2f
+// Portrait: 48a192fa-99a9-4bec-af90-bf25ffa5706a
+// Thumbnail: https://vz-7f66f787-c63.b-cdn.net/48a192fa-99a9-4bec-af90-bf25ffa5706a/thumbnail.jpg
+
+// https://vz-7f66f787-c63.b-cdn.net/${videoID}/thumbnail.jpg
+
+export type Props = {
+  videoID: string
+  aspectRatio: '' | '16:9' | '9:16'
+}
+
+const { videoID, aspectRatio = '16:9' } = Astro.props
+const videoLibraryID = import.meta.env.PUBLIC_BUNNY_VIDEO_LIBRARY_ID
+const baseUrl = 'https://iframe.mediadelivery.net/embed'
+const thumbnailBaseUrl = 'https://vz-7f66f787-c63.b-cdn.net'
+// Parameters
+// @see https://docs.bunny.net/docs/stream-embedding-videos
+const options = {
+  autoplay: false,
+  preload: true,
+  responsive: true,
+  chromecast: false,
+  disableAirplay: false,
+  disableIosPlayer: true,
+  showHeatmap: true,
+  muted: true,
+  loop: true,
+  playsinline: true,
+  showSpeed: false,
+}
+const params = Object.entries(options)
+  .map(([key, value]) => `${key}=${value}`)
+  .join('&')
+const videoPlayerUrl = `${baseUrl}/${videoLibraryID}/${videoID}?${params}`
+const thumbnailUrl = `${thumbnailBaseUrl}/${videoID}/thumbnail.jpg`
+
+const aspectRatioClasses = {
+  '16:9': 'aspect-16/9',
+  '9:16': 'h-svh w-[56.25svh]',
+}
+const aspectRatioClass =
+  aspectRatioClasses[aspectRatio || '16:9'] ?? aspectRatioClasses['16:9']
+---
+
+<div class={clsx('relative overflow-hidden', aspectRatioClass)}>
+  <img
+    src={thumbnailUrl}
+    alt=""
+    class="absolute inset-0 object-cover"
+    loading="lazy"
+  />
+  <iframe
+    data-video
+    src={videoPlayerUrl}
+    loading="lazy"
+    style="border:0;position:absolute;top:0;height:100%;width:100%;"
+    allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+    allowfullscreen="true"></iframe>
+</div>
+
+<script>
+  import playerjs from 'player.js'
+
+  const videos = document.querySelectorAll('[data-video]')
+  videos.forEach((video) => {
+    const player = new playerjs.Player(video)
+    // @ts-ignore
+    video.__player = player
+    // player.on('ready', () => {
+    //   console.log('ready', video, player)
+    // })
+  })
+
+  // Auto play/pause video, when in viewport
+  const config = {
+    rootMargin: '0px -200px',
+    threshold: 0,
+  }
+  const callback = (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        entry.target.__player?.pause()
+      } else {
+        // entry.target.__player?.play()
+      }
+    })
+  }
+
+  const observer = new IntersectionObserver(callback, config)
+  videos.forEach((element) => {
+    observer.observe(element)
+  })
+</script>

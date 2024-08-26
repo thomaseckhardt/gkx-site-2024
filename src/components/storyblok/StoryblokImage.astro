@@ -1,0 +1,73 @@
+---
+import { getAssetDimensionsFromFilename } from '@/utils/storyblok'
+import { Image } from 'astro:assets'
+import clsx from 'clsx'
+
+const aspectRatioClasses = {
+  '': '',
+  original: '',
+  '16/9': 'aspect-16/9',
+  '3/2': 'aspect-2/2',
+  '4/3': 'aspect-4/3',
+  '1/1': 'aspect-1/1',
+  '3/4': 'aspect-3/4',
+  '9/16': 'aspect-9/16',
+}
+export type AspectRatio = keyof typeof aspectRatioClasses
+
+export type Props = {
+  aspectRatio?: AspectRatio
+  image?: {
+    filename?: string
+    src?: string
+  }
+  alt?: string
+  width?: number
+  height?: number
+  src?: string
+  class?: string
+}
+
+const {
+  aspectRatio = 'original',
+  image,
+  alt = '',
+  width = 0,
+  height = 0,
+  src,
+  class: className,
+  ...props
+} = Astro.props
+
+const filename = image?.filename || image?.src || src
+const isSvg = filename?.endsWith('.svg')
+
+const { width: originalWidth, height: originalHeight } =
+  getAssetDimensionsFromFilename(filename)
+// console.log('filename', filename)
+
+const finalWidth = width > 0 && height > 0 ? width : originalWidth
+const finalHeight = width > 0 && height > 0 ? height : originalHeight
+
+// TODO: Allow aspectRatios to be passed in as props
+// TODO: Use a picture with srcset
+
+const apsectRatioClass = aspectRatioClasses[aspectRatio]
+---
+
+{
+  filename &&
+    (isSvg ? (
+      <img src={filename} alt={alt} class={className} {...props} />
+    ) : (
+      <Image
+        src={filename}
+        alt={alt}
+        width={finalWidth}
+        height={finalHeight}
+        class={clsx(apsectRatioClass, className)}
+        inferSize
+        {...props}
+      />
+    ))
+}

@@ -1,0 +1,37 @@
+---
+import Section from '@/components/sections/Section.astro'
+import type { TextStoryblok } from '@/types/storyblok'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import clsx from 'clsx'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+
+export type Props = {
+  class?: string
+  blok: TextStoryblok
+}
+
+const { class: className, blok, ...props } = Astro.props
+
+const textSizes = {
+  '': 'text-22 lg:text-25 font-serif',
+  'normal': 'text-22 lg:text-25 font-serif',
+  'large': 'text-32 lg:text-35 font-serif',
+}
+const textSize = textSizes[blok.textSize ?? 'normal'] ?? textSizes['normal']
+---
+
+<Section
+  class={clsx('relative', textSize, className)}
+  blok={blok}
+  spacing="paragraph"
+  {...props}
+>
+  {
+    isRichTextField(blok.text) && (
+      <StoryblokRichText
+        content={blok.text}
+        class={clsx('max-w-text richtext px-page-mx', textSize)}
+      />
+    )
+  }
+</Section>

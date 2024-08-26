@@ -1,0 +1,23 @@
+---
+import MetaColorScheme from '@/components/meta/MetaColorScheme.astro'
+import MetaFacebook from '@/components/meta/MetaFacebook.astro'
+import MetaIcon from '@/components/meta/MetaIcon.astro'
+import MetaRobots from '@/components/meta/MetaRobots.astro'
+import MetaSeo from '@/components/meta/MetaSeo.astro'
+import MetaTwitter from '@/components/meta/MetaTwitter.astro'
+import ConsentManagement from './ConsentManagement.astro'
+import MetaSitemap from './MetaSitemap.astro'
+import MetaDates from './MetaDates.astro'
+
+const { site = {} } = Astro.props
+---
+
+<MetaSeo {...site} />
+<MetaSitemap />
+<ConsentManagement />
+<MetaColorScheme />
+<MetaRobots />
+<MetaIcon />
+<MetaFacebook {...site} />
+<MetaTwitter {...site} />
+<MetaDates {...site} />

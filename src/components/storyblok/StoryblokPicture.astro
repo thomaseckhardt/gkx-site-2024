@@ -1,0 +1,235 @@
+---
+import type { AssetStoryblok } from '@/types/storyblok'
+import { getAspectRatioFromString } from '@/utils/asset'
+import { addPositionIfNotExists } from '@/utils/layout'
+import {
+  getAssetDimensionsFromFilename,
+  getAssetExtension,
+} from '@/utils/storyblok/asset'
+import { Picture } from 'astro:assets'
+import clsx from 'clsx'
+
+// TODO: astro:assets performance not very well in server mode
+
+const STORYBLOK_MAX_SIZE = 4000
+
+type FocusPoint =
+  | {
+      x: string
+      y: string
+    }
+  | undefined
+
+const truncateSize = ({ width, height }, maxSize = STORYBLOK_MAX_SIZE) => {
+  let resizeWidth = Math.min(Number(width), maxSize)
+  let resizeHeight = Math.min(Number(height), maxSize)
+
+  if (!isNaN(resizeWidth) && resizeWidth > maxSize) {
+    console.warn(
+      `Width is greater than the maximum allowed size of ${maxSize}px`,
+    )
+    if (!isNaN(resizeHeight)) {
+      resizeHeight = Math.round((resizeHeight / resizeWidth) * maxSize)
+    }
+    resizeWidth = maxSize
+  }
+
+  if (!isNaN(resizeHeight) && resizeHeight > maxSize) {
+    console.warn(
+      `Height is greater than the maximum allowed size of ${maxSize}px`,
+    )
+    if (!isNaN(resizeWidth)) {
+      resizeWidth = Math.round((resizeWidth / resizeHeight) * maxSize)
+    }
+    resizeHeight = maxSize
+  }
+
+  const size = { width: resizeWidth, height: resizeHeight }
+
+  return size
+}
+
+export type Props = {
+  image:
+    | {
+        filename: string
+        alt?: string
+        focus?: string
+        title?: string
+        copyright?: string
+        meta_data?: {
+          width?: number | string
+          height?: number | string
+        }
+      }
+    | AssetStoryblok
+  width?: string | number
+  height?: string | number
+  aspectRatio?: string | number
+  // Astro Image/Picture props
+  widths?: number[]
+  sizes: string
+  formats?: string[]
+  class?: string
+  classPicture?: string
+  alt?: string
+  loading?: 'lazy' | 'eager'
+  // TODO: Add Picture.pictureAttributes type
+  pictureAttributes?: any
+  [key: string]: any
+}
+
+const {
+  class: className = 'w-full',
+  classPicture,
+  image,
+  width,
+  height,
+  aspectRatio,
+  widths = [640, 768, 1024, 1366, 1600, 1920, 3840],
+  sizes,
+  formats = ['avif', 'webp'],
+  pictureAttributes,
+  alt: customAlt,
+  loading = 'lazy',
+  ...props
+} = Astro.props
+
+const alt = image?.alt || customAlt || ''
+// TODO: Intercept storyblok fetch to calculate width/height for SVGs
+const metaWidth = image?.meta_data?.width
+const metaHeight = image?.meta_data?.height
+
+let { width: resizeWidth, height: resizeHeight } = truncateSize({
+  width,
+  height,
+})
+let resizeAspectRatio =
+  !isNaN(resizeWidth) && !isNaN(resizeHeight)
+    ? resizeWidth / resizeHeight
+    : typeof aspectRatio === 'string'
+      ? getAspectRatioFromString(aspectRatio) ?? Number(aspectRatio)
+      : aspectRatio
+
+let sortedWidths = widths
+  .filter((w) => w <= STORYBLOK_MAX_SIZE)
+  .sort((a, b) => a - b)
+
+if (resizeAspectRatio && resizeAspectRatio < 1) {
+  sortedWidths = sortedWidths.filter(
+    (w) => w / (resizeAspectRatio ?? 1) <= STORYBLOK_MAX_SIZE,
+  )
+}
+
+if (!sortedWidths || sortedWidths.length === 0) {
+  throw new Error(
+    `You must provide at least one width for the image. Max size is ${STORYBLOK_MAX_SIZE}px.`,
+  )
+}
+
+// Resizing
+const smallestWidth = Math.ceil(sortedWidths[0])
+const biggestWidth = Math.min(
+  Math.ceil(sortedWidths[sortedWidths.length - 1]),
+  STORYBLOK_MAX_SIZE,
+)
+let smallestHeight = 0
+let biggestHeight = 0
+
+if (!isNaN(resizeAspectRatio as number)) {
+  smallestHeight = Math.round(smallestWidth / resizeAspectRatio)
+  biggestHeight = Math.round(biggestWidth / resizeAspectRatio)
+}
+
+// Storyblok Image Service
+const storyblokParams = ['m']
+const storyblokFilters: string[] = []
+
+const sizeParams = `${biggestWidth}x${biggestHeight}`
+
+// Smart Cropping
+const { width: originalWidth, height: originalHeight } =
+  getAssetDimensionsFromFilename(image.filename)
+let focus: FocusPoint = undefined
+if (image.focus) {
+  storyblokFilters.push(`focal(${image?.focus})`)
+  const focusPoints = image.focus.split(':').map((coords) => {
+    const [x, y] = coords.split('x')
+    return { x: parseInt(x), y: parseInt(y) }
+  })
+  const center = {
+    x: Math.round((focusPoints[1].x - focusPoints[0].x) / 2 + focusPoints[0].x),
+    y: Math.round((focusPoints[1].y - focusPoints[0].y) / 2 + focusPoints[0].y),
+  }
+
+  focus = {
+    x: ((center.x / (originalWidth ?? 1)) * 100).toFixed(4) + '%',
+    y: ((center.y / (originalHeight ?? 1)) * 100).toFixed(4) + '%',
+  }
+}
+const filterParam = storyblokFilters.length
+  ? `filters:${storyblokFilters.join(':')}`
+  : ''
+
+const storyblokParamString = [
+  ...storyblokParams,
+  sizeParams,
+  'smart',
+  filterParam,
+].join('/')
+const imageSrc = `${image.filename}/${storyblokParamString}`
+
+// Astro Image
+// https://docs.astro.build/en/guides/images/
+const ext = getAssetExtension(image, { withoutDot: true }) ?? 'png'
+const isSVG = ext?.endsWith('svg')
+
+const copyright = image.copyright ? `© ${image.copyright}` : undefined
+let style: any = {}
+if (copyright) style['--tw-content'] = `'${image.copyright}'`
+if (focus) style.objectPosition = `${focus.x} ${focus.y}`
+
+const mergedPictureClasses = clsx(
+  'block',
+  addPositionIfNotExists(classPicture, 'relative'),
+  classPicture,
+  copyright &&
+    clsx(
+      'after:absolute after:bottom-0 after:left-full after:block after:origin-bottom-left after:-rotate-90 after:whitespace-nowrap after:pb-1 after:pl-3 after:text-[12px] after:font-medium after:content-[attr(data-copyright)]',
+      'after:z-10 after:text-white',
+    ),
+)
+const finalPictureAttrs = {
+  ...(copyright ? { 'data-copyright': copyright } : undefined),
+  ...(Object.keys(style).length > 0 ? { style } : undefined),
+  ...pictureAttributes,
+  ...(mergedPictureClasses ? { class: mergedPictureClasses } : {}),
+}
+---
+
+{
+  isSVG ? (
+    <img
+      class={clsx(className)}
+      src={image?.filename}
+      alt={alt}
+      width={metaWidth}
+      height={metaHeight}
+      loading={loading}
+      {...props}
+    />
+  ) : (
+    <Picture
+      class={clsx(className)}
+      src={imageSrc}
+      alt={alt}
+      inferSize
+      formats={formats}
+      fallbackFormat={ext}
+      widths={sortedWidths}
+      sizes={sizes}
+      pictureAttributes={finalPictureAttrs}
+      loading={loading}
+    />
+  )
+}

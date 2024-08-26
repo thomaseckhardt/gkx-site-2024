@@ -1,0 +1,177 @@
+---
+import ProjectHero from '@/components/sections/ProjectHero.astro'
+import Button from '@/components/shared/Button.astro'
+import EntryLayout from '@/layouts/EntryLayout.astro'
+import type { ProjectStoryblok } from '@/types/storyblok'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+import type { StoryblokStory } from 'storyblok-generate-ts'
+
+export type Props = {
+  site: Object
+  story: StoryblokStory<ProjectStoryblok>
+  blok: ProjectStoryblok
+}
+
+const { site, story, blok } = Astro.props
+
+const body = blok.information
+---
+
+<!-- h-svh overflow-y-auto overflow-x-hidden -->
+<EntryLayout site={site} story={story}>
+  <main
+    class={clsx(
+      'x-main',
+      'text-22 lg:text-25',
+      'h-svh snap-y snap-mandatory overflow-y-auto overflow-x-hidden',
+    )}
+    x-data={`{  
+      openInfo: function() {
+        if (this.$refs.info) {
+          this.$refs.info.scrollIntoView({
+            behavior: "smooth",
+          });
+        }
+      },
+      closeInfo: function() {
+        this.$root.scroll({
+            top: 0,
+            behavior: "smooth",
+          });
+      },
+    }`}
+  >
+    <ProjectHero
+      as="header"
+      spacing="none"
+      slides={blok.heroSlides}
+      class={clsx('x-hero', 'sticky top-0 snap-start overflow-hidden')}
+    >
+      <div slot="infoButton" class="x-info-open">
+        <Button as="button" x-on:click="() => openInfo()">Info</Button>
+      </div>
+      <div
+        slot="backdrop"
+        aria-hidden
+        class={clsx(
+          'x-backdrop opacity-0',
+          'pointer-events-none absolute inset-0 z-30 h-full h-svh w-full bg-white',
+        )}
+      >
+      </div>
+    </ProjectHero>
+    <div class={clsx('x-info', 'relative snap-start pb-20')}>
+      {
+        // Close info button
+      }
+      <div
+        x-ref="info"
+        class={clsx('x-info-close', 'px-page-mx pt-page-mx relative z-20 mb-3')}
+      >
+        <Button as="button" x-on:click="() => closeInfo()">Close</Button>
+      </div>
+      {
+        body?.map((section, index) => (
+          <StoryblokComponent
+            blok={section}
+            story={story}
+            spacing={index === 0 ? 'none' : 'paragraph'}
+            class="z-20"
+          />
+        ))
+      }
+    </div>
+  </main>
+</EntryLayout>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+  import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+
+  gsap.registerPlugin(ScrollTrigger)
+  gsap.registerPlugin(ScrollToPlugin)
+
+  // gsap.to('.x-info', {
+  //   // scrollTo: { y: 0 },
+  //   scrollTrigger: {
+  //     trigger: '.x-info',
+  //     start: '-=20 100%',
+  //     end: '+=200 80%',
+  //     markers: true,
+  //     // snap: {
+  //     //   snapTo: 1,
+  //     //   duration: { min: 0.2, max: 3 },
+  //     //   delay: 0.2,
+  //     //   ease: 'power1.inOut',
+  //     // },
+  //     onEnter: () => {
+  //       console.log('enter')
+  //     },
+  //     onEnterBack: () => {
+  //       console.log('enter back')
+  //     },
+  //     onLeave: () => {
+  //       console.log('leave')
+  //     },
+  //   },
+  // })
+
+  const info = document.querySelector('.x-info')
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      scroller: '.x-main',
+      // markers: true,
+      trigger: '.x-info',
+      start: '0 100%',
+      end: '0 50%',
+      scrub: 1,
+      // snap: {
+      //       snapTo: 'labels', // snap to the closest label in the timeline
+      //       duration: { min: 0.2, max: 3 }, // the snap animation should be at least 0.2 seconds, but no more than 3 seconds (determined by velocity)
+      //       delay: 0.2, // wait 0.2 seconds from the last scroll event before doing the snapping
+      //       ease: 'power1.inOut' // the ease of the snap animation ("power3" by default)
+      //   }
+      // onEnter: () => {
+      //   console.log('enter')
+      // },
+      // onEnterBack: () => {
+      //   console.log('enter back')
+      //   info?.classList.replace('overflow-y-auto', 'overflow-y-hidden')
+      // },
+      // onLeave: () => {
+      //   console.log('leave')
+      //   info?.classList.replace('overflow-y-hidden', 'overflow-y-auto')
+      // },
+    },
+  })
+
+  tl.to('.x-backdrop', {
+    opacity: 1,
+    ease: 'none',
+  })
+  // tl.to(
+  //   '.x-info-open',
+  //   {
+  //     opacity: 0,
+  //     ease: 'none',
+  //   },
+  //   0,
+  // )
+
+  const hero = gsap.timeline({
+    scrollTrigger: {
+      scroller: '.x-main',
+      trigger: '.x-info',
+      start: 'top 100%',
+      end: 'top 0%',
+      scrub: true,
+    },
+  })
+  hero.to('.x-hero-inner', {
+    y: -100,
+    ease: 'none',
+  })
+</script>

@@ -1,0 +1,24 @@
+---
+import { isProduction } from '@/utils/env'
+---
+
+<!-- {
+  // Google Consent Mode
+
+  isProduction && (
+    <script
+      is:inline
+      data-cookieconsent="ignore"
+      src="/scripts/google-consent-mode.js"
+    />
+  )
+} --><!-- {
+  // Google Tag Manager
+  isProduction && (
+    <script
+      is:inline
+      data-cookieconsent="ignore"
+      src="/scripts/google-tag-manager.js"
+    />
+  )
+} -->

@@ -1,0 +1,45 @@
+---
+// Open Graph Image
+// 1200 x 630 px
+// Max. 300 KB otherwise it will not be sent, e.g. when sharing in WhatsApp.
+
+export type Props = {
+  title?: string
+  og_title?: string
+  ogTitle?: string
+  facebookTitle?: string
+  description?: string
+  og_description?: string
+  ogDescription?: string
+  facebookDescription?: string
+  og_image?: string
+  ogImage?: string
+  facebookImage?: string
+  ogUrl?: string
+  facebookUrl?: string
+  canonicalUrl?: string
+  ogType?: string
+  facebookType?: string
+}
+
+const props = Astro.props
+
+// Open Graph meta
+// https://ogp.me/#metadata
+const title =
+  props.og_title || props.ogTitle || props.facebookTitle || props.title
+const description =
+  props.og_description ||
+  props.ogDescription ||
+  props.facebookDescription ||
+  props.description
+const image = props.og_image || props.ogImage || props.facebookImage
+const url = props.ogUrl || props.facebookUrl || props.canonicalUrl
+const type = props.ogType || props.facebookType || 'website'
+---
+
+{title && <meta property="og:title" content={title} />}
+{description && <meta property="og:description" content={description} />}
+{image && <meta property="og:image" content={image} />}
+{url && <meta property="og:url" content={url} />}
+{type && <meta property="og:type" content={type} />}

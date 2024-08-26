@@ -1,0 +1,22 @@
+---
+import Section from '@/components/sections/Section.astro'
+import type { VideoPlayerStoryblok } from '@/types/storyblok'
+import clsx from 'clsx'
+import VideoIframe from '../shared/VideoIframe.astro'
+
+export type Props = {
+  class?: string
+  blok: VideoPlayerStoryblok
+}
+
+const { class: className, blok, ...props } = Astro.props
+---
+
+<Section
+  class={clsx('relative', className)}
+  blok={blok}
+  spacing="paragraph"
+  {...props}
+>
+  <VideoIframe videoID={blok.videoID} aspectRatio={blok.aspectRatio} />
+</Section>

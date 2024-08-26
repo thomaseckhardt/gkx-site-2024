@@ -1,0 +1,43 @@
+---
+import { getAnchor } from '@/utils/anchor'
+import type { SpacingKey } from '@/utils/app/spacing'
+import { addSpacing } from '@/utils/app/spacing'
+import { storyblokEditable } from '@/utils/storyblok'
+import clsx from 'clsx'
+
+export type Props = {
+  as?: string
+  class?: string
+  anchor?: string
+  spacing?: SpacingKey
+  defaultSpacing?: SpacingKey
+  defaultColor?: string
+  blok: any
+  addContainerColor: boolean
+  [key: string]: any
+}
+
+const {
+  addContainerColor = true,
+  as: Component = 'div',
+  class: className,
+  anchor: anchorName,
+  spacing,
+  defaultSpacing = 'none',
+  padding,
+  defaultColor,
+  blok,
+  ...props
+} = Astro.props
+
+const anchor = getAnchor(anchorName ?? blok?.anchor)
+---
+
+<Component
+  class={clsx(className, addSpacing(spacing ?? blok?.spacing, defaultSpacing))}
+  id={anchor?.id}
+  {...props}
+  {...storyblokEditable(blok)}
+>
+  <slot />
+</Component>

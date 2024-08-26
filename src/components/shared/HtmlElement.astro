@@ -1,0 +1,10 @@
+---
+export type Props = {
+  as?: string
+  [key: string]: unknown
+}
+
+const { as: Component = 'div', ...props } = Astro.props
+---
+
+<Component {...props}><slot /></Component>

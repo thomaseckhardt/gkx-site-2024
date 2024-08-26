@@ -1,0 +1,27 @@
+---
+import EnvBadge from '@/components/debug/EnvBadge.astro'
+import BaseHead from '@/layouts/BaseHead.astro'
+import clsx from 'clsx'
+
+export type Props = {
+  site?: any
+  language?: string
+  class?: string
+}
+
+const { language, site, class: className } = Astro.props
+
+const htmlLang = language || 'de'
+---
+
+<html lang={htmlLang}>
+  <head>
+    <BaseHead site={site} language={language} />
+    <slot name="head" />
+  </head>
+
+  <body class={clsx(className)}>
+    <slot />
+    <EnvBadge />
+  </body>
+</html>

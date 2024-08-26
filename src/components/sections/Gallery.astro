@@ -1,0 +1,43 @@
+---
+import Section from '@/components/sections/Section.astro'
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import type { GalleryStoryblok } from '@/types/storyblok'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  blok: GalleryStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const slides = blok.slides?.slice(0, 20) ?? []
+---
+
+<Section
+  blok={blok}
+  spacing="paragraph"
+  class={clsx('cursor-left relative', className)}
+  x-data="carousel({ enableMouseNavigation: true })"
+>
+  {
+    slides?.length > 0 && (
+      <div
+        class={clsx(
+          'flex gap-x-4 lg:gap-x-6',
+          'scroll-px-page-mx px-page-mx',
+          'scrollbar-hidden snap-x snap-mandatory overflow-x-auto overflow-y-hidden',
+        )}
+        data-carousel-track
+      >
+        {slides.map((item) => (
+          <div class={clsx('h-[424px] flex-none snap-start')}>
+            <div class={clsx('')}>
+              <StoryblokPicture image={item.image} class="h-[424px] w-auto" />
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+</Section>

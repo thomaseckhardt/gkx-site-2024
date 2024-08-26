@@ -1,0 +1,20 @@
+---
+import '@/styles/index.css'
+import Meta from '@/components/meta/Meta.astro'
+import SiteVerification from '@/components/meta/SiteVerification.astro'
+
+const { site } = Astro.props
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<Meta site={site} />
+<SiteVerification />
+<meta name="generator" content={Astro.generator} />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css"
+/>
+<script
+  src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"
+></script>

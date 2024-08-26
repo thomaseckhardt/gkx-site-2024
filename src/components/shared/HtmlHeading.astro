@@ -1,0 +1,15 @@
+---
+export type Props = {
+  heading?: string
+  order?: number | string
+  [key: string]: unknown
+}
+
+const { order = 2, heading, ...props } = Astro.props
+
+const orderInt = parseInt(String(order))
+const orderNormalized = Math.max(1, Math.min(isNaN(orderInt) ? 2 : orderInt, 6))
+const Component = `h${orderNormalized}`
+---
+
+<Component {...props}><slot>{heading}</slot></Component>

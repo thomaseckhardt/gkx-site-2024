@@ -1,0 +1,11 @@
+---
+import SiteHeader from '@/components/shared/SiteHeader.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+
+const { site, story } = Astro.props
+---
+
+<BaseLayout {...Astro.props}>
+  <SiteHeader site={site} />
+  <slot />
+</BaseLayout>

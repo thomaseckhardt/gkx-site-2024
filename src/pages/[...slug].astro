@@ -1,0 +1,51 @@
+---
+import { storyblokEditable } from '@storyblok/astro'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import type { PageStoryblok } from '@/types/storyblok'
+import { useSiteConfig } from '@/utils/useSiteConfig'
+import setDefaults from 'lodash/defaults'
+import { getStoryDates } from '@/utils/storyblok/date'
+import { fetchStory } from '@/utils/storyblok/fetchStories'
+import { isSSR } from '@/utils/env'
+import { generateStaticPaths, parseUrl } from '@/utils/storyblok/paths'
+
+export async function getStaticPaths() {
+  return await generateStaticPaths()
+}
+
+const params = Astro.params
+let props = isSSR() ? parseUrl(params?.slug) : Astro.props
+
+const { slug, language } = props
+const story = (await fetchStory(slug || 'home')) as unknown as PageStoryblok
+const blok = story?.content ?? {}
+const siteConfig = await useSiteConfig(language)
+
+const { datePublished, dateModified } = getStoryDates(story)
+
+const site = setDefaults(
+  {
+    title: blok.title,
+    description: blok.description,
+    ogTitle: blok.ogTitle,
+    ogDescription: blok.ogDescription,
+    ogImage: blok.ogImage,
+    lang: story.lang,
+    canonicalUrl: new URL(Astro.url.pathname, Astro.site),
+    datePublished,
+    dateModified,
+  },
+  siteConfig,
+)
+---
+
+{
+  story?.content && (
+    <StoryblokComponent
+      site={site}
+      story={story}
+      blok={story.content}
+      {...storyblokEditable(story)}
+    />
+  )
+}

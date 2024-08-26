@@ -1,0 +1,9 @@
+---
+// @see https://docs.astro.build/de/guides/integrations-guide/sitemap/
+---
+
+{
+  import.meta.env.PUBLIC_ENV === 'production' && (
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  )
+}

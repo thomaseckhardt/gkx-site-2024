@@ -1,0 +1,42 @@
+---
+import Section from '@/components/sections/Section.astro'
+import type { HeroSlideStoryblok } from '@/types/storyblok'
+import clsx from 'clsx'
+import HeroSlide from '../blocks/HeroSlide.astro'
+
+export type Props = {
+  class?: string
+  slides: HeroSlideStoryblok[]
+  as?: string
+}
+
+const { class: className, slides = [], ...props } = Astro.props
+---
+
+<Section
+  as="section"
+  class={clsx('relative h-svh bg-white', className)}
+  {...props}
+  x-data="hero"
+  aria-label="Project gallery"
+>
+  <div class="x-hero-inner will-change-transform">
+    {
+      slides.length > 0 && (
+        <div x-ref="carousel" class="splide">
+          <div class="splide__track">
+            <ul class="splide__list">
+              {slides.map((slide) => (
+                <HeroSlide blok={slide} class="splide__slide" />
+              ))}
+            </ul>
+          </div>
+        </div>
+      )
+    }
+    <div class="left-page-mx absolute bottom-7 z-20">
+      <slot name="infoButton" />
+    </div>
+    <slot name="backdrop" />
+  </div>
+</Section>

@@ -1,0 +1,37 @@
+---
+export type Props = Record<string, never>
+
+// 1. Use https://favicon.io/favicon-converter/
+//    - Upload an image with 1:1 aspect ratio
+// 2. Move the downloaded files to ./public
+//    - android-chrome-192x192.png
+//    - android-chrome-512x512.png
+//    - apple-touch-icon.png
+//    - favicon-16x16.png
+//    - favicon-32x32.png
+//    - favicon.ico
+//    - site.webmanifest
+// 3. Edit ./public/site.webmanifest according to your needs
+
+const basePath = import.meta.env.PUBLIC_ENV === 'production' ? '' : ''
+---
+
+<link rel="icon" type="image/svg+xml" href={`${basePath}/favicon.ico`} />
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href={`${basePath}/apple-touch-icon.png`}
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href={`${basePath}/favicon-32x32.png`}
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href={`${basePath}/favicon-16x16.png`}
+/>
+<link rel="manifest" href={`${basePath}/site.webmanifest`} />

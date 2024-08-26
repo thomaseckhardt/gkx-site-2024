@@ -1,0 +1,13 @@
+[[redirects]]
+  from = "/functions/*" # simplify all calls to serverless functions
+  to = "/.netlify/functions/:splat" # all function calls will go to this path
+  status = 200 # ok code
+  force = true # ensure to always redirect
+  
+[images]
+  remote_images = ["https://a.storyblok.com/.*"]
+
+[dev]
+  command = "npm run dev"
+  framework = "#custom"
+  targetPort = 4321

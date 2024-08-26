@@ -1,0 +1,87 @@
+---
+import Section from '@/components/sections/Section.astro'
+import HtmlLink from '@/components/shared/HtmlLink.astro'
+import StoryblokPicture from '@/components/storyblok/StoryblokPicture.astro'
+import type { GalleryStoryblok, StoreProductStoryblok } from '@/types/storyblok'
+import { fetchStories } from '@/utils/storyblok/fetchStories'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  blok: GalleryStoryblok
+}
+
+const { class: className, blok } = Astro.props
+
+const stories = await fetchStories({
+  by_slugs: 'products/*',
+  content_type: 'StoreProduct',
+  sort_by: 'sort_by_date:desc,published_at:desc,created_at:desc',
+})
+
+const products: StoreProductStoryblok[] =
+  stories?.slice(0, 20).map(
+    (story) =>
+      ({
+        ...story.content,
+      }) as StoreProductStoryblok,
+  ) ?? []
+
+const sizes = {
+  'default': {
+    track: clsx(
+      'auto-cols-[calc((100%_-_var(--gap))_/_2.5)] md:auto-cols-[calc((100%_-_var(--gap))_/_3)] lg:auto-cols-[calc((100%_-_var(--gap)_-_var(--gap))_/_4)]',
+    ),
+    sizes: '100vw',
+  },
+}
+const sizeConfig = sizes[blok.aspectRatio ?? ''] ?? sizes['default']
+---
+
+<Section
+  blok={blok}
+  as="aside"
+  spacing="paragraph"
+  class={clsx('relative', className)}
+  x-data="carousel"
+>
+  <h2
+    class="text-38 lg:text-40 px-page-mx mb-5 font-sans font-bold uppercase tracking-wide md:mb-10"
+  >
+    Shop
+  </h2>
+  <div>
+    {
+      products?.length > 0 && (
+        <div
+          class={clsx(
+            'grid grid-flow-col gap-x-8 md:gap-x-4',
+            'scroll-px-page-mx px-page-mx',
+            'scrollbar-hidden snap-x snap-mandatory overflow-x-auto overflow-y-hidden',
+            sizeConfig.track,
+          )}
+          data-carousel-track
+        >
+          {products.map((product) => (
+            <HtmlLink
+              class={clsx('w-full snap-start')}
+              link={product.soldOut ? undefined : product.link}
+            >
+              <StoryblokPicture
+                image={product.image}
+                aspectRatio="2/3"
+                pictureSizes={sizeConfig.sizes}
+              />
+              <div class="text-13 md:text-16 mt-2 text-center font-serif tracking-wide md:px-2">
+                {product.title && <div>{product.title}</div>}
+                {product.soldOut && (
+                  <div class="font-narrow mt-2">Sold out</div>
+                )}
+              </div>
+            </HtmlLink>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</Section>

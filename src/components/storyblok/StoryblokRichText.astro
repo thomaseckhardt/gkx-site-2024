@@ -1,0 +1,69 @@
+---
+// For a complex example see
+// https://stackblitz.com/github/NordSecurity/storyblok-rich-text-astro-renderer/tree/main/demo?file=src%2Fstoryblok%2FRichText.astro
+
+import StoryblokRichTextImage from '@/components/storyblok/StoryblokRichTextImage.astro'
+import type { MultilinkStoryblok, RichtextStoryblok } from '@/types/storyblok'
+import { applyLinkAttrs } from '@/utils/link'
+import { isRichTextField } from '@/utils/storyblok'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import type { RichTextType } from 'storyblok-rich-text-astro-renderer'
+import RichTextRenderer from 'storyblok-rich-text-astro-renderer/RichTextRenderer.astro'
+
+export interface Props {
+  content?: RichtextStoryblok
+  [k: string]: any
+}
+
+const {
+  content = {
+    type: 'doc',
+    content: [],
+  },
+  ...props
+} = Astro.props
+
+const hasContent = isRichTextField(content)
+---
+
+{
+  hasContent && (
+    <RichTextRenderer
+      content={content as RichTextType}
+      schema={{
+        nodes: {
+          // heading: ({ attrs }) => ({
+          //   component: StoryblokRichTextHeading,
+          //   props: attrs,
+          // }),
+          image: ({ attrs }) => ({
+            component: StoryblokRichTextImage,
+            props: attrs,
+          }),
+        },
+        marks: {
+          link: ({ attrs }) => {
+            const { as: Tag, ...linkAttrs } =
+              applyLinkAttrs(attrs as MultilinkStoryblok) ?? {}
+
+            return {
+              component: Tag,
+              props: {
+                ...linkAttrs,
+                class: 'richtext-link',
+              },
+            }
+          },
+        },
+      }}
+      resolver={(blok) => {
+        // console.log('blok.component', blok.component, blok)
+        return {
+          component: StoryblokComponent,
+          props: { blok, isRichTextEmbed: true },
+        }
+      }}
+      {...props}
+    />
+  )
+}

@@ -1,0 +1,17 @@
+export const isPreview = () => {
+  return import.meta.env.PUBLIC_ENV === 'preview'
+}
+
+export const isProduction = () => {
+  return import.meta.env.PUBLIC_ENV === 'production'
+}
+
+export const isSSR = () => {
+  return import.meta.env.SSR
+}
+
+export const storyblokVersion = () => {
+  return import.meta.env.PUBLIC_STORYBLOK_VERSION === 'draft'
+    ? 'draft'
+    : 'published'
+}

@@ -1,0 +1,24 @@
+---
+import StoryblokImage from '@/components/storyblok/StoryblokImage.astro'
+
+const { src, alt, title, copyright } = Astro.props
+
+const image = {
+  src,
+  alt,
+}
+---
+
+<div class="prose-s text-mute prose">
+  <figure>
+    {
+      title && (
+        <figcaption class="!text-heading6 text-mute font-medium">
+          {title}
+        </figcaption>
+      )
+    }
+    <StoryblokImage image={image} class="!my-5" />
+    {copyright && <p>Quelle: {copyright}</p>}
+  </figure>
+</div>

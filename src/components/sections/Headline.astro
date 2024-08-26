@@ -1,0 +1,30 @@
+---
+import Section from '@/components/sections/Section.astro'
+import type { HeadlineStoryblok } from '@/types/storyblok'
+import clsx from 'clsx'
+
+export type Props = {
+  class?: string
+  blok: HeadlineStoryblok
+}
+
+const { class: className, blok, ...props } = Astro.props
+
+const textSizes = {
+  '': 'text-22 lg:text-25 font-serif',
+  'normal': 'text-22 lg:text-25 font-serif',
+  'large': 'text-32 lg:text-35 font-serif',
+  'display': 'text-40 lg:text-45 font-sans font-bold tracking-wide uppercase',
+}
+const textSize = textSizes[blok.textSize ?? 'normal'] ?? textSizes['normal']
+---
+
+<Section
+  as="h2"
+  class={clsx('max-w-heading px-page-mx relative', textSize, className)}
+  blok={blok}
+  spacing="paragraph"
+  {...props}
+>
+  {blok.text}
+</Section>

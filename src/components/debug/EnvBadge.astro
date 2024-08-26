@@ -1,0 +1,38 @@
+---
+const envBadge =
+  import.meta.env.PUBLIC_ENV !== 'production'
+    ? import.meta.env.PUBLIC_ENV
+    : undefined
+---
+
+{
+  envBadge && !import.meta.env.DEV && (
+    <div
+      style={{
+        position: 'fixed',
+        top: '2px',
+        right: '2px',
+      }}
+    >
+      <span
+        style={{
+          marginLeft: 'auto',
+          display: 'inline-flex',
+          alignItems: 'center',
+          borderRadius: '8px',
+          color: '#eff6ff',
+          paddingLeft: '0.5rem',
+          paddingRight: '0.5rem',
+          paddingTop: '0.25rem',
+          paddingBottom: '0.25rem',
+          fontSize: '0.75rem',
+          lineHeight: '1rem',
+          fontWeight: 500,
+          backgroundColor: '#7B21CA',
+        }}
+      >
+        {envBadge}
+      </span>
+    </div>
+  )
+}

@@ -1,0 +1,33 @@
+---
+export type Props = {
+  title?: string
+  description?: string
+  twitter_title?: string
+  twitterTitle?: string
+  twitter_description?: string
+  twitterDescription?: string
+  twitter_image?: string
+  twitterImage?: string
+  defaultImage?: string
+  twitterUrl?: string
+  canonicalUrl?: string
+  twitterCard?: string
+}
+
+const props = Astro.props
+
+// Twitter Card meta
+// https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image
+const title = props.twitter_title || props.twitterTitle || props.title
+const description =
+  props.twitter_description || props.twitterDescription || props.description
+const image = props.twitter_image || props.twitterImage || props.defaultImage
+const url = props.twitterUrl || props.canonicalUrl
+const card = props.twitterCard || 'summary_large_image'
+---
+
+{title && <meta name="twitter:title" content={title} />}
+{description && <meta name="twitter:description" content={description} />}
+{image && <meta name="twitter:image" content={image} />}
+{url && <meta name="twitter:url" content={url} />}
+{card && <meta name="twitter:card" content={card} />}

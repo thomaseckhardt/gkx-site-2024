@@ -1,0 +1,103 @@
+---
+import type { HeroSlideStoryblok } from '@/types/storyblok'
+import clsx from 'clsx'
+import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+
+export type Props = {
+  class?: string
+  blok: HeroSlideStoryblok
+}
+
+const { class: className, blok, ...props } = Astro.props
+
+const isVideo = blok.videoPortraitID || blok.videoLandscapeID
+const variant = blok.variant || 'fullscreen'
+const isFullscreen = variant === 'fullscreen'
+const mainImage = blok.imagePortrait?.filename
+  ? blok.imagePortrait
+  : blok.imageLandscape
+const backgroundImage =
+  variant === 'backgroundImage' && mainImage?.filename ? mainImage : undefined
+const backgroundColor = blok.backgroundColor?.color
+const style =
+  !isFullscreen && backgroundColor
+    ? {
+        backgroundColor,
+      }
+    : undefined
+---
+
+<div
+  class={clsx(
+    'relative h-svh w-svw',
+    !isFullscreen && 'lg:py-19 flex items-center justify-center',
+    isFullscreen &&
+      'after:absolute after:bottom-0 after:left-0 after:right-0 after:z-10 after:h-3/4 after:w-full after:bg-gradient-to-t after:from-black/60 after:to-black/0 lg:after:h-1/2',
+    className,
+  )}
+  style={style}
+>
+  {
+    !isVideo && (
+      <Fragment>
+        {/* Text */}
+        <div class="px-page-mx max-w-text absolute bottom-0 left-0 z-30 pb-18 text-white">
+          {blok.title && (
+            <p class="text-45 lg:text-50 font-bold tracking-wide">
+              {blok.title}
+            </p>
+          )}
+          {isRichTextField(blok.description) && (
+            <StoryblokRichText
+              content={blok.description}
+              class={clsx('richtext text-32 lg:text-35 max-w-full font-serif')}
+            />
+          )}
+        </div>
+        {/* Background Image */}
+        {backgroundImage && (
+          <StoryblokPicture
+            classPicture="absolute inset-0 hidden lg:block"
+            class={clsx('absolute inset-0 h-full w-full object-cover')}
+            image={backgroundImage}
+          />
+        )}
+        {/* Image */}
+        {isFullscreen && (
+          <Fragment>
+            {blok.imagePortrait?.filename && (
+              <StoryblokPicture
+                class={clsx(
+                  'h-svh w-svw object-cover',
+                  blok.imageLandscape?.filename && 'lg:hidden',
+                )}
+                image={blok.imagePortrait}
+              />
+            )}
+            {blok.imageLandscape?.filename && (
+              <StoryblokPicture
+                class={clsx('h-svh w-svw object-cover')}
+                image={blok.imageLandscape}
+              />
+            )}
+          </Fragment>
+        )}
+        {!isFullscreen && (
+          <Fragment>
+            {mainImage && mainImage.filename && (
+              <StoryblokPicture
+                classPicture="w-full h-full lg:w-auto lg:aspect-9/16 lg:rounded-xl"
+                class={clsx(
+                  'absolute inset-0 h-full w-full object-cover lg:rounded-xl',
+                )}
+                image={mainImage}
+              />
+            )}
+          </Fragment>
+        )}
+      </Fragment>
+    )
+  }
+</div>

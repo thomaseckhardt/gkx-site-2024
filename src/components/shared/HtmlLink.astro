@@ -1,0 +1,19 @@
+---
+import { applyLinkAttrs } from '@/utils/link'
+import type { MultilinkStoryblok } from '@/types/storyblok'
+import Element from '@/components/shared/HtmlElement.astro'
+
+export type Props = {
+  as?: string
+  link?: MultilinkStoryblok | { href: string }
+  [key: string]: unknown
+}
+
+const { as: Tag = 'div', link, ...props } = Astro.props
+
+const Component = link ? 'a' : Tag
+---
+
+<Element {...props} {...Component === 'a' ? applyLinkAttrs(link) : undefined}>
+  <slot />
+</Element>
