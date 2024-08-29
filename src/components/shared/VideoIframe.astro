@@ -1,5 +1,6 @@
 ---
 import clsx from 'clsx'
+import { getThumbnailUrl, getVideoPlayerUrl } from '@/utils/bunny'
 
 // Landspace: de93e5b7-de47-47e2-869b-66115f27be2f
 // Portrait: 48a192fa-99a9-4bec-af90-bf25ffa5706a
@@ -7,18 +8,17 @@ import clsx from 'clsx'
 
 // https://vz-7f66f787-c63.b-cdn.net/${videoID}/thumbnail.jpg
 
+// TODO: Embed view token authentication
+// https://docs.bunny.net/docs/stream-embed-token-authentication
+
 export type Props = {
   videoID: string
   aspectRatio: '' | '16:9' | '9:16'
 }
 
 const { videoID, aspectRatio = '16:9' } = Astro.props
-const videoLibraryID = import.meta.env.PUBLIC_BUNNY_VIDEO_LIBRARY_ID
-const baseUrl = 'https://iframe.mediadelivery.net/embed'
-const thumbnailBaseUrl = 'https://vz-7f66f787-c63.b-cdn.net'
-// Parameters
-// @see https://docs.bunny.net/docs/stream-embedding-videos
-const options = {
+
+const videoPlayerUrl = getVideoPlayerUrl(videoID, {
   autoplay: false,
   preload: true,
   responsive: true,
@@ -30,16 +30,12 @@ const options = {
   loop: true,
   playsinline: true,
   showSpeed: false,
-}
-const params = Object.entries(options)
-  .map(([key, value]) => `${key}=${value}`)
-  .join('&')
-const videoPlayerUrl = `${baseUrl}/${videoLibraryID}/${videoID}?${params}`
-const thumbnailUrl = `${thumbnailBaseUrl}/${videoID}/thumbnail.jpg`
+})
+const thumbnailUrl = getThumbnailUrl(videoID)
 
 const aspectRatioClasses = {
   '16:9': 'aspect-16/9',
-  '9:16': 'h-svh w-[56.25svh]',
+  '9:16': 'lgmax:aspect-9/16 lg:h-svh lg:w-[56.25svh]',
 }
 const aspectRatioClass =
   aspectRatioClasses[aspectRatio || '16:9'] ?? aspectRatioClasses['16:9']
@@ -56,7 +52,7 @@ const aspectRatioClass =
     data-video
     src={videoPlayerUrl}
     loading="lazy"
-    style="border:0;position:absolute;top:0;height:100%;width:100%;"
+    class="absolute inset-0 h-full w-full border-0"
     allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
     allowfullscreen="true"></iframe>
 </div>

@@ -3,6 +3,7 @@ import Section from '@/components/sections/Section.astro'
 import type { HeroSlideStoryblok } from '@/types/storyblok'
 import clsx from 'clsx'
 import HeroSlide from '../blocks/HeroSlide.astro'
+import CircularProgress from '../shared/CircularProgress.astro'
 
 export type Props = {
   class?: string
@@ -31,12 +32,22 @@ const { class: className, slides = [], ...props } = Astro.props
               ))}
             </ul>
           </div>
+          <div class="absolute bottom-5 left-page-mx right-page-mx z-20 flex items-center justify-between">
+            <div class="flex-none">
+              <slot name="infoButton" />
+            </div>
+            <div class="ml-auto flex flex-none items-center gap-x-2">
+              <div class="text-18 whitespace-nowrap text-white">
+                <span x-text="index" />/<span x-text="total" />
+              </div>
+              <button class="splide__toggle" type="button">
+                <CircularProgress />
+              </button>
+            </div>
+          </div>
         </div>
       )
     }
-    <div class="left-page-mx absolute bottom-7 z-20">
-      <slot name="infoButton" />
-    </div>
     <slot name="backdrop" />
   </div>
 </Section>

@@ -10,10 +10,17 @@ export type Props = {
 }
 
 const { class: className, blok, ...props } = Astro.props
+
+const aspectRatioClasses = {
+  '16:9': '',
+  '9:16': 'lg:mx-page-mx',
+}
+const aspectRatioClass =
+  aspectRatioClasses[blok.aspectRatio || '16:9'] ?? aspectRatioClasses['16:9']
 ---
 
 <Section
-  class={clsx('relative', className)}
+  class={clsx('relative', aspectRatioClass, className)}
   blok={blok}
   spacing="paragraph"
   {...props}

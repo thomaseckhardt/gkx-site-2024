@@ -184,6 +184,11 @@ export default {
         xl: '2rem',
       },
       screens: {
+        'smmax': { 'max': '640px' },
+        'mdmax': { 'max': '768px' },
+        'lgmax': { 'max': '1024px' },
+        'xlmax': { 'max': '1280px' },
+        '2xlmax': { 'max': '1536px' },
         'hovers': { raw: '(hover: hover)' },
         'hoversnot': { raw: '(hover: none)' },
       },

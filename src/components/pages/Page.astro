@@ -2,7 +2,6 @@
 import EntryLayout from '@/layouts/EntryLayout.astro'
 import type { PageStoryblok } from '@/types/storyblok'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
-import { componentIsHTMLElement } from 'astro/runtime/server/render/dom.js'
 import type { StoryblokStory } from 'storyblok-generate-ts'
 
 export type Props = {
@@ -14,8 +13,6 @@ export type Props = {
 const { site, story, blok } = Astro.props
 
 const sections = blok.body
-
-console.log(sections)
 ---
 
 <EntryLayout site={site} story={story}>

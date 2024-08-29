@@ -1,9 +1,10 @@
 ---
 import type { HeroSlideStoryblok } from '@/types/storyblok'
+import { isRichTextField } from '@/utils/storyblok/richtext'
 import clsx from 'clsx'
 import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
-import { isRichTextField } from '@/utils/storyblok/richtext'
 import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+import { getMP4 } from '@/utils/bunny'
 
 export type Props = {
   class?: string
@@ -27,43 +28,63 @@ const style =
         backgroundColor,
       }
     : undefined
+
+const videoSrcPortrait = getMP4(blok.videoPortraitID, 720)
+const videoSrcLandscape = getMP4(blok.videoLandscapeID, 720)
+const videoSourcesLandscape = [
+  {
+    media: '(min-width: 1920px)',
+    src: getMP4(blok.videoLandscapeID || blok.videoPortraitID, 1080),
+  },
+  {
+    media: '',
+    src: getMP4(blok.videoLandscapeID || blok.videoPortraitID, 720),
+  },
+].filter((source) => Boolean(source.src))
 ---
 
-<div
+<li
   class={clsx(
     'relative h-svh w-svw',
-    !isFullscreen && 'lg:py-19 flex items-center justify-center',
+    !isFullscreen && 'flex items-center justify-center lg:py-19',
     isFullscreen &&
       'after:absolute after:bottom-0 after:left-0 after:right-0 after:z-10 after:h-3/4 after:w-full after:bg-gradient-to-t after:from-black/60 after:to-black/0 lg:after:h-1/2',
     className,
   )}
   style={style}
 >
+  {/* Text */}
+  <div
+    class="absolute bottom-0 left-0 z-30 max-w-text px-page-mx pb-18 text-white"
+  >
+    {
+      blok.title && (
+        <p class="lg:text-50 text-45 font-bold tracking-wide">{blok.title}</p>
+      )
+    }
+    {
+      isRichTextField(blok.description) && (
+        <StoryblokRichText
+          content={blok.description}
+          class={clsx('richtext max-w-full font-serif text-32 lg:text-35')}
+        />
+      )
+    }
+  </div>
+  {/* Background Image */}
+  {
+    backgroundImage && (
+      <StoryblokPicture
+        classPicture="absolute inset-0 hidden lg:block"
+        class={clsx('absolute inset-0 h-full w-full object-cover')}
+        image={backgroundImage}
+        sizes="100vw"
+      />
+    )
+  }
   {
     !isVideo && (
       <Fragment>
-        {/* Text */}
-        <div class="px-page-mx max-w-text absolute bottom-0 left-0 z-30 pb-18 text-white">
-          {blok.title && (
-            <p class="text-45 lg:text-50 font-bold tracking-wide">
-              {blok.title}
-            </p>
-          )}
-          {isRichTextField(blok.description) && (
-            <StoryblokRichText
-              content={blok.description}
-              class={clsx('richtext text-32 lg:text-35 max-w-full font-serif')}
-            />
-          )}
-        </div>
-        {/* Background Image */}
-        {backgroundImage && (
-          <StoryblokPicture
-            classPicture="absolute inset-0 hidden lg:block"
-            class={clsx('absolute inset-0 h-full w-full object-cover')}
-            image={backgroundImage}
-          />
-        )}
         {/* Image */}
         {isFullscreen && (
           <Fragment>
@@ -74,12 +95,14 @@ const style =
                   blok.imageLandscape?.filename && 'lg:hidden',
                 )}
                 image={blok.imagePortrait}
+                sizes="100vw"
               />
             )}
             {blok.imageLandscape?.filename && (
               <StoryblokPicture
                 class={clsx('h-svh w-svw object-cover')}
                 image={blok.imageLandscape}
+                sizes="100vw"
               />
             )}
           </Fragment>
@@ -88,11 +111,12 @@ const style =
           <Fragment>
             {mainImage && mainImage.filename && (
               <StoryblokPicture
-                classPicture="w-full h-full lg:w-auto lg:aspect-9/16 lg:rounded-xl"
+                classPicture="relative w-full h-full lg:w-auto lg:aspect-9/16 lg:rounded-xl"
                 class={clsx(
                   'absolute inset-0 h-full w-full object-cover lg:rounded-xl',
                 )}
                 image={mainImage}
+                sizes="(min-width: 1024px) 800px, 100vw"
               />
             )}
           </Fragment>
@@ -100,4 +124,40 @@ const style =
       </Fragment>
     )
   }
-</div>
+  {
+    isVideo && (
+      <Fragment>
+        {isFullscreen && (
+          <div>
+            <video
+              class="pointer-events-none h-svh w-svw object-cover"
+              muted
+              playsinline
+            >
+              {/* TODO: Add via JS beacuse Chrome does not respects media attribute */}
+              {videoSourcesLandscape.map((source) => (
+                <source
+                  src={source.src}
+                  media={source.media}
+                  type="video/mp4"
+                />
+              ))}
+            </video>
+          </div>
+        )}
+        {!isFullscreen && (
+          <div class="relative h-full w-full lg:aspect-9/16 lg:w-auto lg:rounded-xl">
+            <video
+              class="absolute inset-0 h-full w-full object-cover lg:rounded-xl"
+              muted
+              playsinline
+              autoplay="false"
+            >
+              <source src={videoSrcPortrait} type="video/mp4" />
+            </video>
+          </div>
+        )}
+      </Fragment>
+    )
+  }
+</li>

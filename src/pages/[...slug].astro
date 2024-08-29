@@ -9,6 +9,8 @@ import { fetchStory } from '@/utils/storyblok/fetchStories'
 import { isSSR } from '@/utils/env'
 import { generateStaticPaths, parseUrl } from '@/utils/storyblok/paths'
 
+export const prerender = true
+
 export async function getStaticPaths() {
   return await generateStaticPaths()
 }

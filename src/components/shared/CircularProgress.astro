@@ -1,0 +1,67 @@
+---
+export type Props = {
+  value?: number
+  radius?: number
+  strokeWidth?: number
+  color?: string
+  bgColor?: string
+  xProp?: string
+}
+
+const {
+  value = 0.75,
+  radius = 17,
+  strokeWidth = 4,
+  color = 'stroke-white',
+  bgColor = 'stroke-white/25',
+  xProp = 'ratio',
+} = Astro.props
+const percentage = value * 100
+
+const size = strokeWidth * 2 + radius * 2
+
+export const calcCirc = (r: number): number => {
+  return Math.PI * r * 2
+}
+
+export const calculateDashoffset = (
+  percentageShown: number,
+  circumference: number,
+): number => {
+  return ((100 - percentageShown) / 100) * circumference
+}
+
+const circ = calcCirc(radius)
+const dashOffset = calculateDashoffset(percentage, circ)
+---
+
+<svg
+  x-data={`{ circ: ${circ},  calculateDashoffset: ${calculateDashoffset.toString()} }`}
+  width={size}
+  height={size}
+  viewBox={`${-size / 2} ${-size / 2} ${size} ${size}`}
+  fill="gray"
+  xmlns="http://www.w3.org/2000/svg"
+  class="-rotate-90"
+>
+  <circle
+    class={bgColor}
+    r={radius}
+    cx="0"
+    cy="0"
+    fill="transparent"
+    stroke-width={strokeWidth}
+    stroke-linecap="round"></circle>
+  <circle
+    class={color}
+    cx="0"
+    cy="0"
+    fill="transparent"
+    stroke-width={strokeWidth}
+    stroke-linecap="round"
+    r={radius}
+    stroke-dasharray={circ}
+    stroke-dashoffset={dashOffset}
+    x-bind:stroke-dashoffset={`calculateDashoffset(${xProp} * 100, circ)`}
+  ></circle>
+</svg>
