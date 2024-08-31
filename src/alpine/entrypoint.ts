@@ -3,12 +3,14 @@
 import type { Alpine } from 'alpinejs'
 import { carousel } from '@/alpine/carousel'
 import { hero } from '@/alpine/hero'
+import { home } from '@/alpine/home'
 // import * as bodyScrollLock from 'body-scroll-lock'
 
 export default (Alpine: Alpine) => {
   // Alpine.plugin(collapse)
   // Alpine.plugin(persist)
 
+  Alpine.data('home', home)
   Alpine.data('carousel', carousel)
   Alpine.data('hero', hero)
 

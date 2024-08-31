@@ -1,0 +1,269 @@
+---
+import clsx from 'clsx'
+import StoryblokImage from '../storyblok/StoryblokImage.astro'
+
+const projectSamples = [
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=110` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=111` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=112` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=113` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=114` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=115` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=116` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=117` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=118` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+  {
+    cover: { filename: `https://unsplash.it/360/640?image=119` },
+    title: 'Tennis 40: Love Buch Porsche × Steidl',
+    subtitle: 'Porsche',
+  },
+]
+const projects = [...projectSamples]
+const navItems = [...projectSamples]
+const total = navItems.length
+const half = total / 2
+// TODO: sort by date ASC (!)
+
+// GSAP 3D Carousel Demo
+// https://codepen.io/GreenSock/pen/RwLepdQ
+---
+
+<div class="h-svh">
+  <div
+    x-data="home"
+    class="flex h-svh justify-center"
+    style={{ '--total': projects.length, '--pi': Math.PI }}
+  >
+    <!-- <div class="absolute left-0 top-0 w-full">
+      <div class="h-[96px] bg-green-500/25"></div>
+      <div class="absolute bottom-[] h-[96px] bg-green-500/25"></div>
+    </div> -->
+    <div class="x-home__container">
+      <ul class="x-home__carousel">
+        {
+          projects.map((project, index) => (
+            <li
+              class="x-home__carousel-item rounded-3xl"
+              style={{
+                '--i': index,
+                '--depth': 1 - Math.abs(index - half) / half,
+              }}
+            >
+              <a href="#" class="x-home__card relative block rounded-3xl">
+                <div class="x-home__card-blend" />
+                <img
+                  src={project.cover.filename}
+                  alt={project.title}
+                  class="h-auto w-full rounded-3xl"
+                />
+                <div class="absolute left-4 top-4 rounded-2xl bg-white/80 p-2 font-bold">
+                  {index}
+                </div>
+                <div class="absolute hidden p-4">
+                  <h3 class="text-lg font-bold">{project.title}</h3>
+                  <p class="text-sm">{project.subtitle}</p>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="x-thumbnails">
+        <div x-ref="thumbnails" class="splide">
+          <nav class="splide__track">
+            <ul class="splide__list x-home__nav__">
+              {
+                navItems.map((project, index) => (
+                  <li
+                    class="splide__slide x-home__slide"
+                    style={{
+                      '--i': index,
+                    }}
+                  >
+                    <a href="#" class="x-home__nav-item relative">
+                      <div class="absolute left-1 top-1 z-10 rounded-lg bg-white px-1">
+                        {index}
+                      </div>
+                      <img
+                        src={project.cover.filename}
+                        alt=""
+                        class="absolute inset-0 h-full w-full rounded-lg object-cover"
+                      />
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap'
+
+  const carousel = document.querySelector('.x-home__carousel')
+  if (carousel) {
+    const slides: HTMLElement[] = gsap.utils.toArray(
+      carousel.querySelectorAll('.x-home__carousel-item'),
+    )
+    const total = slides.length
+    const half = total / 2
+
+    // const tl = gsap.timeline()
+    // tl.from(carousel, {
+    //   rotateX: 90,
+    //   duration: 10,
+    // })
+    const rotation = gsap.to(carousel, {
+      '--progress': 1,
+      rotateY: -360,
+      duration: 24,
+      repeat: -1,
+      ease: 'none',
+      onUpdate: (props) => {
+        const progress = rotation.progress()
+
+        slides.forEach((slide, index) => {
+          const progressIndex =
+            (((index - progress * total) % total) + total) % total
+          const depth = 1 - Math.abs(progressIndex - half) / half
+          slide.style.setProperty('--depth', `${depth}`)
+        })
+      },
+    })
+  }
+</script>
+
+<style>
+  .splide:not(.is-overflow) .splide__arrows {
+    display: none;
+  }
+
+  .splide:not(.is-overflow) .splide__list {
+    justify-content: center;
+    transform: translateX(0) !important;
+  }
+
+  .splide:not(.is-overflow) .splide__slide:last-child {
+    margin: 0 !important;
+  }
+
+  .splide__slide {
+    @apply flex items-center transition duration-300 ease-in-out;
+
+    height: var(--nav-h);
+  }
+
+  .splide__slide:hover,
+  .splide__slide.is-active {
+    /* transform: scale(1.2); */
+    transform: translateY(-0.25rem);
+  }
+
+  .x-home__container {
+    --mt: 6rem;
+    --nav-h: 4.5rem;
+    --nav-item-h: 3.6rem;
+    --nav-gap: 3.375rem;
+    --mb: 1.75rem;
+
+    @apply flex w-full flex-col items-center overflow-hidden;
+
+    margin-top: var(--mt);
+    gap: var(--nav-gap);
+  }
+
+  .x-home__carousel {
+    --h: calc(100svh - var(--nav-h) - var(--nav-gap) - var(--mt) - var(--mb));
+    --w: calc(var(--h) / 16 * 9);
+    --angle: calc(var(--pi) / var(--total));
+    --r: calc((var(--w) * 1) / (2 * sin(var(--angle))));
+    --z: calc(var(--r));
+    --perspective: 8000;
+    --perspectivePX: 8000px;
+    --progress: 0;
+    @apply flex-none;
+
+    width: calc(var(--h) / 16 * 9);
+    height: var(--h);
+    /* backface-visibility: hidden; */
+    transform-style: preserve-3d;
+    transform: perspective(var(--perspectivePX)) translateZ(calc(var(--z) * -1))
+      rotateY(calc(var(--progress) * -360deg)) rotateX(0deg);
+  }
+
+  .x-home__carousel-item {
+    @apply absolute h-full w-full rounded-2xl;
+
+    filter: saturate(calc(1 - var(--depth))) blur(calc(var(--depth) * 2px));
+    /* backface-visibility: hidden; */
+    transform-origin: center;
+    transform-style: preserve-3d;
+    transform: rotateY(calc(var(--i) * 360deg / var(--total)))
+      translateZ(var(--z));
+  }
+  .x-home__card-blend {
+    @apply absolute inset-0 bg-white;
+
+    opacity: calc(var(--depth) - 0.1);
+  }
+
+  .x-thumbnails {
+    @apply w-full flex-none;
+    height: var(--nav-h);
+  }
+
+  /* DEPRECATED: */
+
+  .x-home__nav {
+    @apply flex w-full flex-none items-center justify-center gap-x-0.5 overflow-hidden bg-sky-500/25;
+
+    height: var(--nav-h);
+  }
+
+  .x-home__nav-item {
+    @apply flex flex-none items-center justify-center overflow-hidden rounded-lg bg-sky-500/50;
+
+    width: calc(var(--nav-item-h) / 16 * 9);
+    height: var(--nav-item-h);
+  }
+</style>
