@@ -1,6 +1,14 @@
 ---
 import clsx from 'clsx'
 import StoryblokImage from '../storyblok/StoryblokImage.astro'
+import { fetchStories } from '@/utils/storyblok'
+import type { ProjectStoryblok } from '@/types/storyblok'
+
+const projectStories = await fetchStories({
+  by_slugs: 'projects/*',
+  content_type: 'Project',
+  sort_by: 'sort_by_date:asc,published_at:asc,created_at:asc',
+})
 
 const projectSamples = [
   {
@@ -54,8 +62,22 @@ const projectSamples = [
     subtitle: 'Porsche',
   },
 ]
-const projects = [...projectSamples]
-const navItems = [...projectSamples]
+const projects = [
+  ...(projectStories?.length
+    ? projectStories.map((project: ProjectStoryblok) => {
+        const heroSlide = project.content.heroSlides?.[0] ?? {}
+        return {
+          ...project.content,
+          link: project.full_slug,
+          cover: heroSlide.imagePortrait.filename
+            ? heroSlide.imagePortrait
+            : heroSlide.imageLandscape,
+        }
+      })
+    : undefined),
+  ...projectSamples,
+].filter(Boolean)
+const navItems = [...projects]
 const total = navItems.length
 const half = total / 2
 // TODO: sort by date ASC (!)
@@ -85,12 +107,15 @@ const half = total / 2
                 '--depth': 1 - Math.abs(index - half) / half,
               }}
             >
-              <a href="#" class="x-home__card relative block rounded-3xl">
+              <a
+                href={project?.link}
+                class="x-home__card relative block h-full w-full rounded-3xl"
+              >
                 <div class="x-home__card-blend" />
                 <img
                   src={project.cover.filename}
                   alt={project.title}
-                  class="h-auto w-full rounded-3xl"
+                  class="h-full w-full rounded-3xl object-cover"
                 />
                 <div class="absolute left-4 top-4 rounded-2xl bg-white/80 p-2 font-bold">
                   {index}
@@ -136,42 +161,6 @@ const half = total / 2
     </div>
   </div>
 </div>
-
-<script>
-  import { gsap } from 'gsap'
-
-  const carousel = document.querySelector('.x-home__carousel')
-  if (carousel) {
-    const slides: HTMLElement[] = gsap.utils.toArray(
-      carousel.querySelectorAll('.x-home__carousel-item'),
-    )
-    const total = slides.length
-    const half = total / 2
-
-    // const tl = gsap.timeline()
-    // tl.from(carousel, {
-    //   rotateX: 90,
-    //   duration: 10,
-    // })
-    const rotation = gsap.to(carousel, {
-      '--progress': 1,
-      rotateY: -360,
-      duration: 24,
-      repeat: -1,
-      ease: 'none',
-      onUpdate: (props) => {
-        const progress = rotation.progress()
-
-        slides.forEach((slide, index) => {
-          const progressIndex =
-            (((index - progress * total) % total) + total) % total
-          const depth = 1 - Math.abs(progressIndex - half) / half
-          slide.style.setProperty('--depth', `${depth}`)
-        })
-      },
-    })
-  }
-</script>
 
 <style>
   .splide:not(.is-overflow) .splide__arrows {
