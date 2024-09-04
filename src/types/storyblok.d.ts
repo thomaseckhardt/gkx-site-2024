@@ -72,6 +72,8 @@ export interface PageStoryblok {
     | HeroSlideStoryblok
     | PageStoryblok
     | ProjectStoryblok
+    | ProjectCarouselStoryblok
+    | SiteConfigurationStoryblok
     | StorefrontStoryblok
     | StoreProductStoryblok
     | TextStoryblok
@@ -89,6 +91,18 @@ export interface ProjectStoryblok {
   information?: (GalleryStoryblok | HeadlineStoryblok | StorefrontStoryblok | TextStoryblok | VideoPlayerStoryblok)[];
   _uid: string;
   component: "Project";
+  [k: string]: any;
+}
+
+export interface ProjectCarouselStoryblok {
+  _uid: string;
+  component: "ProjectCarousel";
+  [k: string]: any;
+}
+
+export interface SiteConfigurationStoryblok {
+  _uid: string;
+  component: "SiteConfiguration";
   [k: string]: any;
 }
 

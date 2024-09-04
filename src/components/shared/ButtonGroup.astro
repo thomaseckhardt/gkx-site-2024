@@ -4,13 +4,12 @@ import Button, {
   type Theme,
   type Variant,
 } from '@/components/shared/Button.astro'
-import type { ButtonStoryblok } from '@/types/storyblok'
 import { applyLinkAttrs } from '@/utils/link'
 import clsx from 'clsx'
 
 export type Props = {
   as?: string
-  buttons: ButtonStoryblok[]
+  buttons: any
   class?: string
   color?: Theme
   size?: Size

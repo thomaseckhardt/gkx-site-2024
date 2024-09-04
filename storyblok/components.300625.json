@@ -137,7 +137,7 @@
       "name": "HeroSlide",
       "display_name": null,
       "created_at": "2024-08-14T14:04:11.521Z",
-      "updated_at": "2024-08-22T08:13:27.462Z",
+      "updated_at": "2024-08-27T09:23:21.157Z",
       "id": 6167970,
       "schema": {
         "title": {
@@ -174,11 +174,13 @@
         },
         "videoPortraitID": {
           "type": "text",
-          "pos": 4
+          "pos": 4,
+          "display_name": "Video ID Portrait"
         },
         "videoLandscapeID": {
           "type": "text",
-          "pos": 5
+          "pos": 5,
+          "display_name": "Video ID Landscape"
         },
         "variant": {
           "type": "option",
@@ -217,7 +219,7 @@
       "image": null,
       "preview_field": null,
       "is_root": false,
-      "preview_tmpl": null,
+      "preview_tmpl": "<div>Variant: {{it.variant}}</div>\n{{@if(it.imagePortrait.filename)}}\n{{@image(it.imagePortrait.filename)/}} \n{{#else}}\n{{@image(it.imageLandscape.filename)/}} \n{{/if}}",
       "is_nestable": true,
       "all_presets": [],
       "preset_id": null,
@@ -308,6 +310,50 @@
       "real_name": "Project",
       "component_group_uuid": null,
       "color": "#395ece",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "ProjectCarousel",
+      "display_name": null,
+      "created_at": "2024-08-29T09:04:08.605Z",
+      "updated_at": "2024-08-29T09:04:08.605Z",
+      "id": 6225810,
+      "schema": {},
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "ProjectCarousel",
+      "component_group_uuid": null,
+      "color": null,
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
+      "name": "SiteConfiguration",
+      "display_name": null,
+      "created_at": "2024-09-04T13:58:04.168Z",
+      "updated_at": "2024-09-04T13:58:04.168Z",
+      "id": 6252790,
+      "schema": {},
+      "image": null,
+      "preview_field": null,
+      "is_root": true,
+      "preview_tmpl": null,
+      "is_nestable": false,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "SiteConfiguration",
+      "component_group_uuid": null,
+      "color": null,
       "icon": null,
       "internal_tags_list": [],
       "internal_tag_ids": [],
@@ -505,5 +551,6 @@
       "internal_tag_ids": [],
       "content_type_asset_preview": null
     }
-  ]
+  ],
+  "component_groups": []
 }

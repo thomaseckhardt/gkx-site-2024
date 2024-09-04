@@ -64,8 +64,10 @@ const projectSamples = [
   },
 ]
 const projects = [
+  // @ts-ignore
   ...(projectStories?.length
-    ? projectStories.map((project: ProjectStoryblok) => {
+    ? // @ts-ignore
+      projectStories.map((project: ProjectStoryblok) => {
         const heroSlide = project.content.heroSlides?.[0] ?? {}
         return {
           ...project.content,
