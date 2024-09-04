@@ -50,6 +50,7 @@ export default defineConfig({
         VideoPlayer: 'components/sections/VideoPlayer',
         Gallery: 'components/sections/Gallery',
         Storefront: 'components/sections/Storefront',
+        StorefrontProject: 'components/sections/StorefrontProject',
         ProjectCarousel: 'components/sections/ProjectCarousel',
         // Content Types
         Project: 'components/pages/Project',

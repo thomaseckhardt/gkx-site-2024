@@ -16,18 +16,16 @@ export type Props = {
 
 const { site, story, blok } = Astro.props
 
-let headingCount = 0
+let headlineCount = 0
 const body =
   blok.information?.map((blok) => {
-    console.log(blok.component)
     if (blok.component === 'Headline') {
-      headingCount++
-      console.log(headingCount)
+      headlineCount++
       return {
         ...blok,
         _props: {
-          textSize: headingCount === 1 ? 'display' : 'large',
-          headingOrder: headingCount === 1 ? 1 : 2,
+          textSize: headlineCount === 1 ? 'display' : 'large',
+          headingOrder: headlineCount === 1 ? 1 : 2,
         },
       }
     }
