@@ -6,7 +6,6 @@ import type { ProjectStoryblok } from '@/types/storyblok'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
 import type { StoryblokStory } from 'storyblok-generate-ts'
-import HeroSlide from '@/components/blocks/HeroSlide.astro'
 
 export type Props = {
   site: Object
@@ -31,6 +30,8 @@ const body =
     }
     return blok
   }) ?? []
+
+const FLAG_SCROLL_SNAP = false
 ---
 
 <EntryLayout site={site} story={story}>
@@ -38,7 +39,8 @@ const body =
     class={clsx(
       'x-main',
       'text-22 lg:text-25',
-      'h-svh snap-y snap-mandatory overflow-y-auto overflow-x-hidden',
+      FLAG_SCROLL_SNAP &&
+        'h-svh snap-y snap-mandatory overflow-y-auto overflow-x-hidden',
     )}
     x-data="project"
   >
@@ -54,7 +56,10 @@ const body =
       as="header"
       spacing="none"
       slides={blok.heroSlides}
-      class="x-hero sticky top-0 h-svh snap-start"
+      class={clsx(
+        'x-hero sticky top-0 h-svh',
+        FLAG_SCROLL_SNAP && 'snap-start',
+      )}
     >
       <div slot="infoButton" class="x-info-open">
         <Button as="button" x-on:click="() => openInfo()">Info</Button>
@@ -70,7 +75,9 @@ const body =
       </div>
     </ProjectHero>
 
-    <div class={clsx('x-info', 'relative snap-start pb-20')}>
+    <div
+      class={clsx('x-info', 'relative pb-20', FLAG_SCROLL_SNAP && 'snap-start')}
+    >
       <div
         x-ref="info"
         class={clsx('x-info-close', 'relative z-20 mb-3 px-page-mx pt-page-mx')}
