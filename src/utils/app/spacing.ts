@@ -1,5 +1,3 @@
-// Project
-
 const spacing: Spacing = {
   'auto': {
     cmsLabel: 'Automatisch',
@@ -22,15 +20,15 @@ const spacing: Spacing = {
   },
   'md': {
     cmsLabel: 'md',
-    classes: 'mt-18',
+    classes: 'mt-20',
   },
   'lg': {
     cmsLabel: 'lg',
-    classes: 'mt-25',
+    classes: 'mt-32',
   },
   'xl': {
     cmsLabel: 'xl',
-    classes: 'mt-50',
+    classes: 'mt-44',
   },
 }
 
