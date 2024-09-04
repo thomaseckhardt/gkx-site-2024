@@ -196,27 +196,27 @@ const half = total / 2
 </div>
 
 <style is:global>
-  .splide:not(.is-overflow) .splide__arrows {
+  .x-thumbnails .splide:not(.is-overflow) .splide__arrows {
     display: none;
   }
 
-  .splide:not(.is-overflow) .splide__list {
+  .x-thumbnails .splide:not(.is-overflow) .splide__list {
     justify-content: center;
     transform: translateX(0) !important;
   }
 
-  .splide:not(.is-overflow) .splide__slide:last-child {
+  .x-thumbnails .splide:not(.is-overflow) .splide__slide:last-child {
     margin: 0 !important;
   }
 
-  .splide__slide {
+  .x-thumbnails .splide__slide {
     @apply flex items-center transition duration-300 ease-in-out;
 
     height: var(--nav-h);
   }
 
-  .splide__slide:hover,
-  .splide__slide.is-active {
+  .x-thumbnails .splide__slide:hover,
+  .x-thumbnails .splide__slide.is-active {
     /* transform: scale(1.2); */
     transform: translateY(-0.25rem);
   }
