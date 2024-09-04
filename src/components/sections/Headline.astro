@@ -6,22 +6,28 @@ import clsx from 'clsx'
 export type Props = {
   class?: string
   blok: HeadlineStoryblok
+  textSize: undefined | 'large' | 'display'
+  headingOrder: undefined | 1 | 2 | 3 | 4 | 5 | 6
 }
 
-const { class: className, blok, ...props } = Astro.props
+const {
+  class: className,
+  blok,
+  headingOrder = 2,
+  textSize = 'display',
+  ...props
+} = Astro.props
 
 const textSizes = {
-  '': 'text-22 lg:text-25 font-serif',
-  'normal': 'text-22 lg:text-25 font-serif',
-  'large': 'text-32 lg:text-35 font-serif',
+  'large': 'text-32 lg:text-35 font-sans font-bold tracking-wide uppercase',
   'display': 'text-40 lg:text-45 font-sans font-bold tracking-wide uppercase',
 }
-const textSize = textSizes[blok.textSize ?? 'normal'] ?? textSizes['normal']
+const textSizeClass = textSizes[blok.textSize ?? 'large'] ?? textSizes['large']
 ---
 
 <Section
-  as="h2"
-  class={clsx('max-w-heading px-page-mx relative', textSize, className)}
+  as={`h${headingOrder}`}
+  class={clsx('relative max-w-heading px-page-mx', textSizeClass, className)}
   blok={blok}
   spacing="paragraph"
   {...props}

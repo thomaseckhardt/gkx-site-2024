@@ -16,7 +16,23 @@ export type Props = {
 
 const { site, story, blok } = Astro.props
 
-const body = blok.information
+let headingCount = 0
+const body =
+  blok.information?.map((blok) => {
+    console.log(blok.component)
+    if (blok.component === 'Headline') {
+      headingCount++
+      console.log(headingCount)
+      return {
+        ...blok,
+        _props: {
+          textSize: headingCount === 1 ? 'display' : 'large',
+          headingOrder: headingCount === 1 ? 1 : 2,
+        },
+      }
+    }
+    return blok
+  }) ?? []
 ---
 
 <EntryLayout site={site} story={story}>
@@ -70,6 +86,7 @@ const body = blok.information
             story={story}
             spacing={index === 0 ? 'none' : 'paragraph'}
             class="z-20"
+            {...section._props}
           />
         ))
       }

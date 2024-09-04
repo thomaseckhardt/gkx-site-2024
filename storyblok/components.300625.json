@@ -77,44 +77,12 @@
       "name": "Headline",
       "display_name": null,
       "created_at": "2024-08-16T07:54:36.520Z",
-      "updated_at": "2024-08-16T08:11:22.515Z",
+      "updated_at": "2024-09-04T22:00:54.751Z",
       "id": 6174261,
       "schema": {
         "text": {
           "type": "textarea",
           "pos": 0,
-          "required": true
-        },
-        "headingOrder": {
-          "type": "number",
-          "pos": 1,
-          "min_value": 1,
-          "max_value": 1,
-          "default_value": "2",
-          "required": true
-        },
-        "textSize": {
-          "type": "option",
-          "pos": 2,
-          "use_uuid": true,
-          "options": [
-            {
-              "_uid": "644e9ed5-c925-46b3-8fe4-70e74d37245a",
-              "name": "Normal",
-              "value": "normal"
-            },
-            {
-              "_uid": "894511c0-bbc8-478b-aaba-1da0732dcccc",
-              "value": "large",
-              "name": "Large"
-            },
-            {
-              "_uid": "b71516e4-05ec-4143-98be-b53f11c067e0",
-              "value": "display",
-              "name": "Display"
-            }
-          ],
-          "default_value": "large",
           "required": true
         }
       },
@@ -261,7 +229,7 @@
       "name": "Project",
       "display_name": null,
       "created_at": "2024-08-14T12:38:44.158Z",
-      "updated_at": "2024-08-16T08:08:09.524Z",
+      "updated_at": "2024-09-04T22:04:41.639Z",
       "id": 6167499,
       "schema": {
         "title": {
@@ -294,9 +262,9 @@
           "component_whitelist": [
             "Gallery",
             "Headline",
-            "Storefront",
             "Text",
-            "VideoPlayer"
+            "VideoPlayer",
+            "StorefrontProject"
           ]
         }
       },
@@ -319,7 +287,7 @@
       "name": "ProjectCarousel",
       "display_name": null,
       "created_at": "2024-08-29T09:04:08.605Z",
-      "updated_at": "2024-08-29T09:04:08.605Z",
+      "updated_at": "2024-09-04T22:04:28.514Z",
       "id": 6225810,
       "schema": {},
       "image": null,
@@ -331,7 +299,7 @@
       "preset_id": null,
       "real_name": "ProjectCarousel",
       "component_group_uuid": null,
-      "color": null,
+      "color": "#2db47d",
       "icon": null,
       "internal_tags_list": [],
       "internal_tag_ids": [],
@@ -341,7 +309,7 @@
       "name": "SiteConfiguration",
       "display_name": null,
       "created_at": "2024-09-04T13:58:04.168Z",
-      "updated_at": "2024-09-04T13:58:04.168Z",
+      "updated_at": "2024-09-04T22:04:18.342Z",
       "id": 6252790,
       "schema": {},
       "image": null,
@@ -353,7 +321,7 @@
       "preset_id": null,
       "real_name": "SiteConfiguration",
       "component_group_uuid": null,
-      "color": null,
+      "color": "#1b243f",
       "icon": null,
       "internal_tags_list": [],
       "internal_tag_ids": [],
@@ -398,10 +366,57 @@
       "content_type_asset_preview": null
     },
     {
+      "name": "StorefrontProject",
+      "display_name": null,
+      "created_at": "2024-09-04T22:01:39.519Z",
+      "updated_at": "2024-09-04T22:03:07.176Z",
+      "id": 6254519,
+      "schema": {
+        "headline": {
+          "type": "text",
+          "pos": 0,
+          "default_value": "Shop"
+        },
+        "ctaLabel": {
+          "type": "text",
+          "pos": 1,
+          "description": "",
+          "default_value": "Shop"
+        },
+        "ctaUrl": {
+          "type": "multilink",
+          "pos": 2
+        },
+        "products": {
+          "type": "bloks",
+          "pos": 3,
+          "restrict_type": "",
+          "restrict_components": true,
+          "component_whitelist": [
+            "StoreProduct"
+          ]
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "StorefrontProject",
+      "component_group_uuid": null,
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null
+    },
+    {
       "name": "StoreProduct",
       "display_name": null,
       "created_at": "2024-08-16T08:01:36.749Z",
-      "updated_at": "2024-08-22T08:23:41.234Z",
+      "updated_at": "2024-09-04T22:02:55.797Z",
       "id": 6174271,
       "schema": {
         "image": {
@@ -437,7 +452,7 @@
       "preview_field": null,
       "is_root": true,
       "preview_tmpl": null,
-      "is_nestable": false,
+      "is_nestable": true,
       "all_presets": [],
       "preset_id": null,
       "real_name": "StoreProduct",

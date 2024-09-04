@@ -44,8 +44,6 @@ export interface GallerySlideStoryblok {
 
 export interface HeadlineStoryblok {
   text: string;
-  headingOrder: string;
-  textSize: "" | "normal" | "large" | "display";
   _uid: string;
   component: "Headline";
   [k: string]: any;
@@ -75,6 +73,7 @@ export interface PageStoryblok {
     | ProjectCarouselStoryblok
     | SiteConfigurationStoryblok
     | StorefrontStoryblok
+    | StorefrontProjectStoryblok
     | StoreProductStoryblok
     | TextStoryblok
     | VideoPlayerStoryblok
@@ -88,7 +87,13 @@ export interface ProjectStoryblok {
   title?: string;
   subtitle?: string;
   heroSlides: HeroSlideStoryblok[];
-  information?: (GalleryStoryblok | HeadlineStoryblok | StorefrontStoryblok | TextStoryblok | VideoPlayerStoryblok)[];
+  information?: (
+    | GalleryStoryblok
+    | HeadlineStoryblok
+    | TextStoryblok
+    | VideoPlayerStoryblok
+    | StorefrontProjectStoryblok
+  )[];
   _uid: string;
   component: "Project";
   [k: string]: any;
@@ -136,6 +141,16 @@ export interface StorefrontStoryblok {
   ctaUrl?: Exclude<MultilinkStoryblok, {linktype?: "email"} | {linktype?: "asset"}>;
   _uid: string;
   component: "Storefront";
+  [k: string]: any;
+}
+
+export interface StorefrontProjectStoryblok {
+  headline?: string;
+  ctaLabel?: string;
+  ctaUrl?: Exclude<MultilinkStoryblok, {linktype?: "email"} | {linktype?: "asset"}>;
+  products?: StoreProductStoryblok[];
+  _uid: string;
+  component: "StorefrontProject";
   [k: string]: any;
 }
 
