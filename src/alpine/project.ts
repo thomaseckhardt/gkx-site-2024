@@ -21,6 +21,7 @@ export function project(): AlpineComponent<ProjectComponent> {
       }
     },
     closeInfo: function () {
+      console.log('close info')
       this.$root.scroll({
         top: 0,
         behavior: 'smooth',

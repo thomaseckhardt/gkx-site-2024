@@ -27,12 +27,17 @@ const { class: className, slides = [], ...props } = Astro.props
         <div x-ref="carousel" class="splide">
           <div class="splide__track">
             <ul class="splide__list">
-              {slides.map((slide) => (
-                <HeroSlide blok={slide} class="splide__slide" />
+              {slides.map((slide, index) => (
+                <HeroSlide
+                  as="li"
+                  blok={slide}
+                  class="splide__slide h-svh w-svw"
+                  animateText={index === 0}
+                />
               ))}
             </ul>
           </div>
-          <div class="absolute bottom-5 left-page-mx right-page-mx z-20 flex items-center justify-between">
+          <div class="animate-project-controls-in absolute bottom-5 left-page-mx right-page-mx z-20 flex items-center justify-between">
             <div class="flex-none">
               <slot name="infoButton" />
             </div>

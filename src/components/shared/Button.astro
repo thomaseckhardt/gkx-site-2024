@@ -41,7 +41,7 @@ const { ink, inkProp } = defineInk({
 ---
 
 <Component class={ink('root')} {...props}>
-  <span class={ink('body', 'inline-block z-10')}>
+  <span class={ink('body', 'inline-block z-10 pointer-events-none')}>
     <slot>{label}</slot>
   </span>
 </Component>

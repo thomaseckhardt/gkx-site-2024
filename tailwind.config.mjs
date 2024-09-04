@@ -66,10 +66,6 @@ export default {
         // '21/9': '21/9', // 2.3333333333
         // '5/2': '5/2', // 2.5
       },
-      zIndex: {
-        // 'header': 1010,
-        // 'dialog': 2020,
-      },
       fontSize: {
         // https://tailwindcss.com/docs/font-size
         // 'xs': [rem(12), { lineHeight: rem(16) }],
@@ -195,6 +191,15 @@ export default {
       cursor: {
         'left': 'w-resize',
         'right': 'e-resize',
+      },
+      animation: {
+        'project-heading-in':
+          'fade-in-slide 0.8s cubic-bezier(0.25, 1, 0.5, 1) 1s both',
+        'project-controls-in':
+          'fade-in-slide 0.8s cubic-bezier(0.25, 1, 0.5, 1) 1.3s both',
+      },
+      zIndex: {
+        'header': 9000,
       },
       typography: {
         // https://github.com/tailwindlabs/tailwindcss-typography/blob/master/src/styles.js

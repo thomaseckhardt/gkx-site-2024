@@ -7,11 +7,20 @@ import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
 import { getMP4 } from '@/utils/bunny'
 
 export type Props = {
+  as?: string
   class?: string
   blok: HeroSlideStoryblok
+  showText?: boolean
+  animateText?: boolean
 }
 
-const { class: className, blok, ...props } = Astro.props
+const {
+  as: Component = 'div',
+  class: className,
+  blok,
+  showText = true,
+  animateText = false,
+} = Astro.props
 
 const isVideo = blok.videoPortraitID || blok.videoLandscapeID
 const variant = blok.variant || 'fullscreen'
@@ -43,9 +52,9 @@ const videoSourcesLandscape = [
 ].filter((source) => Boolean(source.src))
 ---
 
-<li
+<Component
   class={clsx(
-    'relative h-svh w-svw',
+    'relative',
     !isFullscreen && 'flex items-center justify-center lg:py-19',
     isFullscreen &&
       'after:absolute after:bottom-0 after:left-0 after:right-0 after:z-10 after:h-3/4 after:w-full after:bg-gradient-to-t after:from-black/60 after:to-black/0 lg:after:h-1/2',
@@ -54,23 +63,26 @@ const videoSourcesLandscape = [
   style={style}
 >
   {/* Text */}
-  <div
-    class="absolute bottom-0 left-0 z-30 max-w-text px-page-mx pb-18 text-white"
-  >
-    {
-      blok.title && (
-        <p class="lg:text-50 text-45 font-bold tracking-wide">{blok.title}</p>
-      )
-    }
-    {
-      isRichTextField(blok.description) && (
-        <StoryblokRichText
-          content={blok.description}
-          class={clsx('richtext max-w-full font-serif text-32 lg:text-35')}
-        />
-      )
-    }
-  </div>
+  {
+    showText && (
+      <div
+        class={clsx(
+          'absolute bottom-0 left-0 z-30 max-w-text px-page-mx pb-18 text-white',
+          animateText && 'animate-project-heading-in',
+        )}
+      >
+        {blok.title && (
+          <p class="lg:text-50 text-45 font-bold tracking-wide">{blok.title}</p>
+        )}
+        {isRichTextField(blok.description) && (
+          <StoryblokRichText
+            content={blok.description}
+            class={clsx('richtext max-w-full font-serif text-32 lg:text-35')}
+          />
+        )}
+      </div>
+    )
+  }
   {/* Background Image */}
   {
     backgroundImage && (
@@ -88,20 +100,10 @@ const videoSourcesLandscape = [
         {/* Image */}
         {isFullscreen && (
           <Fragment>
-            {blok.imagePortrait?.filename && (
-              <StoryblokPicture
-                class={clsx(
-                  'h-svh w-svw object-cover',
-                  blok.imageLandscape?.filename && 'lg:hidden',
-                )}
-                image={blok.imagePortrait}
-                sizes="100vw"
-              />
-            )}
-            {blok.imageLandscape?.filename && (
+            {mainImage?.filename && (
               <StoryblokPicture
                 class={clsx('h-svh w-svw object-cover')}
-                image={blok.imageLandscape}
+                image={mainImage}
                 sizes="100vw"
               />
             )}
@@ -109,7 +111,7 @@ const videoSourcesLandscape = [
         )}
         {!isFullscreen && (
           <Fragment>
-            {mainImage && mainImage.filename && (
+            {mainImage?.filename && (
               <StoryblokPicture
                 classPicture="relative w-full h-full lg:w-auto lg:aspect-9/16 lg:rounded-xl"
                 class={clsx(
@@ -160,4 +162,4 @@ const videoSourcesLandscape = [
       </Fragment>
     )
   }
-</li>
+</Component>

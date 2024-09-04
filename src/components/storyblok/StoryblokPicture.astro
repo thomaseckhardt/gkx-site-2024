@@ -108,7 +108,7 @@ let resizeAspectRatio =
   !isNaN(resizeWidth) && !isNaN(resizeHeight)
     ? resizeWidth / resizeHeight
     : typeof aspectRatio === 'string'
-      ? getAspectRatioFromString(aspectRatio) ?? Number(aspectRatio)
+      ? (getAspectRatioFromString(aspectRatio) ?? Number(aspectRatio))
       : aspectRatio
 
 let sortedWidths = widths

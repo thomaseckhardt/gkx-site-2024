@@ -6,6 +6,7 @@ import type { ProjectStoryblok } from '@/types/storyblok'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import clsx from 'clsx'
 import type { StoryblokStory } from 'storyblok-generate-ts'
+import HeroSlide from '@/components/blocks/HeroSlide.astro'
 
 export type Props = {
   site: Object
@@ -27,11 +28,19 @@ const body = blok.information
     )}
     x-data="project"
   >
+    <!-- <div class={clsx('sticky top-0 h-svh snap-start overflow-hidden')}>
+      <HeroSlide
+        blok={blok.heroSlides?.[0]}
+        class="absolute inset-0"
+        imageTransitionName={`project-cover/${story.slug}`}
+        showText={false}
+      />
+    </div> -->
     <ProjectHero
       as="header"
       spacing="none"
       slides={blok.heroSlides}
-      class={clsx('x-hero', 'sticky top-0 snap-start overflow-hidden')}
+      class="x-hero sticky top-0 h-svh snap-start"
     >
       <div slot="infoButton" class="x-info-open">
         <Button as="button" x-on:click="() => openInfo()">Info</Button>
@@ -46,6 +55,7 @@ const body = blok.information
       >
       </div>
     </ProjectHero>
+
     <div class={clsx('x-info', 'relative snap-start pb-20')}>
       <div
         x-ref="info"

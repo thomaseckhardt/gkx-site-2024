@@ -21,6 +21,13 @@ export default defineConfig({
     defaultLocale: 'en',
     locales: ['en'],
   },
+  vite: {
+    server: {
+      watch: {
+        usePolling: true,
+      },
+    },
+  },
   integrations: [
     storyblok({
       accessToken: env.STORYBLOK_TOKEN,

@@ -103,6 +103,12 @@ export function hero(): AlpineComponent<HeroComponent> {
         if (clickDuration > 300) {
           return
         }
+
+        const target = event.target as HTMLElement
+        if (target.tagName === 'BUTTON' || target.tagName === 'A') {
+          return
+        }
+
         if (event.clientX > this.$root.clientWidth / 2) {
           this.next()
         } else {
@@ -136,7 +142,7 @@ export function hero(): AlpineComponent<HeroComponent> {
         // rewind: false,
         pagination: false,
         arrows: false,
-        autoplay: true,
+        autoplay: false,
         interval: 5000,
         pauseOnHover: false,
         pauseOnFocus: true,
@@ -190,6 +196,10 @@ export function hero(): AlpineComponent<HeroComponent> {
       splide.on('autoplay:playing', (rate) => {
         this.ratio = rate as number
       })
+
+      setTimeout(() => {
+        this.playAutoPlay()
+      }, 1600)
 
       this.enableMouseControls()
     },
