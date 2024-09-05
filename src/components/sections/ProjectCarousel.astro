@@ -282,6 +282,7 @@ const half = total / 2
   .x-home__carousel-item {
     @apply absolute h-full w-full rounded-2xl;
 
+    filter: blur(calc(var(--depth) * 4px));
     transform-origin: center;
     transform-style: preserve-3d;
     transform: rotateY(calc(var(--i) * 360deg / var(--total)))
