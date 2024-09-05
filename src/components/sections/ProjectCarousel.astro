@@ -241,19 +241,21 @@ const half = total / 2
     --nav-gap: 2rem;
     --mb: 1rem;
 
-    @apply flex w-full flex-col items-center overflow-hidden;
+    @apply relative flex w-full flex-col items-center overflow-hidden;
+    @apply border-b border-t border-purple-500/50;
 
     margin-top: var(--mt);
+    margin-bottom: var(--mb);
     gap: var(--nav-gap);
   }
 
   @screen lg {
     .x-home__container {
-      /* --mt: 4.5rem; */
+      --mt: 3.5rem;
       --nav-h: 0rem;
       --nav-item-h: 0rem;
       --nav-gap: 0rem;
-      --mb: 4.5rem;
+      --mb: 2.5rem;
     }
   }
 
@@ -261,7 +263,7 @@ const half = total / 2
     --h: calc(100svh - var(--nav-h) - var(--nav-gap) - var(--mt) - var(--mb));
     --w: calc(var(--h) / 16 * 9);
     --angle: calc(var(--pi) / var(--total));
-    --r: calc((var(--w) * 1) / (2 * sin(var(--angle))));
+    --r: calc((var(--w) * 1) / (2 * sin(var(--angle))) + 2rem);
     --z: calc(var(--r));
     --perspective: 8000;
     --perspectivePX: 8000px;
@@ -270,7 +272,6 @@ const half = total / 2
 
     width: calc(var(--h) / 16 * 9);
     height: var(--h);
-    /* backface-visibility: hidden; */
     transform-style: preserve-3d;
     transform: perspective(var(--perspectivePX)) translateZ(calc(var(--z) * -1))
       rotateY(calc(var(--progress) * -360deg)) rotateX(0deg);
@@ -279,12 +280,10 @@ const half = total / 2
   .x-home__carousel-item {
     @apply absolute h-full w-full rounded-2xl;
 
-    /* filter: saturate(calc(1 - var(--depth))) blur(calc(var(--depth) * 2px)); */
-    /* backface-visibility: hidden; */
     transform-origin: center;
     transform-style: preserve-3d;
     transform: rotateY(calc(var(--i) * 360deg / var(--total)))
-      translateZ(var(--z));
+      translateZ(var(--z)) scale(calc(1 - var(--depth) * 0.5));
   }
 
   .x-home__carousel .x-home__carousel-item {
@@ -293,7 +292,6 @@ const half = total / 2
   .x-home__carousel .x-home__card-blend {
     @apply absolute inset-0 z-50 bg-white;
 
-    /* opacity: calc(var(--depth) - 0.1); */
     opacity: clamp(0, calc(var(--depth) * 1), 0.8);
   }
 
