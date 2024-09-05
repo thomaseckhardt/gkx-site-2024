@@ -80,7 +80,7 @@ const projects = [
       })
     : undefined),
   ...projectSamples,
-  ...projectSamples,
+  // ...projectSamples,
 ].filter(Boolean)
 const navItems = [...projects]
 const total = navItems.length
@@ -151,13 +151,13 @@ const half = total / 2
         }
       </ul>
       <div class="x-thumbnails lg:hidden">
-        <div x-ref="thumbnails" class="splide">
-          <nav class="splide__track">
-            <ul class="splide__list x-home__nav__">
+        <div x-ref="thumbnails">
+          <nav>
+            <ul class="x-home__nav">
               {
                 navItems.map((project, index) => (
                   <li
-                    class="splide__slide x-home__slide"
+                    class="x-home__thumb"
                     style={{
                       '--i': index,
                     }}
@@ -238,11 +238,12 @@ const half = total / 2
     --mt: 4.5rem;
     --nav-h: 4.5rem;
     --nav-item-h: 3.5rem;
+    --nav-item-w: calc(var(--nav-item-h) / 16 * 9);
     --nav-gap: 2rem;
     --mb: 1rem;
 
     @apply relative flex w-full flex-col items-center overflow-hidden;
-    @apply border-b border-t border-purple-500/50;
+    /* @apply border-b border-t border-purple-500/50; */
 
     margin-top: var(--mt);
     margin-bottom: var(--mb);
@@ -263,7 +264,8 @@ const half = total / 2
     --h: calc(100svh - var(--nav-h) - var(--nav-gap) - var(--mt) - var(--mb));
     --w: calc(var(--h) / 16 * 9);
     --angle: calc(var(--pi) / var(--total));
-    --r: calc((var(--w) * 1) / (2 * sin(var(--angle))) + 2rem);
+    --gap-cards: 0rem;
+    --r: calc((var(--w) * 1) / (2 * sin(var(--angle))) + var(--gap-cards));
     --z: calc(var(--r));
     --perspective: 8000;
     --perspectivePX: 8000px;
@@ -303,15 +305,22 @@ const half = total / 2
   /* DEPRECATED: */
 
   .x-home__nav {
-    @apply flex w-full flex-none items-center justify-center gap-x-0.5 overflow-hidden bg-sky-500/25;
+    @apply inline-flex flex-none items-center gap-x-0.5;
 
+    margin-left: calc(50% - var(--nav-item-w) / 2);
     height: var(--nav-h);
+  }
+
+  .x-home__thumb {
+    will-change: transform;
+    transform: scale(calc(1 - 0.1 * var(--scaleAbs)))
+      translateX(calc((0.1 * var(--nav-item-w) / 2) * var(--scale)));
   }
 
   .x-home__thumb-link {
     @apply flex flex-none items-center justify-center overflow-hidden rounded-lg bg-sky-500/50;
 
-    width: calc(var(--nav-item-h) / 16 * 9);
+    width: var(--nav-item-w);
     height: var(--nav-item-h);
   }
 </style>

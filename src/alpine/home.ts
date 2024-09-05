@@ -17,6 +17,7 @@ export function home(): AlpineComponent<HomeComponent> {
   let startProgress = 0
   let proxy: HTMLElement | undefined = undefined
   let spin: GSAPTween | undefined = undefined
+  let thumbsTween: GSAPTween | undefined = undefined
 
   function updateRotation() {
     // console.log('rotation', this.rotation)
@@ -133,8 +134,19 @@ export function home(): AlpineComponent<HomeComponent> {
       const slides: HTMLElement[] = gsap.utils.toArray(
         carousel.querySelectorAll('.x-home__carousel-item'),
       )
+      const thumbs: HTMLElement[] = gsap.utils.toArray(
+        document.querySelectorAll('.x-home__thumb'),
+      )
+      const thumbsContainer: HTMLElement[] = gsap.utils.toArray(
+        document.querySelectorAll('.x-home__nav'),
+      )
       const total = slides.length
       const half = total / 2
+
+      // thumbsTween = gsap.to(thumbs, {
+      //   x: '-100%',
+      // })
+      // thumbsTween.pause()
 
       spin = gsap.fromTo(
         carousel,
@@ -155,6 +167,23 @@ export function home(): AlpineComponent<HomeComponent> {
                 (((index - progress * total) % total) + total) % total
               const depth = 1 - Math.abs(progressIndex - half) / half
               slide.style.setProperty('--depth', `${depth}`)
+            })
+
+            thumbs.forEach((elem, index) => {
+              const indexDiff = parseFloat(
+                (index - progress * total).toFixed(4),
+              )
+              // Clamp indexDiff between -1 and 1
+              const scale = Math.max(-1, Math.min(1, indexDiff))
+
+              elem.style.setProperty('--ratio', `${indexDiff}`)
+              elem.style.setProperty('--scale', `${scale}`)
+              elem.style.setProperty('--scaleAbs', `${Math.abs(scale)}`)
+              elem.style.setProperty('--index', `${Math.round(indexDiff)}`)
+            })
+
+            gsap.set(thumbsContainer, {
+              x: `${-progress * 100}%`,
             })
           },
         },
@@ -231,37 +260,37 @@ export function home(): AlpineComponent<HomeComponent> {
       const elem = this.$refs.thumbnails
       if (!elem) return
 
-      const splide = new Splide(elem, {
-        arrows: false,
-        pagination: false,
-        drag: true,
-        autoWidth: true,
-        type: 'loop',
-        snap: true,
-        trimSpace: false,
-        focus: 'center',
-        gap: '0.125rem',
-      })
+      // const splide = new Splide(elem, {
+      //   arrows: false,
+      //   pagination: false,
+      //   drag: true,
+      //   autoWidth: true,
+      //   type: 'loop',
+      //   snap: true,
+      //   trimSpace: false,
+      //   focus: 'center',
+      //   gap: '0.125rem',
+      // })
 
-      splide.on('overflow', function (isOverflow) {
-        console.log('overflow', isOverflow)
-        // Reset the carousel position
-        // splide.go(5)
+      // splide.on('overflow', function (isOverflow) {
+      //   console.log('overflow', isOverflow)
+      //   // Reset the carousel position
+      //   // splide.go(5)
 
-        splide.options = {
-          drag: isOverflow,
-          clones: isOverflow ? undefined : 0, // Toggle clones
-        }
-      })
+      //   splide.options = {
+      //     drag: isOverflow,
+      //     clones: isOverflow ? undefined : 0, // Toggle clones
+      //   }
+      // })
 
-      splide.on('move', function () {
-        console.log('move', splide.index)
-      })
+      // splide.on('move', function () {
+      //   console.log('move', splide.index)
+      // })
 
-      splide.mount()
-      setTimeout(() => {
-        splide.go(5)
-      }, 1000)
+      // splide.mount()
+      // setTimeout(() => {
+      //   splide.go(5)
+      // }, 1000)
     },
 
     init() {
