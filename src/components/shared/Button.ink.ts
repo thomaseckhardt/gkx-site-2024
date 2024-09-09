@@ -23,7 +23,7 @@ export const config: InkConfig = {
   sizes: {
     DEFAULT: {
       DEFAULT: {
-        root: 'py-3 -my-3 text-lg leading-none',
+        root: 'py-3 -my-3 text-18 lg:text-20 leading-none',
         body: 'py-0.25 px-2',
       },
     },
