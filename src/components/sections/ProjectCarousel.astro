@@ -1,101 +1,92 @@
 ---
 import clsx from 'clsx'
-import StoryblokImage from '../storyblok/StoryblokImage.astro'
 import { fetchStories } from '@/utils/storyblok'
 import type { ProjectStoryblok } from '@/types/storyblok'
-import HeroSlide from '../blocks/HeroSlide.astro'
 
-const projectStories = await fetchStories({
+const projectStories = (await fetchStories({
   by_slugs: 'projects/*',
   content_type: 'Project',
   sort_by: 'sort_by_date:asc,published_at:asc,created_at:asc',
-})
+})) as unknown as ProjectStoryblok[]
 
 const projectSamples = [
-  {
-    cover: { filename: `https://unsplash.it/360/640?image=110` },
-    title: 'Tennis 40: Love Buch Porsche × Steidl',
-    subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
-  },
   {
     cover: { filename: `https://unsplash.it/360/640?image=111` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=1',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=112` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=2',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=113` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=3',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=114` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=4',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=115` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=5',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=116` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=6',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=117` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=7',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=118` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=8',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=119` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
-    link: 'projects/porsche-x-steidl',
+    link: 'projects/porsche-x-steidl?index=9',
   },
 ]
+
+const realProjects =
+  projectStories?.map((project: ProjectStoryblok) => {
+    const heroSlide = project.content.heroSlides?.[0] ?? {}
+    return {
+      ...project.content,
+      slug: project.slug,
+      link: project.full_slug ? `/${project.full_slug}` : undefined,
+      cover: heroSlide.imagePortrait.filename
+        ? heroSlide.imagePortrait
+        : heroSlide.imageLandscape,
+    }
+  }) ?? []
 const projects = [
-  // @ts-ignore
-  ...(projectStories?.length
-    ? // @ts-ignore
-      projectStories.map((project: ProjectStoryblok) => {
-        const heroSlide = project.content.heroSlides?.[0] ?? {}
-        return {
-          ...project.content,
-          slug: project.slug,
-          link: project.full_slug ? `/${project.full_slug}` : undefined,
-          cover: heroSlide.imagePortrait.filename
-            ? heroSlide.imagePortrait
-            : heroSlide.imageLandscape,
-        }
-      })
-    : undefined),
+  ...realProjects,
   ...projectSamples,
+  // ...realProjects,
   // ...projectSamples,
 ].filter(Boolean)
 const navItems = [...projects]
 const total = navItems.length
 const half = total / 2
-// TODO: sort by date ASC (!)
 
 // GSAP 3D Carousel Demo
 // https://codepen.io/GreenSock/pen/RwLepdQ
@@ -194,7 +185,7 @@ const half = total / 2
                     <a
                       href={project.link}
                       class="x-home__thumb-link relative"
-                      x-on:click.prevent={`() => navigateTo('${project.link}')`}
+                      x-on:click.prevent={`() => navigateTo('${project.link}', false)`}
                     >
                       {/*
                       <div class="absolute left-1 top-1 z-10 rounded-lg bg-white px-1">

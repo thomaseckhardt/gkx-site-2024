@@ -13,6 +13,7 @@ interface HomeComponent {
   getRotationIndex: () => number
   spinToIndex: (index: number, onCompleteCallback?: () => void) => void
   rotateTo: (dir: -1 | 1) => void
+  getIndexOfRotation: (round?: boolean) => number
 }
 
 export function home(): AlpineComponent<HomeComponent> {
@@ -21,6 +22,7 @@ export function home(): AlpineComponent<HomeComponent> {
   let spin: GSAPTween | undefined = undefined
   let total: number = 0
   let totalHalf: number = 0
+  let angle: number = 0
 
   function updateRotation() {
     // console.log('rotation', this.rotation)
@@ -100,54 +102,76 @@ export function home(): AlpineComponent<HomeComponent> {
         startDelay,
       )
     },
-    navigateTo: function (url) {
-      console.log('navigate to', url)
+    navigateTo: function (url, open = true) {
+      console.log('navigate to', url, open)
       const component = this
       const card = document.querySelector(`[data-card="${url}"]`) as HTMLElement
-      const carousel = this.$refs.carousel
-      if (!card) {
-        console.warn('card not defined', card)
-        return
-      }
 
       const index = Number(card.getAttribute('data-index'))
-      const rotation = Number(gsap.getProperty(carousel, 'rotationY'))
-      const total = parseInt(carousel.dataset.total ?? '0')
-      const indexOfRotation = gsap.utils.mapRange(0, 360, 0, total, rotation)
+      const indexOfRotation = this.getIndexOfRotation(false)
       const diff = Math.abs(index - Math.abs(indexOfRotation))
-      // console.log('index', index, total, rotation, indexOfRotation, diff)
+      console.log('navigateTo', index, indexOfRotation, diff)
 
-      if (spin && diff > 0.05) {
-        this.spinToIndex(index, () => {
-          component.startPageTransition(url)
-        })
+      if (!open) {
+        this.spinToIndex(index)
       } else {
-        component.startPageTransition(url)
+        if (spin && diff > 0.05) {
+          this.spinToIndex(index, () => {
+            component.startPageTransition(url)
+          })
+        } else {
+          component.startPageTransition(url)
+        }
       }
     },
+    getIndexOfRotation(round = true) {
+      const currentRotation = Number(gsap.getProperty(proxy, 'rotation')) % 360
+      let indexOfRotation = gsap.utils.mapRange(
+        0,
+        360,
+        0,
+        total,
+        currentRotation,
+      )
+      if (indexOfRotation < 0) {
+        indexOfRotation = total + indexOfRotation
+      }
+
+      return round ? Math.round(indexOfRotation) : indexOfRotation
+    },
     spinToIndex(index: number, onCompleteCallback?: () => void) {
-      const indexOfRotation = this.getRotationIndex()
-      const diff = Math.abs(index - Math.abs(indexOfRotation))
-      const carousel = this.$refs.carousel
-      const total = parseInt(carousel.dataset.total ?? '0')
+      const indexOfRotation = this.getIndexOfRotation(true)
+      const indexDiff = index - indexOfRotation
+      const rotationChange = indexDiff * angle
 
-      // const dir = indexOfRotation > 0 ? 1 : -1
-      // TODO: Take current rotation into account
-      const duration = Math.max(0.6, Math.min(0.2 * diff, 2))
-      console.log('duration', duration)
+      const currentRotation = Number(gsap.getProperty(proxy, 'rotation'))
+      const rotationNormalized = currentRotation % 360
+      const rotationRest = currentRotation - rotationNormalized
 
-      const newRotation = index / total
+      const targetRotation = rotationChange + currentRotation
+      const duration = Math.max(0.6, Math.min(0.2 * indexDiff, 2))
+      console.log('spinToIndex', {
+        index,
+        indexDiff,
+        indexOfRotation,
+        rotationChange,
+        currentRotation,
+        rotationRest,
+        targetRotation,
+      })
+
       gsap.killTweensOf(proxy)
       gsap.to(proxy, {
-        rotation: newRotation,
-        duration,
+        rotation: targetRotation,
+        duration: duration,
         ease: 'sine.inOut',
+        onUpdate: updateRotation,
         onComplete: onCompleteCallback,
       })
     },
     getRotationIndex() {
       const carousel = this.$refs.carousel
-      const rotation = Number(gsap.getProperty(carousel, 'rotationY'))
+      const rotation = Number(gsap.getProperty(carousel, 'rotationY')) % 360
       const total = parseInt(this.total ?? '0')
       const indexOfRotation = gsap.utils.mapRange(
         0,
@@ -160,14 +184,13 @@ export function home(): AlpineComponent<HomeComponent> {
       return indexOfRotation
     },
     rotateTo(dir = 1) {
-      const angle = 360 / total
       const currentRotation = Number(gsap.getProperty(proxy, 'rotation'))
-      const newAngle =
+      const targetRotation =
         Math.round((currentRotation + angle * dir) / angle) * angle
 
       gsap.killTweensOf(proxy)
       gsap.to(proxy, {
-        rotation: newAngle,
+        rotation: targetRotation,
         duration: 0.6,
         ease: 'sine.inOut',
         onUpdate: updateRotation,
@@ -194,6 +217,7 @@ export function home(): AlpineComponent<HomeComponent> {
       )
       total = slides.length
       totalHalf = total / 2
+      angle = 360 / total
 
       // thumbsTween = gsap.to(thumbs, {
       //   x: '-100%',
