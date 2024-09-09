@@ -30,7 +30,7 @@ const textSize = textSizes[blok.textSize ?? 'normal'] ?? textSizes['normal']
     isRichTextField(blok.text) && (
       <StoryblokRichText
         content={blok.text}
-        class={clsx('max-w-text richtext px-page-mx', textSize)}
+        class={clsx('richtext mx-page-mx max-w-text', textSize)}
       />
     )
   }

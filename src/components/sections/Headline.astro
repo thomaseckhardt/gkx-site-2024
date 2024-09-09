@@ -27,7 +27,7 @@ const textSizeClass = textSizes[blok.textSize ?? 'large'] ?? textSizes['large']
 
 <Section
   as={`h${headingOrder}`}
-  class={clsx('relative max-w-heading px-page-mx', textSizeClass, className)}
+  class={clsx('relative mx-page-mx max-w-heading', textSizeClass, className)}
   blok={blok}
   spacing="paragraph"
   {...props}
