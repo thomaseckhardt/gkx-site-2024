@@ -16,51 +16,61 @@ const projectSamples = [
     cover: { filename: `https://unsplash.it/360/640?image=110` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=111` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=112` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=113` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=114` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=115` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=116` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=117` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=118` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
   {
     cover: { filename: `https://unsplash.it/360/640?image=119` },
     title: 'Tennis 40: Love Buch Porsche × Steidl',
     subtitle: 'Porsche',
+    link: 'projects/porsche-x-steidl',
   },
 ]
 const projects = [
@@ -103,7 +113,26 @@ const half = total / 2
       <div class="absolute bottom-[] h-[96px] bg-green-500/25"></div>
     </div> -->
     <div class="x-home__container">
-      <div class="absolute left-0 top-0"></div>
+      <button
+        type="button"
+        class={clsx(
+          'absolute left-0 top-0 z-10 block h-[var(--carousel-height)] w-[20vw] cursor-left bg-purple-500/5',
+          'hidden lg:block',
+        )}
+        x-on:click="prev"
+      >
+        <span class="sr-only">Move to previous project</span>
+      </button>
+      <button
+        type="button"
+        class={clsx(
+          'absolute right-0 top-0 z-10 block h-[var(--carousel-height)] w-[20vw] cursor-right bg-purple-500/5',
+          'hidden lg:block',
+        )}
+        x-on:click="next"
+      >
+        <span class="sr-only">Move to next project</span>
+      </button>
       <ul
         x-ref="carousel"
         class="x-home__carousel"
@@ -241,6 +270,9 @@ const half = total / 2
     --nav-item-w: calc(var(--nav-item-h) / 16 * 9);
     --nav-gap: 2rem;
     --mb: 1rem;
+    --carousel-height: calc(
+      100svh - var(--nav-h) - var(--nav-gap) - var(--mt) - var(--mb)
+    );
 
     @apply relative flex w-full flex-col items-center overflow-hidden;
     /* @apply border-b border-t border-purple-500/50; */
@@ -261,8 +293,7 @@ const half = total / 2
   }
 
   .x-home__carousel {
-    --h: calc(100svh - var(--nav-h) - var(--nav-gap) - var(--mt) - var(--mb));
-    --w: calc(var(--h) / 16 * 9);
+    --w: calc(var(--carousel-height) / 16 * 9);
     --angle: calc(var(--pi) / var(--total));
     --gap-cards: 0rem;
     --r: calc((var(--w) * 1) / (2 * sin(var(--angle))) + var(--gap-cards));
@@ -272,8 +303,8 @@ const half = total / 2
     --progress: 0;
     @apply flex-none;
 
-    width: calc(var(--h) / 16 * 9);
-    height: var(--h);
+    width: calc(var(--carousel-height) / 16 * 9);
+    height: var(--carousel-height);
     transform-style: preserve-3d;
     transform: perspective(var(--perspectivePX)) translateZ(calc(var(--z) * -1))
       rotateY(calc(var(--progress) * -360deg)) rotateX(0deg);

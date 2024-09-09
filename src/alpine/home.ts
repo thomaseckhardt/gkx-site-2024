@@ -5,28 +5,35 @@ import { Draggable } from 'gsap/Draggable'
 import { InertiaPlugin } from 'gsap/InertiaPlugin'
 
 interface HomeComponent {
-  initThumbnails: () => void
   initCarousel: () => void
   navigateTo: (slug: string) => void
   startPageTransition: (url: string) => void
+  prev: () => void
+  next: () => void
+  getRotationIndex: () => number
+  spinToIndex: (index: number, onCompleteCallback?: () => void) => void
+  rotateTo: (dir: -1 | 1) => void
 }
 
 export function home(): AlpineComponent<HomeComponent> {
-  const dragDistancePerRotation = 3000
   const progressWrap = gsap.utils.wrap(0, 1)
-  let startProgress = 0
-  let proxy: HTMLElement | undefined = undefined
+  let proxy: HTMLElement = document.createElement('div')
   let spin: GSAPTween | undefined = undefined
-  let thumbsTween: GSAPTween | undefined = undefined
+  let total: number = 0
+  let totalHalf: number = 0
 
   function updateRotation() {
     // console.log('rotation', this.rotation)
     // let p = startProgress + (this.startX - this.x) / dragDistancePerRotation
     if (spin) {
       // spin?.progress(progressWrap(p))
-      let p = this.rotation / 360
+      let rotation = Number(gsap.getProperty(proxy, 'rotation'))
+      let p = rotation / 360
       spin?.progress(progressWrap(p))
     }
+
+    // var progressWrap = gsap.utils.wrap(0, 1)
+    // animation.progress(progressWrap(gsap.getProperty(proxy, 'x') / wrapWidth))
   }
 
   const component: AlpineComponent<HomeComponent> = {
@@ -111,21 +118,66 @@ export function home(): AlpineComponent<HomeComponent> {
       // console.log('index', index, total, rotation, indexOfRotation, diff)
 
       if (spin && diff > 0.05) {
-        // const dir = indexOfRotation > 0 ? 1 : -1
-        // TODO: Take current rotation into account
-        const duration = Math.max(0.6, Math.min(0.2 * diff, 2))
-        console.log('duration', duration)
-        gsap.to(spin, {
-          progress: index,
-          duration,
-          ease: 'sine.inOut',
-          onComplete: () => {
-            component.startPageTransition(url)
-          },
+        this.spinToIndex(index, () => {
+          component.startPageTransition(url)
         })
       } else {
         component.startPageTransition(url)
       }
+    },
+    spinToIndex(index: number, onCompleteCallback?: () => void) {
+      const indexOfRotation = this.getRotationIndex()
+      const diff = Math.abs(index - Math.abs(indexOfRotation))
+      const carousel = this.$refs.carousel
+      const total = parseInt(carousel.dataset.total ?? '0')
+
+      // const dir = indexOfRotation > 0 ? 1 : -1
+      // TODO: Take current rotation into account
+      const duration = Math.max(0.6, Math.min(0.2 * diff, 2))
+      console.log('duration', duration)
+
+      const newRotation = index / total
+      gsap.killTweensOf(proxy)
+      gsap.to(proxy, {
+        rotation: newRotation,
+        duration,
+        ease: 'sine.inOut',
+        onComplete: onCompleteCallback,
+      })
+    },
+    getRotationIndex() {
+      const carousel = this.$refs.carousel
+      const rotation = Number(gsap.getProperty(carousel, 'rotationY'))
+      const total = parseInt(this.total ?? '0')
+      const indexOfRotation = gsap.utils.mapRange(
+        0,
+        360,
+        0,
+        total,
+        Math.abs(rotation),
+      )
+      console.log('rotation', rotation, indexOfRotation)
+      return indexOfRotation
+    },
+    rotateTo(dir = 1) {
+      const angle = 360 / total
+      const currentRotation = Number(gsap.getProperty(proxy, 'rotation'))
+      const newAngle =
+        Math.round((currentRotation + angle * dir) / angle) * angle
+
+      gsap.killTweensOf(proxy)
+      gsap.to(proxy, {
+        rotation: newAngle,
+        duration: 0.6,
+        ease: 'sine.inOut',
+        onUpdate: updateRotation,
+      })
+    },
+    prev() {
+      this.rotateTo(-1)
+    },
+    next() {
+      this.rotateTo(1)
     },
     initCarousel() {
       const carousel = document.querySelector('.x-home__carousel')
@@ -140,57 +192,49 @@ export function home(): AlpineComponent<HomeComponent> {
       const thumbsContainer: HTMLElement[] = gsap.utils.toArray(
         document.querySelectorAll('.x-home__nav'),
       )
-      const total = slides.length
-      const half = total / 2
+      total = slides.length
+      totalHalf = total / 2
 
       // thumbsTween = gsap.to(thumbs, {
       //   x: '-100%',
       // })
       // thumbsTween.pause()
 
-      spin = gsap.fromTo(
-        carousel,
-        {
-          rotationY: (i) => (i * 360) / total,
+      spin = gsap.to(carousel, {
+        rotationY: '-=360',
+        duration: 10,
+        ease: 'none',
+        // repeat: -1,
+        // transformOrigin: '50% 50% ' + -radius + 'px',
+        onUpdate: () => {
+          const progress = spin?.progress() ?? 0
+
+          slides.forEach((slide, index) => {
+            const progressIndex =
+              (((index - progress * total) % total) + total) % total
+            const depth = 1 - Math.abs(progressIndex - totalHalf) / totalHalf
+            slide.style.setProperty('--depth', `${depth}`)
+          })
+
+          thumbs.forEach((elem, index) => {
+            const indexDiff = parseFloat((index - progress * total).toFixed(4))
+            // Clamp indexDiff between -1 and 1
+            const scale = Math.max(-1, Math.min(1, indexDiff))
+
+            elem.style.setProperty('--ratio', `${indexDiff}`)
+            elem.style.setProperty('--scale', `${scale}`)
+            elem.style.setProperty('--scaleAbs', `${Math.abs(scale)}`)
+            elem.style.setProperty('--index', `${Math.round(indexDiff)}`)
+          })
+
+          gsap.set(thumbsContainer, {
+            x: `${-progress * 100}%`,
+          })
         },
-        {
-          rotationY: '-=360',
-          duration: 10,
-          ease: 'none',
-          // repeat: -1,
-          // transformOrigin: '50% 50% ' + -radius + 'px',
-          onUpdate: () => {
-            const progress = spin?.progress() ?? 0
-
-            slides.forEach((slide, index) => {
-              const progressIndex =
-                (((index - progress * total) % total) + total) % total
-              const depth = 1 - Math.abs(progressIndex - half) / half
-              slide.style.setProperty('--depth', `${depth}`)
-            })
-
-            thumbs.forEach((elem, index) => {
-              const indexDiff = parseFloat(
-                (index - progress * total).toFixed(4),
-              )
-              // Clamp indexDiff between -1 and 1
-              const scale = Math.max(-1, Math.min(1, indexDiff))
-
-              elem.style.setProperty('--ratio', `${indexDiff}`)
-              elem.style.setProperty('--scale', `${scale}`)
-              elem.style.setProperty('--scaleAbs', `${Math.abs(scale)}`)
-              elem.style.setProperty('--index', `${Math.round(indexDiff)}`)
-            })
-
-            gsap.set(thumbsContainer, {
-              x: `${-progress * 100}%`,
-            })
-          },
-        },
-      )
+      })
+      // TODO: Recommendation: pre-render for performance. Does it make sense?
+      spin.progress(1, true).progress(0, true)
       spin.pause()
-
-      proxy = document.createElement('div')
 
       Draggable.create(proxy, {
         trigger: '.x-home__carousel', // activate the dragging when the user presses on the .demoWrapper
@@ -203,94 +247,12 @@ export function home(): AlpineComponent<HomeComponent> {
         },
         allowNativeTouchScrolling: true,
         onPress() {
-          gsap.killTweensOf(this.spin) // if it's in the middle of animating the spin back to timeScale: 1, kill that.
-          spin?.timeScale(0) // stop the spin.
-          startProgress = spin?.progress() ?? 0 // remember the current progress value because we'll make the drag relative to that.
+          gsap.killTweensOf(this.spin)
+          spin?.timeScale(0)
         },
         onDrag: updateRotation,
-
         onThrowUpdate: updateRotation,
-        // onRelease() {
-        //   if (!this.tween || !this.tween.isActive()) {
-        //     // if the user clicked and released (no inertia flick), resume the spin
-        //     if (spin) {
-        //       gsap.to(spin, { timeScale: 1, duration: 1 })
-        //     }
-        //   }
-        // },
-        // onThrowComplete() {
-        //   // resume the spin after the inertia tween finishes
-        //   if (spin) {
-        //     gsap.to(spin, { timeScale: 1, duration: 1 })
-        //   }
-        // },
-        // Alternative to inertia
-        // onDragEnd: function () {
-        //   const p = progressWrap(
-        //     startProgress + (this.startX - this.x) / dragDistancePerRotation,
-        //   )
-        //   const snap = p / total
-        //   gsap.to(carousel, {
-        //     rotationY: gsap.utils.snap(360 / total, this.x),
-        //   })
-        // },
       })
-
-      // OLD
-
-      // const rotation = gsap.to(carousel, {
-      //   '--progress': 1,
-      //   rotateY: -360,
-      //   duration: 24,
-      //   repeat: -1,
-      //   ease: 'none',
-      //   onUpdate: (props) => {
-      //     const progress = rotation.progress()
-
-      //     slides.forEach((slide, index) => {
-      //       const progressIndex =
-      //         (((index - progress * total) % total) + total) % total
-      //       const depth = 1 - Math.abs(progressIndex - half) / half
-      //       slide.style.setProperty('--depth', `${depth}`)
-      //     })
-      //   },
-      // })
-    },
-    initThumbnails() {
-      const elem = this.$refs.thumbnails
-      if (!elem) return
-
-      // const splide = new Splide(elem, {
-      //   arrows: false,
-      //   pagination: false,
-      //   drag: true,
-      //   autoWidth: true,
-      //   type: 'loop',
-      //   snap: true,
-      //   trimSpace: false,
-      //   focus: 'center',
-      //   gap: '0.125rem',
-      // })
-
-      // splide.on('overflow', function (isOverflow) {
-      //   console.log('overflow', isOverflow)
-      //   // Reset the carousel position
-      //   // splide.go(5)
-
-      //   splide.options = {
-      //     drag: isOverflow,
-      //     clones: isOverflow ? undefined : 0, // Toggle clones
-      //   }
-      // })
-
-      // splide.on('move', function () {
-      //   console.log('move', splide.index)
-      // })
-
-      // splide.mount()
-      // setTimeout(() => {
-      //   splide.go(5)
-      // }, 1000)
     },
 
     init() {
@@ -298,7 +260,6 @@ export function home(): AlpineComponent<HomeComponent> {
       gsap.registerPlugin(Draggable, InertiaPlugin)
 
       this.initCarousel()
-      this.initThumbnails()
     },
   }
 
