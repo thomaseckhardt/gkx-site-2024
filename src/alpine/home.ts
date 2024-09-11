@@ -401,6 +401,8 @@ export function home(): AlpineComponent<HomeComponent> {
       //   duration: 2,
       //   ease: Power2.easeInOut,
       // })
+
+      this.$root.classList.remove('sr-only')
     },
 
     init() {
