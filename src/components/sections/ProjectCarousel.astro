@@ -126,7 +126,7 @@ const half = total / 2
 <div class="h-svh">
   <div
     x-data="home"
-    class="flex h-svh justify-center"
+    class="x-home flex h-svh justify-center"
     style={{ '--total': projects.length, '--pi': Math.PI }}
   >
     <!-- <div class="absolute left-0 top-0 w-full">
@@ -137,6 +137,7 @@ const half = total / 2
       <button
         type="button"
         class={clsx(
+          'x-home__arrow',
           'absolute left-0 top-0 z-10 block h-[var(--carousel-height)] w-[20vw] cursor-left',
           'hidden lg:block',
         )}
@@ -147,6 +148,7 @@ const half = total / 2
       <button
         type="button"
         class={clsx(
+          'x-home__arrow',
           'absolute right-0 top-0 z-10 block h-[var(--carousel-height)] w-[20vw] cursor-right',
           'hidden lg:block',
         )}
@@ -159,6 +161,15 @@ const half = total / 2
       >
       </div>
       <div class="x-home__canvas">
+        <svg viewBox="0 0 100 100" class="x-home__circle">
+          <circle
+            cx="50%"
+            cy="50%"
+            r="49"
+            fill="none"
+            stroke="black"
+            stroke-width="2"></circle>
+        </svg>
         <ul
           x-ref="carousel"
           class="x-home__carousel"
@@ -327,14 +338,14 @@ const half = total / 2
     height: var(--carousel-height);
     transform-style: preserve-3d;
     /* perspective: 8000px; */
+    --gap-cards: 0rem;
+    --w: calc(var(--carousel-height) / 16 * 9);
+    --angle: calc(var(--pi) / var(--total));
+    --r: calc((var(--w) * 1) / (2 * sin(var(--angle))) + var(--gap-cards));
+    --z: calc(var(--r));
   }
 
   .x-home__carousel {
-    --w: calc(var(--carousel-height) / 16 * 9);
-    --angle: calc(var(--pi) / var(--total));
-    --gap-cards: 0rem;
-    --r: calc((var(--w) * 1) / (2 * sin(var(--angle))) + var(--gap-cards));
-    --z: calc(var(--r));
     --perspective: 8000;
     --perspectivePX: 8000px;
     --progress: 0;
@@ -408,4 +419,28 @@ const half = total / 2
     width: var(--nav-item-w);
     height: var(--nav-item-h);
   }
+
+  .x-home__circle {
+    --size: calc(var(--r) * 2.05);
+
+    transform-style: preserve-3d;
+    /* transform-origin: bottom center; */
+    transform: rotateX(90deg) translateZ(calc(var(--carousel-height) / 2));
+
+    position: absolute;
+    top: calc(50% - var(--size) / 2);
+    left: calc(50% - var(--size) / 2);
+    width: calc(var(--size));
+    height: calc(var(--size));
+  }
+
+  .x-home:not(.is-ready) .x-home__arrow {
+    display: none !important;
+  }
+  /* .x-home__circle circle {
+    --circ: calc(var(--pi) * var(--size));
+    --ratio: 0.5;
+    stroke-dasharray: var(--circ);
+    stroke-dashoffset: calc((1 - var(--ratio)) * var(--circ));
+  } */
 </style>

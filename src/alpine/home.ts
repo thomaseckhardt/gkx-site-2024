@@ -301,70 +301,48 @@ export function home(): AlpineComponent<HomeComponent> {
       const radius = Number(gsap.getProperty(firstCard, 'z'))
       const startZ = radius * -80
       const endZ = radius * -1
-      const durationFade = 0.8
-      const durationSpin = 3
-      const delayCards = durationFade + durationSpin
+      const durationSpin = 4
       const cardDuration = 2
-      const cardDelay = 1
+      const cardDelay = durationSpin - cardDuration * 0.4
 
       gsap.set(canvas, { rotationX: -90, z: startZ })
-      gsap.set(carousel, { rotationY: -360 })
+      gsap.set(carousel, { rotationY: -360 * 3 })
 
       const tl = gsap.timeline({
+        delay: 0,
+        // repeat: -1,
+        // yoyo: true,
+        onStart: () => {
+          console.log('timeline started')
+        },
         onComplete: () => {
           component.initCarousel()
+          component.$root.classList.add('is-ready')
         },
       })
       tl.to(
-        '.x-home__canvas-blend',
-        // {
-        //   rotationX: -90,
-        //   z: startZ,
-        //   opacity: 0,
-        // },
+        '.x-home__circle',
+        { opacity: 0, duration: 1, strokeWidth: 0.1, ease: Linear.easeNone },
+        0,
+      )
+      tl.to(
+        carousel,
         {
-          opacity: 0,
-          duration: durationFade,
-          ease: Linear.easeNone,
+          rotationY: 0,
+          duration: durationSpin,
+          ease: Power2.easeOut,
         },
+        0,
       )
       tl.to(
         canvas,
         {
           rotationX: 0,
           z: endZ,
-          duration: durationSpin,
-          ease: Power2.easeInOut,
-        },
-        durationFade,
-      )
-      tl.to(
-        carousel,
-        // {
-        //   rotationY: -360,
-        // },
-        {
-          rotationY: 0,
-          duration: durationSpin,
+          duration: durationSpin * 0.75,
           ease: Power3.easeInOut,
-          // Not Working
-          // onUpdate: () => {
-          //   const progress =
-          //     (Number(gsap.getProperty(carousel, 'rotationY')) / 360) % 1
-
-          //   cards.forEach((slide, index) => {
-          //     const progressIndex =
-          //       (((index - progress * total) % total) + total) % total
-          //     const depth = 1 - Math.abs(progressIndex - totalHalf) / totalHalf
-          //     slide.style.setProperty('--depth', `${depth}`)
-
-          //     // if (index === 0) {
-          //     //   console.log({ progress, depth })
-          //     // }
-          //   })
-          // },
         },
-        durationFade,
+        durationSpin * 0.125,
       )
       cards.forEach((card, index) => {
         const depth = 1 - Math.abs(index - totalHalf) / totalHalf
@@ -377,7 +355,7 @@ export function home(): AlpineComponent<HomeComponent> {
             duration: cardDuration,
             ease: Power3.easeOut,
           },
-          delayCards - cardDuration + cardDelay,
+          cardDelay,
         )
       })
       tl.fromTo(
@@ -412,8 +390,17 @@ export function home(): AlpineComponent<HomeComponent> {
       //   )
       // })
       tl.progress(1, true).progress(0, true)
+      tl.pause()
+      tl.restart(true)
 
-      tl.play()
+      // tl.pause()
+      // gsap.to(canvas, {
+      //   rotationX: 0,
+      //   yoyo: true,
+      //   repeat: -1,
+      //   duration: 2,
+      //   ease: Power2.easeInOut,
+      // })
     },
 
     init() {
