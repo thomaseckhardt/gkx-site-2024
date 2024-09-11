@@ -191,8 +191,9 @@ export default {
         'hoversnot': { raw: '(hover: none)' },
       },
       cursor: {
-        'left': `url('/cursor-left.svg'), url('/cursor-left.png'), w-resize`,
-        'right': `url('/cursor-right.svg'), url('/cursor-right.png'), e-resize`,
+        // TODO: Add PNG versions as fallback
+        'left': `url('/cursor-left.svg'), w-resize`,
+        'right': `url('/cursor-right.svg'), e-resize`,
       },
       animation: {
         'project-heading-in':

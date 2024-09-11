@@ -154,52 +154,57 @@ const half = total / 2
       >
         <span class="sr-only">Move to next project</span>
       </button>
-      <ul
-        x-ref="carousel"
-        class="x-home__carousel"
-        data-total={projects.length}
+      <div
+        class="x-home__canvas-blend pointer-events-none absolute inset-0 h-full w-full bg-white"
       >
-        {
-          projects.map((project, index) => (
-            <li
-              class="x-home__carousel-item overflow-hidden rounded-3xl"
-              style={{
-                '--i': index,
-                '--depth': 1 - Math.abs(index - half) / half,
-              }}
-              data-index={index}
-              data-card={project.link}
-            >
-              <a
-                href={project.link}
-                class={clsx(
-                  'x-home__card relative block h-full w-full',
-                  'after:absolute after:bottom-0 after:left-0 after:right-0 after:z-10 after:h-3/4 after:w-full after:bg-gradient-to-t after:from-black/60 after:to-black/0 lg:after:h-1/2',
-                )}
-                x-on:click.prevent={`() => navigateTo('${project.link}')`}
+      </div>
+      <div class="x-home__canvas">
+        <ul
+          x-ref="carousel"
+          class="x-home__carousel"
+          data-total={projects.length}
+        >
+          {
+            projects.map((project, index) => (
+              <li
+                class="x-home__carousel-item overflow-hidden rounded-3xl"
+                style={{
+                  '--i': index,
+                }}
+                data-index={index}
+                data-card={project.link}
               >
-                <div class="x-home__card-blend" />
-                <img
-                  src={project.cover.filename}
-                  alt={project.title}
-                  class="h-full w-full object-cover"
-                />
-                {/* <div class="absolute left-4 top-4 rounded-2xl bg-white/80 p-2 font-bold">
+                <a
+                  href={project.link}
+                  class={clsx(
+                    'x-home__card relative block h-full w-full',
+                    'after:absolute after:bottom-0 after:left-0 after:right-0 after:z-10 after:h-3/4 after:w-full after:bg-gradient-to-t after:from-black/60 after:to-black/0 lg:after:h-1/2',
+                  )}
+                  x-on:click.prevent={`() => navigateTo('${project.link}')`}
+                >
+                  <div class="x-home__card-blend" />
+                  <img
+                    src={project.cover.filename}
+                    alt={project.title}
+                    class="h-full w-full object-cover"
+                  />
+                  {/* <div class="absolute left-4 top-4 rounded-2xl bg-white/80 p-2 font-bold">
                   {index}
                 </div> */}
-                <div class="x-home__text absolute bottom-4 left-4 right-4 z-20 text-white">
-                  <h3 class="text-25 font-bold uppercase tracking-wide">
-                    {project.title}
-                  </h3>
-                  <p class="text-15 font-serif tracking-wide">
-                    {project.subtitle}
-                  </p>
-                </div>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+                  <div class="x-home__text absolute bottom-4 left-4 right-4 z-20 text-white">
+                    <h3 class="text-25 font-bold uppercase tracking-wide">
+                      {project.title}
+                    </h3>
+                    <p class="text-15 font-serif tracking-wide">
+                      {project.subtitle}
+                    </p>
+                  </div>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
       <div class="x-thumbnails lg:hidden">
         <div x-ref="thumbnails">
           <nav>
@@ -298,9 +303,12 @@ const half = total / 2
     @apply relative flex w-full flex-col items-center overflow-hidden;
     /* @apply border-b border-t border-purple-500/50; */
 
-    margin-top: var(--mt);
-    margin-bottom: var(--mb);
+    padding-top: var(--mt);
+    padding-bottom: var(--mb);
     gap: var(--nav-gap);
+
+    perspective: 8000px;
+    transform-style: preserve-3d;
   }
 
   @screen lg {
@@ -311,6 +319,14 @@ const half = total / 2
       --nav-gap: 0rem;
       --mb: 2.5rem;
     }
+  }
+
+  .x-home__canvas {
+    @apply relative flex w-full items-center justify-center;
+
+    height: var(--carousel-height);
+    transform-style: preserve-3d;
+    /* perspective: 8000px; */
   }
 
   .x-home__carousel {
@@ -327,18 +343,32 @@ const half = total / 2
     width: calc(var(--carousel-height) / 16 * 9);
     height: var(--carousel-height);
     transform-style: preserve-3d;
-    transform: perspective(var(--perspectivePX)) translateZ(calc(var(--z) * -1))
-      rotateY(calc(var(--progress) * -360deg)) rotateX(0deg);
+    transform: rotateY(-360deg);
+    /*perspective: 8000px; */
+    /* perspective: 8000px; */
+    /*transform: translateZ(-8000px); */
+
+    /* perspective: var(--perspectivePX); */
+    /* transform: perspective(var(--perspectivePX)) translateZ(calc(var(--z) * -1))
+      rotateY(calc(var(--progress) * -360deg)) rotateX(0deg); */
   }
 
+  /* .x-home__carousel > * {
+    display: none !important;
+  } */
+
   .x-home__carousel-item {
+    --depth: 0;
     @apply absolute h-full w-full rounded-2xl;
 
-    filter: blur(calc(pow(var(--depth), 2) * 4px));
-    transform-origin: center;
+    /* filter: blur(calc(pow(var(--depth), 2) * 4px)); */
+    /* transform-origin: center; */
+    /* transform-style: preserve-3d; */
+    /* transform: rotateY(calc(var(--i) * 360deg / var(--total)))
+      translateZ(var(--z)) scale(calc(1 - var(--depth) * 0.5)); */
     transform-style: preserve-3d;
     transform: rotateY(calc(var(--i) * 360deg / var(--total)))
-      translateZ(var(--z)) scale(calc(1 - var(--depth) * 0.5));
+      translateZ(var(--z));
   }
 
   .x-home__carousel .x-home__carousel-item {
@@ -347,7 +377,9 @@ const half = total / 2
   .x-home__carousel .x-home__card-blend {
     @apply absolute inset-0 z-50 bg-white;
 
-    opacity: clamp(0, calc(var(--depth) * 1), 0.8);
+    opacity: 0;
+    /* transform: translateY(calc(100% * var(--depth))); */
+    opacity: clamp(0, calc(var(--depth)), 0.8);
   }
 
   .x-thumbnails {

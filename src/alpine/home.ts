@@ -1,8 +1,13 @@
 import type { AlpineComponent } from 'alpinejs'
-import type { init } from 'astro/virtual-modules/prefetch.js'
-import { gsap } from 'gsap'
+import { gsap, Power2, Power3, Back, Linear } from 'gsap'
+import { CustomEase } from 'gsap/CustomEase'
 import { Draggable } from 'gsap/Draggable'
 import { InertiaPlugin } from 'gsap/InertiaPlugin'
+
+const Power2InOutBack = CustomEase.create(
+  'custom',
+  'M0,0 C0.173,0 0.242,0.036 0.322,0.13 0.401,0.223 0.449,0.367 0.502,0.506 0.546,0.622 0.62,0.824 0.726,0.916 0.799,0.98 0.869,1.041 1,1 ',
+)
 
 interface HomeComponent {
   initCarousel: () => void
@@ -14,6 +19,7 @@ interface HomeComponent {
   spinToIndex: (index: number, onCompleteCallback?: () => void) => void
   rotateTo: (dir: -1 | 1) => void
   getIndexOfRotation: (round?: boolean) => number
+  initIntroAnimation: () => void
 }
 
 export function home(): AlpineComponent<HomeComponent> {
@@ -23,6 +29,9 @@ export function home(): AlpineComponent<HomeComponent> {
   let total: number = 0
   let totalHalf: number = 0
   let angle: number = 0
+  let carousel: HTMLElement | undefined = undefined
+  let cards: HTMLElement[] = []
+  let thumbs: HTMLElement[] = []
 
   function updateRotation() {
     // console.log('rotation', this.rotation)
@@ -215,9 +224,6 @@ export function home(): AlpineComponent<HomeComponent> {
       const thumbsContainer: HTMLElement[] = gsap.utils.toArray(
         document.querySelectorAll('.x-home__nav'),
       )
-      total = slides.length
-      totalHalf = total / 2
-      angle = 360 / total
 
       // thumbsTween = gsap.to(thumbs, {
       //   x: '-100%',
@@ -237,7 +243,11 @@ export function home(): AlpineComponent<HomeComponent> {
             const progressIndex =
               (((index - progress * total) % total) + total) % total
             const depth = 1 - Math.abs(progressIndex - totalHalf) / totalHalf
+            const scale = 1 - depth * 0.5
             slide.style.setProperty('--depth', `${depth}`)
+            gsap.set(slide, {
+              scale,
+            })
           })
 
           thumbs.forEach((elem, index) => {
@@ -256,7 +266,7 @@ export function home(): AlpineComponent<HomeComponent> {
           })
         },
       })
-      // TODO: Recommendation: pre-render for performance. Does it make sense?
+      // TODO: Recommendation: pre-render for performance. Does it make sense? Check also other timelines
       spin.progress(1, true).progress(0, true)
       spin.pause()
 
@@ -279,11 +289,151 @@ export function home(): AlpineComponent<HomeComponent> {
       })
     },
 
+    initIntroAnimation() {
+      const component = this
+      // const frame = document.querySelector('.x-home__carousel-frame')
+      const canvas = document.querySelector('.x-home__canvas')
+      const carousel = document.querySelector('.x-home__carousel')
+      const cards = document.querySelectorAll('.x-home__carousel-item')
+      const firstCard = cards[0]
+      if (!carousel || !firstCard) return
+
+      const radius = Number(gsap.getProperty(firstCard, 'z'))
+      const startZ = radius * -80
+      const endZ = radius * -1
+      const durationFade = 0.8
+      const durationSpin = 3
+      const delayCards = durationFade + durationSpin
+      const cardDuration = 2
+      const cardDelay = 1
+
+      gsap.set(canvas, { rotationX: -90, z: startZ })
+      gsap.set(carousel, { rotationY: -360 })
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          component.initCarousel()
+        },
+      })
+      tl.to(
+        '.x-home__canvas-blend',
+        // {
+        //   rotationX: -90,
+        //   z: startZ,
+        //   opacity: 0,
+        // },
+        {
+          opacity: 0,
+          duration: durationFade,
+          ease: Linear.easeNone,
+        },
+      )
+      tl.to(
+        canvas,
+        {
+          rotationX: 0,
+          z: endZ,
+          duration: durationSpin,
+          ease: Power2.easeInOut,
+        },
+        durationFade,
+      )
+      tl.to(
+        carousel,
+        // {
+        //   rotationY: -360,
+        // },
+        {
+          rotationY: 0,
+          duration: durationSpin,
+          ease: Power3.easeInOut,
+          // Not Working
+          // onUpdate: () => {
+          //   const progress =
+          //     (Number(gsap.getProperty(carousel, 'rotationY')) / 360) % 1
+
+          //   cards.forEach((slide, index) => {
+          //     const progressIndex =
+          //       (((index - progress * total) % total) + total) % total
+          //     const depth = 1 - Math.abs(progressIndex - totalHalf) / totalHalf
+          //     slide.style.setProperty('--depth', `${depth}`)
+
+          //     // if (index === 0) {
+          //     //   console.log({ progress, depth })
+          //     // }
+          //   })
+          // },
+        },
+        durationFade,
+      )
+      cards.forEach((card, index) => {
+        const depth = 1 - Math.abs(index - totalHalf) / totalHalf
+        const scale = 1 - depth * 0.5
+        tl.to(
+          card,
+          {
+            scale,
+            '--depth': depth,
+            duration: cardDuration,
+            ease: Power3.easeOut,
+          },
+          delayCards - cardDuration + cardDelay,
+        )
+      })
+      tl.fromTo(
+        '.x-home__thumb',
+        {
+          x: '100%',
+          scale: 1.1,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          ease: Back.easeOut,
+          stagger: 0.05,
+        },
+        '-=1',
+      )
+      // thumbs.forEach((thumb, index) => {
+      //   tl.fromTo(
+      //     thumb,
+      //     { x: '100%', scale: 1.1, opacity: 0 },
+      //     {
+      //       x: 0,
+      //       scale: 1,
+      //       opacity: 1,
+      //       duration: 0.6,
+      //       ease: Back.easeOut,
+      //     },
+      //     '-=0.4',
+      //   )
+      // })
+      tl.progress(1, true).progress(0, true)
+
+      tl.play()
+    },
+
     init() {
       console.log('Home component initialized')
       gsap.registerPlugin(Draggable, InertiaPlugin)
 
-      this.initCarousel()
+      carousel = this.$refs.carousel
+      cards = gsap.utils.toArray(
+        carousel?.querySelectorAll('.x-home__carousel-item') ?? [],
+      )
+      thumbs = gsap.utils.toArray(
+        document.querySelectorAll('.x-home__thumb') ?? [],
+      )
+
+      total = cards.length
+      totalHalf = total / 2
+      angle = 360 / total
+
+      // this.initCarousel()
+      this.initIntroAnimation()
     },
   }
 
