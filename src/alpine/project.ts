@@ -82,13 +82,13 @@ export function project(): AlpineComponent<ProjectComponent> {
       })
     },
     handleScrollEnd() {
-      if (window.scrollY > 1 && window.scrollY < window.innerHeight) {
+      if (window.scrollY > 1 && window.scrollY < window.innerHeight - 10) {
         // const scrollTo =
         //   window.scrollY > window.innerHeight * 0.5 ? window.innerHeight : 0
         const scrollTo = scrollDir > 0 ? window.innerHeight : 0
         gsap.to(window, {
           scrollTo: scrollTo,
-          duration: 0.3,
+          duration: 0.25,
           ease: 'power2.out',
         })
       }
