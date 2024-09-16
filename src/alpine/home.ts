@@ -323,7 +323,7 @@ export function home(): AlpineComponent<HomeComponent> {
       })
       tl.to(
         '.x-home__circle',
-        { opacity: 0, duration: 1, strokeWidth: 0.1, ease: Linear.easeNone },
+        { opacity: 0, duration: 0.6, strokeWidth: 0.1, ease: Linear.easeNone },
         0,
       )
       tl.to(
