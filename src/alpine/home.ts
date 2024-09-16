@@ -317,6 +317,7 @@ export function home(): AlpineComponent<HomeComponent> {
           component.$root.classList.remove('sr-only')
         },
         onComplete: () => {
+          console.log('timeline completed')
           component.initCarousel()
           component.$root.classList.add('is-ready')
         },
@@ -359,23 +360,25 @@ export function home(): AlpineComponent<HomeComponent> {
           cardDelay,
         )
       })
-      tl.fromTo(
-        '.x-home__thumb',
-        {
-          x: '100%',
-          scale: 1.1,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          scale: 1,
-          opacity: 1,
-          duration: 0.6,
-          ease: Back.easeOut,
-          stagger: 0.05,
-        },
-        '-=1',
-      )
+      if (window.innerWidth < 1024) {
+        tl.fromTo(
+          '.x-home__thumb',
+          {
+            x: '100%',
+            scale: 1.1,
+            opacity: 0,
+          },
+          {
+            x: 0,
+            scale: 1,
+            opacity: 1,
+            duration: 0.6,
+            ease: Back.easeOut,
+            stagger: 0.05,
+          },
+          '-=1',
+        )
+      }
       // thumbs.forEach((thumb, index) => {
       //   tl.fromTo(
       //     thumb,
@@ -393,15 +396,6 @@ export function home(): AlpineComponent<HomeComponent> {
       tl.progress(1, true).progress(0, true)
       tl.pause()
       tl.restart(true)
-
-      // tl.pause()
-      // gsap.to(canvas, {
-      //   rotationX: 0,
-      //   yoyo: true,
-      //   repeat: -1,
-      //   duration: 2,
-      //   ease: Power2.easeInOut,
-      // })
     },
 
     init() {
