@@ -18,7 +18,7 @@ export function useScrollStartEndEvents(
   element,
   onScrollStart,
   onScrollEnd,
-  debounceTimeMs = 100,
+  debounceTimeMs = 60,
 ) {
   let isScrolling = false
   let scrollLeft = 0

@@ -88,8 +88,8 @@ export function project(): AlpineComponent<ProjectComponent> {
         const scrollTo = scrollDir > 0 ? window.innerHeight : 0
         gsap.to(window, {
           scrollTo: scrollTo,
-          duration: 0.4,
-          ease: 'power2.inOut',
+          duration: 0.3,
+          ease: 'power2.out',
         })
       }
     },
