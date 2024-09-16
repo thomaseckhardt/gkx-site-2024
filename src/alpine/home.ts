@@ -314,6 +314,7 @@ export function home(): AlpineComponent<HomeComponent> {
         // yoyo: true,
         onStart: () => {
           console.log('timeline started')
+          component.$root.classList.remove('sr-only')
         },
         onComplete: () => {
           component.initCarousel()
@@ -401,8 +402,6 @@ export function home(): AlpineComponent<HomeComponent> {
       //   duration: 2,
       //   ease: Power2.easeInOut,
       // })
-
-      this.$root.classList.remove('sr-only')
     },
 
     init() {
