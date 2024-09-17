@@ -48,11 +48,6 @@ export function project(): AlpineComponent<ProjectComponent> {
         },
       })
 
-      tl.to('.x-backdrop', {
-        opacity: 1,
-        ease: 'none',
-      })
-
       const hero = gsap.timeline({
         scrollTrigger: {
           trigger: '.x-info',

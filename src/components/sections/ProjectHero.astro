@@ -42,7 +42,7 @@ const { class: className, slides = [], ...props } = Astro.props
               <slot name="infoButton" />
             </div>
             <div class="ml-auto flex flex-none items-center gap-x-2">
-              <div class="text-18 lg:text-20 whitespace-nowrap font-narrow leading-none tracking-wide text-white">
+              <div class="whitespace-nowrap font-narrow text-18 leading-none tracking-wide text-white lg:text-20">
                 <span x-text="index" />/<span x-text="total" />
               </div>
               <button class="splide__toggle" type="button">
@@ -53,6 +53,5 @@ const { class: className, slides = [], ...props } = Astro.props
         </div>
       )
     }
-    <slot name="backdrop" />
   </div>
 </Section>

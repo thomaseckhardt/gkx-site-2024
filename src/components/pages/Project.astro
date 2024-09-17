@@ -51,15 +51,6 @@ const body =
       <div slot="infoButton" class="x-info-open">
         <Button as="button" x-on:click="() => openInfo()">Info</Button>
       </div>
-      <div
-        slot="backdrop"
-        aria-hidden
-        class={clsx(
-          'x-backdrop opacity-0',
-          'pointer-events-none absolute inset-0 z-30 h-full h-svh w-full bg-white',
-        )}
-      >
-      </div>
     </ProjectHero>
 
     <div class={clsx('x-info', 'relative bg-white pb-20')}>
