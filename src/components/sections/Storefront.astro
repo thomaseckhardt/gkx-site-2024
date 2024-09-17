@@ -46,7 +46,7 @@ const sizeConfig = sizes[blok.aspectRatio ?? ''] ?? sizes['default']
   x-data="carousel"
 >
   <h2
-    class="text-38 lg:text-40 px-page-mx mb-5 font-sans font-bold uppercase tracking-wide md:mb-10"
+    class="mb-5 px-page-mx font-sans text-38 font-bold uppercase tracking-wide md:mb-10 lg:text-40"
   >
     Shop
   </h2>
@@ -72,10 +72,10 @@ const sizeConfig = sizes[blok.aspectRatio ?? ''] ?? sizes['default']
                 aspectRatio="2/3"
                 sizes={sizeConfig.sizes}
               />
-              <div class="text-13 md:text-16 mt-2 text-center font-serif tracking-wide md:px-2">
+              <div class="mt-2 text-center font-serif text-13 tracking-wide md:px-2 md:text-16">
                 {product.title && <div>{product.title}</div>}
                 {product.soldOut && (
-                  <div class="font-narrow mt-2">Sold out</div>
+                  <div class="mt-2 font-narrow">Sold out</div>
                 )}
               </div>
             </HtmlLink>

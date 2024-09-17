@@ -82,6 +82,7 @@ export default {
         // '8xl': [rem(96), { lineHeight: '1' }],
         // '9xl': [rem(128), { lineHeight: '1' }],
         13: [rem(13), { lineHeight: '1' }],
+        15: [rem(15), { lineHeight: '1' }],
         16: [rem(16), { lineHeight: '1' }],
         18: [rem(18), { lineHeight: '1' }],
         20: [rem(20), { lineHeight: '1' }],
@@ -90,8 +91,10 @@ export default {
         32: [rem(32), { lineHeight: '1' }],
         35: [rem(35), { lineHeight: '1' }],
         38: [rem(38), { lineHeight: '1' }],
+        40: [rem(40), { lineHeight: '1' }],
         42: [rem(42), { lineHeight: '1' }],
         45: [rem(45), { lineHeight: '1' }],
+        50: [rem(50), { lineHeight: '1' }],
       },
       fontWeight: {
         // https://tailwindcss.com/docs/font-weight
