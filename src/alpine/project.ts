@@ -3,6 +3,7 @@ import type { AlpineComponent } from 'alpinejs'
 import { gsap } from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import type { UiStore } from './entrypoint'
 
 gsap.registerPlugin(ScrollTrigger)
 gsap.registerPlugin(ScrollToPlugin)
@@ -13,12 +14,16 @@ interface ProjectComponent {
   handleScroll: () => void
   handleScrollStart: () => void
   handleScrollEnd: () => void
+  heroActive: boolean
+  scrollActive: boolean
 }
 
 export function project(): AlpineComponent<ProjectComponent> {
   let lastScrollY = 0
   let scrollDir = 1
   const component: AlpineComponent<ProjectComponent> = {
+    scrollActive: false,
+    heroActive: true,
     openInfo: function () {
       if (this.$refs.info) {
         this.$refs.info.scrollIntoView({
@@ -67,29 +72,50 @@ export function project(): AlpineComponent<ProjectComponent> {
         this.handleScrollStart,
         this.handleScrollEnd,
       )
+
+      const ui = Alpine.store('ui') as UiStore
+      this.ui = ui
     },
     handleScroll() {
       const currentScrollY = window.scrollY
       scrollDir = currentScrollY > lastScrollY ? 1 : -1
       lastScrollY = currentScrollY
+
+      const ui = Alpine.store('ui') as UiStore
+      if (ui.heroActive) {
+        ui.toggleHeroActive(false)
+        console.log('-> ui.heroActive = false')
+      }
+      component.scrollActive = true
     },
     handleScrollStart() {
-      const allVideos = document.querySelectorAll(
-        '.x-hero video',
-      ) as unknown as HTMLVideoElement[]
-      allVideos.forEach((video) => {
-        video.pause()
-      })
+      console.log('scroll START')
+      component.scrollActive = true
+      // if (window.scrollY > 1 && window.scrollY < window.innerHeight - 10) {
+      //   console.log('scroll START do something')
+      // }
     },
     handleScrollEnd() {
-      if (window.scrollY > 1 && window.scrollY < window.innerHeight - 10) {
+      console.log('scroll END')
+      component.scrollActive = false
+      if (window.scrollY >= 0 && window.scrollY < window.innerHeight - 10) {
+        console.log('scroll END do something')
         // const scrollTo =
         //   window.scrollY > window.innerHeight * 0.5 ? window.innerHeight : 0
         const scrollTo = scrollDir > 0 ? window.innerHeight : 0
+        const onComplete =
+          scrollTo === 0
+            ? () => {
+                const ui = Alpine.store('ui') as UiStore
+                ui.toggleHeroActive(true)
+                console.log('-> ui.heroActive = true')
+              }
+            : undefined
         gsap.to(window, {
           scrollTo: scrollTo,
           duration: 0.25,
           ease: 'power2.out',
+          onComplete,
         })
       }
     },

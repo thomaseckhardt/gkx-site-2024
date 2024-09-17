@@ -15,6 +15,15 @@ import { project } from '@/alpine/project'
 // import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 // import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+export type UiStore = {
+  navOpen: boolean
+  toggleNav(force?: boolean): void
+  infoOpen: boolean
+  toggleInfo(force?: boolean): void
+  heroActive: boolean
+  toggleHeroActive(force?: boolean): void
+}
+
 export default (Alpine: Alpine) => {
   // gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Draggable)
 
@@ -26,15 +35,18 @@ export default (Alpine: Alpine) => {
   Alpine.data('home', home)
   Alpine.data('project', project)
 
-  type UiStore = {
-    navOpen: boolean
-    toggleNav(force?: boolean): void
-  }
-
   Alpine.store('ui', {
     navOpen: false,
     toggleNav(force: boolean) {
       this.navOpen = force ?? !this.navOpen
+    },
+    infoOpen: false,
+    toggleInfo(force: boolean) {
+      this.infoOpen = force ?? !this.infoOpen
+    },
+    heroActive: true,
+    toggleHeroActive(force: boolean) {
+      this.heroActive = force ?? !this.heroActive
     },
   } as UiStore)
 }

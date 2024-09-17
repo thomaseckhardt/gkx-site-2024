@@ -1,4 +1,5 @@
 import type { AlpineComponent } from 'alpinejs'
+import type { UiStore } from './entrypoint'
 
 interface HeroComponent {
   splide:
@@ -202,6 +203,28 @@ export function hero(): AlpineComponent<HeroComponent> {
       }, 1600)
 
       this.enableMouseControls()
+
+      Alpine.effect(() => {
+        const ui = Alpine.store('ui') as UiStore
+        console.log('heroActive', ui.heroActive)
+        if (!ui.heroActive) {
+          const allVideos = document.querySelectorAll(
+            '.x-hero video',
+          ) as unknown as HTMLVideoElement[]
+          allVideos.forEach((video) => {
+            video.pause()
+          })
+          this.stopAutoPlay()
+        } else {
+          const video = document.querySelector(
+            '.x-hero .splide__slide.is-active video',
+          ) as HTMLVideoElement
+          if (video) {
+            video.play()
+          }
+          this.playAutoPlay()
+        }
+      })
     },
   }
 
