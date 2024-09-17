@@ -20,6 +20,7 @@ interface HomeComponent {
   rotateTo: (dir: -1 | 1) => void
   getIndexOfRotation: (round?: boolean) => number
   initIntroAnimation: () => void
+  restored: () => void
 }
 
 export function home(): AlpineComponent<HomeComponent> {
@@ -398,6 +399,35 @@ export function home(): AlpineComponent<HomeComponent> {
       tl.restart(true)
     },
 
+    restored() {
+      const progress = 0
+
+      gsap.set('.x-home__circle', { opacity: 0, strokeWidth: 0.1 })
+      cards.forEach((card, index) => {
+        const depth = 1 - Math.abs(index - totalHalf) / totalHalf
+        const scale = 1 - depth * 0.5
+        gsap.set(card, {
+          scale,
+          '--depth': depth,
+        })
+      })
+
+      thumbs.forEach((elem, index) => {
+        const indexDiff = parseFloat((index - progress * total).toFixed(4))
+        // Clamp indexDiff between -1 and 1
+        const scale = Math.max(-1, Math.min(1, indexDiff))
+
+        elem.style.setProperty('--ratio', `${indexDiff}`)
+        elem.style.setProperty('--scale', `${scale}`)
+        elem.style.setProperty('--scaleAbs', `${Math.abs(scale)}`)
+        elem.style.setProperty('--index', `${Math.round(indexDiff)}`)
+      })
+
+      component.$root.classList.remove('sr-only')
+      component.$root.classList.add('is-ready')
+      component.initCarousel()
+    },
+
     init() {
       console.log('Home component initialized')
       gsap.registerPlugin(Draggable, InertiaPlugin)
@@ -414,8 +444,14 @@ export function home(): AlpineComponent<HomeComponent> {
       totalHalf = total / 2
       angle = 360 / total
 
-      // this.initCarousel()
-      this.initIntroAnimation()
+      const sessionActive = this.$store.session.checkSession()
+      console.log('sessionActive', sessionActive)
+
+      if (sessionActive) {
+        this.restored()
+      } else {
+        this.initIntroAnimation()
+      }
     },
   }
 

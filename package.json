@@ -22,6 +22,7 @@
     "ssl:serve": "local-ssl-proxy --source 8000 --target 8888 --cert localhost.pem --key localhost-key.pem"
   },
   "dependencies": {
+    "@alpinejs/persist": "^3.14.1",
     "@astrojs/alpinejs": "^0.4.0",
     "@astrojs/check": "^0.9.3",
     "@astrojs/netlify": "^5.5.1",
