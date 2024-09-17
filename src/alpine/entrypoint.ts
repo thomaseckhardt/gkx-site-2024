@@ -59,6 +59,7 @@ export default (Alpine: Alpine) => {
   } as UiStore)
 
   Alpine.store('session', {
+    // @ts-ignore
     sessionActive: Alpine.$persist(false).using(sessionStorage),
     startSession() {
       this.sessionActive = true

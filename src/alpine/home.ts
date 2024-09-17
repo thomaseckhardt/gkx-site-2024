@@ -423,7 +423,9 @@ export function home(): AlpineComponent<HomeComponent> {
         elem.style.setProperty('--index', `${Math.round(indexDiff)}`)
       })
 
+      // @ts-ignore
       component.$root.classList.remove('sr-only')
+      // @ts-ignore
       component.$root.classList.add('is-ready')
       component.initCarousel()
     },
