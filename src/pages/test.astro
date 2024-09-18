@@ -1,0 +1,19 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+---
+
+<BaseLayout>
+  <main>
+    <h1>Test Page</h1>
+    <div
+      hx-get="/partials/project/"
+      hx-trigger="load"
+      hx-vals='{"slug": "projects/porsche-x-steidl"}'
+    >
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  // htmx.trigger("#project", "load-project", {slug:'my-project-slug'})
+</script>

@@ -1,0 +1,16 @@
+---
+import ProjectDetail from '@/components/shared/ProjectDetail.astro'
+import type { ProjectStoryblok } from '@/types/storyblok'
+import { fetchStory } from '@/utils/storyblok/fetchStories'
+
+export const partial = true
+
+const slug = Astro.url.searchParams.get('slug')
+
+const story = slug
+  ? ((await fetchStory(slug)) as unknown as ProjectStoryblok)
+  : undefined
+const blok = story?.content ?? {}
+---
+
+{story && blok && <ProjectDetail story={story} blok={blok} />}
