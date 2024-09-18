@@ -412,6 +412,11 @@ export function home(): AlpineComponent<HomeComponent> {
         })
       })
 
+      const firstCard = cards[0]
+      const radius = Number(gsap.getProperty(firstCard, 'z'))
+      const endZ = radius * -1
+      gsap.set('.x-home__canvas', { rotationX: 0, z: endZ })
+
       thumbs.forEach((elem, index) => {
         const indexDiff = parseFloat((index - progress * total).toFixed(4))
         // Clamp indexDiff between -1 and 1
