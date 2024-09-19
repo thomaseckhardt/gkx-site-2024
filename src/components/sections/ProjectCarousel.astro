@@ -103,9 +103,9 @@ const realProjects =
       ...project.content,
       slug: project.slug,
       link: project.full_slug ? `/${project.full_slug}` : undefined,
-      cover: heroSlide.imagePortrait.filename
-        ? heroSlide.imagePortrait
-        : heroSlide.imageLandscape,
+      cover: heroSlide.imageLandscape.filename
+        ? heroSlide.imageLandscape
+        : heroSlide.imagePortrait,
     }
   }) ?? []
 const projects = [
