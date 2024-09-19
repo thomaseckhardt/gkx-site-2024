@@ -2,7 +2,6 @@
 import Meta from '@/components/meta/Meta.astro'
 import SiteVerification from '@/components/meta/SiteVerification.astro'
 import '@/styles/index.css'
-// import { ViewTransitions } from 'astro:transitions'
 
 const { site } = Astro.props
 ---
@@ -17,6 +16,16 @@ const { site } = Astro.props
   href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css"
 />
 <script
+  is:inline
   src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"
 ></script>
-<!-- <ViewTransitions /> -->
+<!--
+TODO: Add htmx to the project via NPM
+https://v1.htmx.org/docs/#npm
+https://blog.wesleyac.com/posts/why-not-javascript-cdn
+-->
+<script
+  is:inline
+  src="https://unpkg.com/htmx.org@1.9.12"
+  integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+  crossorigin="anonymous"></script>

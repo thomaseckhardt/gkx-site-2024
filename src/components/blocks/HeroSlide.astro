@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
 import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
 import { getMP4 } from '@/utils/bunny'
+import { renderUniqueStylesheet } from 'astro/runtime/server/index.js'
 
 export type Props = {
   as?: string
@@ -30,7 +31,7 @@ const mainImage = blok.imagePortrait?.filename
   : blok.imageLandscape
 const backgroundImage =
   variant === 'backgroundImage' && mainImage?.filename ? mainImage : undefined
-const backgroundColor = blok.backgroundColor?.color
+const backgroundColor = blok.backgroundColor?.color || '#ffffff'
 const style =
   !isFullscreen && backgroundColor
     ? {
@@ -50,6 +51,15 @@ const videoSourcesLandscape = [
     src: getMP4(blok.videoLandscapeID || blok.videoPortraitID, 720),
   },
 ].filter((source) => Boolean(source.src))
+
+const alpineProps = isVideo
+  ? undefined
+  : {
+      'x-cloak': true,
+      'x-data': '{imageState: {isRendered: false}}',
+      'x-image-state': 'imageState',
+      'x-bind:class': "imageState.isRendered ? 'animate-fade-in' : 'opacity-0'",
+    }
 ---
 
 <Component
@@ -60,6 +70,7 @@ const videoSourcesLandscape = [
       'after:absolute after:bottom-0 after:left-0 after:right-0 after:z-10 after:h-3/4 after:w-full after:bg-gradient-to-t after:from-black/60 after:to-black/0 lg:after:h-1/2',
     className,
   )}
+  {...alpineProps}
   style={style}
 >
   {/* Text */}

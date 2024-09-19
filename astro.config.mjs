@@ -11,7 +11,7 @@ const env = loadEnv(process.env.NODE_ENV, process.cwd(), '')
 const isPublished = env.STORYBLOK_VERSION === 'published'
 const isPreview = env.PUBLIC_ENV === 'preview'
 const isProduction = env.PUBLIC_ENV === 'production'
-const output = isProduction ? 'static' : 'server'
+const output = isProduction ? 'hybrid' : 'server'
 const storyblokBridge = !isPublished
 
 // https://astro.build/config

@@ -35,6 +35,7 @@ interface HeroComponent {
   getCurrentSlide: () => HTMLElement | undefined
   pointerDownStart: number
   onTimeUpdateVideo: (event: Event) => void
+  waitForTransition: boolean
 }
 
 export function hero(): AlpineComponent<HeroComponent> {
@@ -44,6 +45,7 @@ export function hero(): AlpineComponent<HeroComponent> {
     index: 0,
     total: 0,
     pointerDownStart: 0,
+    waitForTransition: true,
     getCurrentSlide() {
       return this.splide?.Components?.Elements?.slides[this.splide?.index ?? 0]
     },
@@ -199,6 +201,7 @@ export function hero(): AlpineComponent<HeroComponent> {
       })
 
       setTimeout(() => {
+        this.waitForTransition = false
         this.playAutoPlay()
       }, 1600)
 
@@ -206,7 +209,7 @@ export function hero(): AlpineComponent<HeroComponent> {
 
       Alpine.effect(() => {
         const ui = Alpine.store('ui') as UiStore
-        console.log('heroActive', ui.heroActive)
+        console.log('hero.heroActive', ui.heroActive)
         if (!ui.heroActive) {
           const allVideos = document.querySelectorAll(
             '.x-hero video',
@@ -215,7 +218,7 @@ export function hero(): AlpineComponent<HeroComponent> {
             video.pause()
           })
           this.stopAutoPlay()
-        } else {
+        } else if (!this.waitForTransition) {
           const video = document.querySelector(
             '.x-hero .splide__slide.is-active video',
           ) as HTMLVideoElement

@@ -1,5 +1,5 @@
 import type { AlpineComponent } from 'alpinejs'
-import { gsap, Power2, Power3, Back, Linear } from 'gsap'
+import { gsap, Power2, Power3, Power4, Back, Linear } from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
 import { Draggable } from 'gsap/Draggable'
 import { InertiaPlugin } from 'gsap/InertiaPlugin'
@@ -21,6 +21,7 @@ interface HomeComponent {
   getIndexOfRotation: (round?: boolean) => number
   initIntroAnimation: () => void
   restored: () => void
+  closeProject: () => void
 }
 
 export function home(): AlpineComponent<HomeComponent> {
@@ -33,6 +34,8 @@ export function home(): AlpineComponent<HomeComponent> {
   let carousel: HTMLElement | undefined = undefined
   let cards: HTMLElement[] = []
   let thumbs: HTMLElement[] = []
+  let projectSlug: undefined | string = undefined
+  let projectContainer: HTMLElement | null = document.getElementById('project')
 
   function updateRotation() {
     // console.log('rotation', this.rotation)
@@ -49,9 +52,66 @@ export function home(): AlpineComponent<HomeComponent> {
   }
 
   const component: AlpineComponent<HomeComponent> = {
+    closeProject() {
+      const card = document.querySelector(
+        `[data-card="${projectSlug}"]`,
+      ) as HTMLElement
+      const cardRect = card.getBoundingClientRect()
+
+      const hero = this.$refs.hero
+      const heroImage = hero.querySelector('img')
+
+      projectContainer?.classList.add('pointer-events-none')
+
+      const startDelay = 0.3
+      const tl = gsap.timeline({
+        onComplete: () => {
+          console.log('closeProject completed')
+          htmx.ajax('GET', '/partials/clear-project/', {
+            target: '#project',
+            swap: 'innerHTML',
+          })
+        },
+      })
+      tl.to('#project', { opacity: 0, duration: 0.3 })
+      tl.to(
+        hero,
+        {
+          x: cardRect.left,
+          y: cardRect.top,
+          width: cardRect.width,
+          height: cardRect.height,
+          borderRadius: 24,
+          ease: Power3.easeInOut,
+          duration: 1,
+        },
+        startDelay,
+      )
+      tl.to(
+        heroImage,
+        {
+          borderRadius: 24,
+          duration: 1,
+        },
+        startDelay,
+      )
+      tl.to(hero, {
+        opacity: 0,
+        duration: 0.3,
+        ease: Linear.easeNone,
+      })
+    },
     startPageTransition(url) {
       const hero = this.$refs.hero
+      // Reset hero and projectContainer
+      while (hero.firstChild) {
+        hero.removeChild(hero.firstChild)
+      }
+      gsap.set(hero, { opacity: 1 })
+      gsap.set(projectContainer, { opacity: 1 })
+
       const card = document.querySelector(`[data-card="${url}"]`) as HTMLElement
+      projectSlug = url
 
       if (!card || !hero) {
         console.warn('card or hero not defined', card, hero)
@@ -62,7 +122,7 @@ export function home(): AlpineComponent<HomeComponent> {
         .querySelector('a')
         ?.cloneNode(true) as HTMLImageElement
       if (cardContent) {
-        cardContent.classList.add('pointer-events-none')
+        cardContent.classList.add('pointer-events-none__')
         hero.appendChild(cardContent)
       }
       const heroText = hero.querySelector('.x-home__text')
@@ -72,7 +132,11 @@ export function home(): AlpineComponent<HomeComponent> {
       const startDelay = 0.12
       const tl = gsap.timeline({
         onComplete: () => {
-          window.location.href = url
+          console.log('transition completed', url)
+          htmx.trigger('#project', 'loadProject', {
+            slug: url,
+          })
+          projectContainer?.classList.remove('pointer-events-none')
         },
       })
       tl.to(
@@ -411,6 +475,11 @@ export function home(): AlpineComponent<HomeComponent> {
           '--depth': depth,
         })
       })
+
+      const firstCard = cards[0]
+      const radius = Number(gsap.getProperty(firstCard, 'z'))
+      const endZ = radius * -1
+      gsap.set('.x-home__canvas', { rotationX: 0, z: endZ })
 
       thumbs.forEach((elem, index) => {
         const indexDiff = parseFloat((index - progress * total).toFixed(4))

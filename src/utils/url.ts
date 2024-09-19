@@ -57,3 +57,7 @@ export const removeTrailingSlash = (url) => {
   if (typeof url !== 'string') return url
   return url.replace(/\/+$/, '')
 }
+
+export const addSlashed = (url) => {
+  return addTrailingSlash(addLeadingSlash(url))
+}

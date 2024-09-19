@@ -1,0 +1,69 @@
+---
+import ProjectHero from '@/components/sections/ProjectHero.astro'
+import Button from '@/components/shared/Button.astro'
+import type { ProjectStoryblok } from '@/types/storyblok'
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
+import clsx from 'clsx'
+import type { StoryblokStory } from 'storyblok-generate-ts'
+
+export type Props = {
+  story: any
+  blok: ProjectStoryblok
+  as?: string
+}
+
+const { story, blok, as: Component = 'div' } = Astro.props
+
+let headlineCount = 0
+const body =
+  blok.information?.map((blok) => {
+    if (blok.component === 'Headline') {
+      headlineCount++
+      return {
+        ...blok,
+        _props: {
+          textSize: headlineCount === 1 ? 'display' : 'large',
+          headingOrder: headlineCount === 1 ? 1 : 2,
+        },
+      }
+    }
+    return blok
+  }) ?? []
+---
+
+<Component
+  class={clsx('x-main', 'text-22 lg:text-25')}
+  x-data="project"
+  data-slug={story.full_slug}
+>
+  <ProjectHero
+    as="header"
+    spacing="none"
+    slides={blok.heroSlides}
+    class={clsx('x-hero sticky top-0 h-svh')}
+  >
+    <div slot="infoButton" class="x-info-open">
+      <Button as="button" x-on:click="() => openInfo()">Info</Button>
+    </div>
+  </ProjectHero>
+
+  <div class={clsx('x-info', 'relative bg-white pb-20')}>
+    <div
+      x-ref="info"
+      class={clsx('x-info-close', 'relative z-20 mx-page-mx mb-3 pt-page-mx')}
+    >
+      <Button as="button" x-on:click="() => closeInfo()">Close</Button>
+    </div>
+    {
+      body?.map((section, index) => (
+        <StoryblokComponent
+          blok={section}
+          story={story}
+          spacing={index === 0 ? 'none' : 'paragraph'}
+          class="z-20"
+          {...section._props}
+        />
+      ))
+    }
+  </div>
+</Component>

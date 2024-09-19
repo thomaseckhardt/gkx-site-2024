@@ -1,3 +1,7 @@
+export const isDevelopment = () => {
+  return import.meta.env.PUBLIC_ENV === 'development'
+}
+
 export const isPreview = () => {
   return import.meta.env.PUBLIC_ENV === 'preview'
 }
