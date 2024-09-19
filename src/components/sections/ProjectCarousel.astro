@@ -206,7 +206,7 @@ const half = total / 2
                     <h3 class="text-25 font-bold uppercase tracking-wide">
                       {project.title}
                     </h3>
-                    <p class="text-15 font-serif tracking-wide">
+                    <p class="font-serif text-15 tracking-wide">
                       {project.subtitle}
                     </p>
                   </div>
@@ -258,6 +258,21 @@ const half = total / 2
       data-image-class="absolute inset-0 h-full w-full rounded-3xl object-cover"
     >
     </div>
+    <div
+      id="project"
+      hx-trigger="loadProject"
+      hx-get="/partials/project/"
+      hx-vals="js:{ slug: event.detail.slug }"
+      class="pointer-events-none absolute left-0 top-0 h-full w-full"
+    >
+    </div>
+    <button
+      type="button"
+      class="z-project-back absolute left-0 top-0 h-10 w-32"
+      x-on:click="closeProject"
+    >
+      <span class="sr-only">Back to home</span>
+    </button>
   </div>
 </div>
 

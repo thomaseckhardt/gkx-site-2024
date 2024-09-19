@@ -199,13 +199,15 @@ export default {
         'right': `url('/cursor-right.svg'), e-resize`,
       },
       animation: {
+        'fade-in': 'fade-in 0.2s linear both',
         'project-heading-in':
           'fade-in-slide 0.8s cubic-bezier(0.25, 1, 0.5, 1) 1s both',
         'project-controls-in':
           'fade-in-slide 0.8s cubic-bezier(0.25, 1, 0.5, 1) 1.3s both',
       },
       zIndex: {
-        'header': 9000,
+        'header': 6000,
+        'project-back': 6050,
       },
       typography: {
         // https://github.com/tailwindlabs/tailwindcss-typography/blob/master/src/styles.js

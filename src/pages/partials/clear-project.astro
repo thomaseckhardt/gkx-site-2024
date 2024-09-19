@@ -1,0 +1,5 @@
+---
+if (Astro.request.headers.get('HX-Request') === 'true') {
+  Astro.response.headers.set('HX-Push-Url', `/`)
+}
+---

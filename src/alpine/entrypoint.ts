@@ -5,6 +5,7 @@ import { carousel } from '@/alpine/carousel'
 import { hero } from '@/alpine/hero'
 import { home } from '@/alpine/home'
 import { project } from '@/alpine/project'
+import imageState from './directives/image-state'
 // import * as bodyScrollLock from 'body-scroll-lock'
 
 /* The following plugin is a Club GSAP perk */
@@ -37,6 +38,7 @@ export default (Alpine: Alpine) => {
 
   // Alpine.plugin(collapse)
   Alpine.plugin(persist)
+  Alpine.plugin(imageState)
 
   Alpine.data('carousel', carousel)
   Alpine.data('hero', hero)

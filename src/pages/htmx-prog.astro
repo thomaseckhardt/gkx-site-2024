@@ -1,0 +1,54 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+---
+
+<BaseLayout>
+  <main>
+    <h1
+      class="absolute right-0 top-0 rounded bg-purple-700 px-3 py-1 text-purple-300"
+    >
+      <div>HTMX programmatically</div>
+    </h1>
+    <button
+      type="button"
+      hx-target="#project"
+      hx-get="/partials/clear-project/"
+      class="z-project-back absolute left-0 top-0 bg-teal-700 uppercase text-teal-300"
+    >
+      back
+    </button>
+    <div
+      id="animation"
+      class="absolute left-0 top-0 h-10 w-10 rounded-full bg-purple-900"
+    >
+    </div>
+    <div
+      id="project"
+      hx-trigger="loadProject"
+      hx-get="/partials/project/"
+      hx-vals="js:{ slug: event.detail.slug }"
+    >
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  import gsap from 'gsap'
+
+  document.addEventListener('loadProject', () => {
+    console.log('The loadProject event was triggered')
+  })
+
+  document.addEventListener('DOMContentLoaded', () =>
+    gsap.to('#animation', {
+      y: window.innerHeight - 40,
+      duration: 2,
+      ease: 'Power2.easeInOut',
+      onComplete: () => {
+        htmx.trigger('#project', 'loadProject', {
+          slug: 'projects/porsche-x-steidl',
+        })
+      },
+    }),
+  )
+</script>

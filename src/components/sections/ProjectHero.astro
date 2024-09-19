@@ -16,7 +16,7 @@ const { class: className, slides = [], ...props } = Astro.props
 
 <Section
   as="section"
-  class={clsx('x-hero relative h-svh bg-white', className)}
+  class={clsx('x-hero relative h-svh', className)}
   {...props}
   x-data="hero"
   aria-label="Project gallery"

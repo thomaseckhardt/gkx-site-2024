@@ -2,15 +2,30 @@
 import ProjectDetail from '@/components/shared/ProjectDetail.astro'
 import type { ProjectStoryblok } from '@/types/storyblok'
 import { fetchStory } from '@/utils/storyblok/fetchStories'
+import { addSlashed } from '@/utils/url'
 
 export const partial = true
 
 const slug = Astro.url.searchParams.get('slug')
+const url = addSlashed(slug)
+console.log('slug', slug, url)
 
 const story = slug
   ? ((await fetchStory(slug)) as unknown as ProjectStoryblok)
   : undefined
 const blok = story?.content ?? {}
+
+// If the request is an HTMX-Request, push the URL to the browser history
+if (Astro.request.headers.get('HX-Request') === 'true' && slug) {
+  Astro.response.headers.set('HX-Push-Url', url)
+}
 ---
 
 {story && blok && <ProjectDetail story={story} blok={blok} />}
+{
+  !slug && (
+    <div>
+      <h2>Project not found</h2>
+    </div>
+  )
+}

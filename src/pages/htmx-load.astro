@@ -4,7 +4,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 
 <BaseLayout>
   <main>
-    <h1>Test Page</h1>
+    <h1
+      class="absolute left-0 top-0 rounded bg-purple-900 px-3 py-1 text-purple-300"
+    >
+      HTMX on page load
+    </h1>
     <div
       hx-get="/partials/project/"
       hx-trigger="load"

@@ -27,6 +27,7 @@
     "@astrojs/check": "^0.9.3",
     "@astrojs/netlify": "^5.5.1",
     "@astrojs/tailwind": "^5.1.0",
+    "@darkroom.engineering/tempus": "^0.0.46",
     "@storyblok/astro": "^5.0.1",
     "@tailwindcss/typography": "^0.5.15",
     "alpinejs": "^3.14.1",

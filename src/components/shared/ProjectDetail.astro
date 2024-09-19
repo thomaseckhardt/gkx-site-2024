@@ -7,11 +7,12 @@ import clsx from 'clsx'
 import type { StoryblokStory } from 'storyblok-generate-ts'
 
 export type Props = {
-  story: StoryblokStory<ProjectStoryblok>
+  story: any
   blok: ProjectStoryblok
+  as?: string
 }
 
-const { story, blok } = Astro.props
+const { story, blok, as: Component = 'div' } = Astro.props
 
 let headlineCount = 0
 const body =
@@ -30,7 +31,11 @@ const body =
   }) ?? []
 ---
 
-<div class={clsx('x-main', 'text-22 lg:text-25')} x-data="project">
+<Component
+  class={clsx('x-main', 'text-22 lg:text-25')}
+  x-data="project"
+  data-slug={story.full_slug}
+>
   <ProjectHero
     as="header"
     spacing="none"
@@ -61,4 +66,4 @@ const body =
       ))
     }
   </div>
-</div>
+</Component>
