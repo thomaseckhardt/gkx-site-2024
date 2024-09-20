@@ -2,6 +2,7 @@
 import clsx from 'clsx'
 import { fetchStories } from '@/utils/storyblok'
 import type { ProjectStoryblok } from '@/types/storyblok'
+import { Image } from 'astro:assets'
 
 const projectStories = (await fetchStories({
   by_slugs: 'projects/*',
@@ -106,6 +107,9 @@ const realProjects =
       cover: heroSlide.imageLandscape.filename
         ? heroSlide.imageLandscape
         : heroSlide.imagePortrait,
+      coverPortrait: heroSlide.imagePortrait.filename
+        ? heroSlide.imagePortrait
+        : heroSlide.imageLandscape,
     }
   }) ?? []
 const projects = [
@@ -194,11 +198,24 @@ const half = total / 2
                   x-on:click.prevent={`() => navigateTo('${project.link}')`}
                 >
                   <div class="x-home__card-blend" />
-                  <img
+                  {/* <img
                     src={project.cover.filename}
                     alt={project.title}
                     class="h-full w-full object-cover"
-                  />
+                  /> */}
+                  {project.cover?.filename && (
+                    <Image
+                      src={project.cover.filename}
+                      alt=""
+                      width="1920"
+                      height="1080"
+                      widths={[768, 1024, 1280, 1536, 1920]}
+                      sizes="100vw"
+                      class="h-full w-full object-cover"
+                      format="webp"
+                      inferSize
+                    />
+                  )}
                   {/* <div class="absolute left-4 top-4 rounded-2xl bg-white/80 p-2 font-bold">
                   {index}
                 </div> */}
@@ -238,11 +255,24 @@ const half = total / 2
                         {index}
                       </div>
                       */}
-                      <img
+                      {/* <img
                         src={project.cover.filename}
                         alt=""
                         class="absolute inset-0 h-full w-full rounded-lg object-cover"
-                      />
+                      /> */}
+                      {project.coverPortrait?.filename && (
+                        <Image
+                          src={project.coverPortrait.filename}
+                          alt=""
+                          width="96"
+                          height="168"
+                          widths={[96]}
+                          sizes="96px"
+                          class="absolute inset-0 h-full w-full rounded-lg object-cover"
+                          format="webp"
+                          inferSize
+                        />
+                      )}
                     </a>
                   </li>
                 ))
