@@ -26,7 +26,10 @@ const {
 const isVideo = blok.videoPortraitID || blok.videoLandscapeID
 const variant = blok.variant || 'fullscreen'
 const isFullscreen = variant === 'fullscreen'
-const mainImage = blok.imagePortrait?.filename
+const mainImage = blok.imageLandscape?.filename
+  ? blok.imageLandscape
+  : blok.imagePortrait
+const portrait = blok.imagePortrait?.filename
   ? blok.imagePortrait
   : blok.imageLandscape
 const backgroundImage =
@@ -122,13 +125,13 @@ const alpineProps = isVideo
         )}
         {!isFullscreen && (
           <Fragment>
-            {mainImage?.filename && (
+            {portrait?.filename && (
               <StoryblokPicture
                 classPicture="relative w-full h-full lg:w-auto lg:aspect-9/16 lg:rounded-xl"
                 class={clsx(
                   'absolute inset-0 h-full w-full object-cover lg:rounded-xl',
                 )}
-                image={mainImage}
+                image={portrait}
                 sizes="(min-width: 1024px) 800px, 100vw"
               />
             )}
