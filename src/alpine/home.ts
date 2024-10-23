@@ -61,7 +61,9 @@ export function home(): AlpineComponent<HomeComponent> {
       const hero = this.$refs.hero
       const heroImage = hero.querySelector('img')
 
-      projectContainer?.classList.add('pointer-events-none')
+      // projectContainer?.classList.add('pointer-events-none')
+      this.$refs.hero?.classList.add('pointer-events-none')
+      console.log('closeProject', projectContainer)
 
       const startDelay = 0.3
       const tl = gsap.timeline({
@@ -130,13 +132,13 @@ export function home(): AlpineComponent<HomeComponent> {
 
       const cardRect = card.getBoundingClientRect()
       const startDelay = 0.12
+      this.$refs.hero?.classList.remove('pointer-events-none')
       const tl = gsap.timeline({
         onComplete: () => {
           console.log('transition completed', url)
           htmx.trigger('#project', 'loadProject', {
             slug: url,
           })
-          projectContainer?.classList.remove('pointer-events-none')
         },
       })
       tl.to(
