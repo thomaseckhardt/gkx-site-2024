@@ -219,17 +219,20 @@ const finalPictureAttrs = {
       {...props}
     />
   ) : (
-    <Picture
-      class={clsx(className)}
-      src={imageSrc}
-      alt={alt}
-      inferSize
-      formats={formats}
-      fallbackFormat={ext}
-      widths={sortedWidths}
-      sizes={sizes}
-      pictureAttributes={finalPictureAttrs}
-      loading={loading}
-    />
+    // <Picture
+    //   class={clsx(className)}
+    //   src={imageSrc}
+    //   alt={alt}
+    //   inferSize
+    //   formats={formats}
+    //   fallbackFormat={ext}
+    //   widths={sortedWidths}
+    //   sizes={sizes}
+    //   pictureAttributes={finalPictureAttrs}
+    //   loading={loading}
+    // />
+    <div {...finalPictureAttrs}>
+      <img src={imageSrc} alt={alt} class={clsx(className)} />
+    </div>
   )
 }
