@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
 import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
 import { getMP4 } from '@/utils/bunny'
-import { renderUniqueStylesheet } from 'astro/runtime/server/index.js'
 
 export type Props = {
   as?: string
@@ -63,6 +62,9 @@ const alpineProps = isVideo
       'x-image-state': 'imageState',
       'x-bind:class': "imageState.isRendered ? 'animate-fade-in' : 'opacity-0'",
     }
+
+console.log('imagePortrait', blok.imagePortrait?.filename)
+console.log('imageLandscape', blok.imageLandscape?.filename)
 ---
 
 <Component
@@ -113,10 +115,25 @@ const alpineProps = isVideo
         {/* Image */}
         {isFullscreen && (
           <Fragment>
-            {mainImage?.filename && (
+            {blok?.imagePortrait?.filename && (
               <StoryblokPicture
+                classPicture={clsx(
+                  blok.imageLandscape?.filename &&
+                    'absolute inset-0 h-full w-full lg:hidden',
+                )}
                 class={clsx('h-svh w-svw object-cover')}
-                image={mainImage}
+                image={blok.imagePortrait}
+                sizes="100vw"
+              />
+            )}
+            {blok.imageLandscape?.filename && (
+              <StoryblokPicture
+                classPicture={clsx(
+                  blok.imagePortrait?.filename &&
+                    'absolute inset-0 hidden h-full w-full lg:block',
+                )}
+                class={clsx('h-svh w-svw object-cover')}
+                image={blok.imageLandscape}
                 sizes="100vw"
               />
             )}

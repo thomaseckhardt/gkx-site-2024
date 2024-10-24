@@ -36,8 +36,8 @@ export default defineConfig({
       // https://github.com/storyblok/storyblok-astro?tab=readme-ov-file#using-the-storyblok-bridge
       bridge: storyblokBridge
         ? {
-            preventClicks: true,
-          }
+          preventClicks: true,
+        }
         : undefined,
       apiOptions: {
         region: 'eu',
@@ -67,8 +67,12 @@ export default defineConfig({
   ],
   output,
   adapter: netlify({
-    imageCDN: true,
+    // imageCDN: true,
   }),
+  image: {
+    domains: ["a.storyblok.com"],
+    remotePatterns: [{ protocol: "https" }],
+  },
   devToolbar: {
     enabled: false,
   },
