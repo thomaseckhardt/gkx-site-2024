@@ -210,7 +210,7 @@ const half = total / 2
                       width="1920"
                       height="1080"
                       widths={[768, 1024, 1280, 1536, 1920]}
-                      sizes="100vw"
+                      sizes="(min-width: 1280px) 28vw, (min-width: 1024px) 38vw, (min-width: 768px) 62vw, 95vw"
                       class="h-full w-full object-cover"
                       format="webp"
                       inferSize
@@ -298,7 +298,7 @@ const half = total / 2
     </div>
     <button
       type="button"
-      class="z-project-back absolute left-0 top-0 h-10 w-32"
+      class="absolute left-0 top-0 z-project-back h-10 w-32"
       x-on:click="closeProject"
     >
       <span class="sr-only">Back to home</span>
