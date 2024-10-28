@@ -62,6 +62,24 @@ export interface HeroSlideStoryblok {
   [k: string]: any;
 }
 
+export interface InterviewStoryblok {
+  headline?: string;
+  headingOrder: string;
+  questions?: InterviewItemStoryblok[];
+  _uid: string;
+  component: "Interview";
+  [k: string]: any;
+}
+
+export interface InterviewItemStoryblok {
+  question?: string;
+  answerOne?: RichtextStoryblok;
+  answerTwo?: RichtextStoryblok;
+  _uid: string;
+  component: "InterviewItem";
+  [k: string]: any;
+}
+
 export type MultilinkStoryblok =
   | {
       id?: string;
@@ -95,7 +113,7 @@ export interface NavigationLinkStoryblok {
 }
 
 export interface PageStoryblok {
-  body?: (RichTextStoryblok | GalleryStoryblok | TextWriteOnStoryblok)[];
+  body?: (RichTextStoryblok | GalleryStoryblok | TextWriteOnStoryblok | VideoPlayerResponsiveStoryblok)[];
   metaTitle?: string;
   metaDescription?: string;
   metaImage?: AssetStoryblok;
@@ -220,5 +238,15 @@ export interface VideoPlayerStoryblok {
   aspectRatio: "" | "16:9" | "9:16";
   _uid: string;
   component: "VideoPlayer";
+  [k: string]: any;
+}
+
+export interface VideoPlayerResponsiveStoryblok {
+  videoIdLandscape: string;
+  videoIdPortrait?: string;
+  aspectRatio: "" | "16:7" | "16:9" | "fullscreen";
+  showControls?: boolean;
+  _uid: string;
+  component: "VideoPlayerResponsive";
   [k: string]: any;
 }

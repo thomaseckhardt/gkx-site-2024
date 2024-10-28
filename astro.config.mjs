@@ -55,6 +55,7 @@ export default defineConfig({
         StorefrontProject: 'components/sections/StorefrontProject',
         ProjectCarousel: 'components/sections/ProjectCarousel',
         RichText: 'components/sections/RichText',
+        Interview: 'components/sections/Interview',
         // Content Types
         Project: 'components/pages/Project',
         Page: 'components/pages/Page',

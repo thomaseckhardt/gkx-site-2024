@@ -201,6 +201,107 @@
       "content_type_asset_preview": null
     },
     {
+      "name": "Interview",
+      "display_name": null,
+      "created_at": "2024-10-28T14:37:24.382Z",
+      "updated_at": "2024-10-28T14:38:16.100Z",
+      "id": 6483166,
+      "schema": {
+        "headline": {
+          "type": "textarea",
+          "pos": 1,
+          "translatable": true
+        },
+        "headingOrder": {
+          "type": "number",
+          "pos": 2,
+          "min_value": 1,
+          "max_value": 6,
+          "default_value": "2",
+          "description": "",
+          "required": true
+        },
+        "questions": {
+          "type": "bloks",
+          "pos": 2,
+          "restrict_type": "",
+          "restrict_components": true,
+          "component_whitelist": [
+            "InterviewItem"
+          ]
+        }
+      },
+      "image": null,
+      "preview_field": "headline",
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "Interview",
+      "component_group_uuid": "all",
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null,
+      "component_group_name": ""
+    },
+    {
+      "name": "InterviewItem",
+      "display_name": null,
+      "created_at": "2024-10-28T14:35:06.494Z",
+      "updated_at": "2024-10-28T14:37:13.321Z",
+      "id": 6483130,
+      "schema": {
+        "question": {
+          "type": "textarea",
+          "pos": 0
+        },
+        "answerOne": {
+          "type": "richtext",
+          "pos": 1,
+          "customize_toolbar": true,
+          "toolbar": [
+            "bold",
+            "unset",
+            "link",
+            "italic",
+            "redo",
+            "undo"
+          ]
+        },
+        "answerTwo": {
+          "type": "richtext",
+          "pos": 2,
+          "customize_toolbar": true,
+          "toolbar": [
+            "bold",
+            "unset",
+            "italic",
+            "link",
+            "redo",
+            "undo"
+          ]
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "InterviewItem",
+      "component_group_uuid": "all",
+      "color": "#fbce41",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null,
+      "component_group_name": ""
+    },
+    {
       "name": "NavigationLink",
       "display_name": null,
       "created_at": "2024-10-28T13:58:45.444Z",
@@ -240,7 +341,7 @@
       "name": "Page",
       "display_name": null,
       "created_at": "2024-08-14T09:32:15.503Z",
-      "updated_at": "2024-10-28T14:13:36.696Z",
+      "updated_at": "2024-10-28T14:21:46.443Z",
       "id": 6166872,
       "schema": {
         "body": {
@@ -250,7 +351,8 @@
           "component_whitelist": [
             "RichText",
             "Gallery",
-            "TextWriteOn"
+            "TextWriteOn",
+            "VideoPlayerResponsive"
           ]
         },
         "tab-dcfe4355-d630-4383-af48-ddcec44e95fc": {
@@ -938,6 +1040,70 @@
       "internal_tags_list": [],
       "internal_tag_ids": [],
       "content_type_asset_preview": null
+    },
+    {
+      "name": "VideoPlayerResponsive",
+      "display_name": null,
+      "created_at": "2024-10-28T14:19:23.842Z",
+      "updated_at": "2024-10-28T14:22:16.087Z",
+      "id": 6482931,
+      "schema": {
+        "videoIdLandscape": {
+          "type": "text",
+          "pos": 0,
+          "required": true
+        },
+        "videoIdPortrait": {
+          "type": "text",
+          "pos": 1,
+          "description": "Bunny.net video ID",
+          "required": false,
+          "display_name": ""
+        },
+        "aspectRatio": {
+          "type": "option",
+          "pos": 2,
+          "use_uuid": true,
+          "options": [
+            {
+              "_uid": "7305db8b-1898-45ff-a454-89ed79c9e0b3",
+              "value": "16:7",
+              "name": "16:7"
+            },
+            {
+              "_uid": "b7756292-3f3f-4715-8456-daeff741371d",
+              "name": "16:9",
+              "value": "16:9"
+            },
+            {
+              "_uid": "ffd90c7a-f8d4-4707-a9d7-1479861c5991",
+              "value": "fullscreen",
+              "name": "Fullscreen "
+            }
+          ],
+          "default_value": "16:7",
+          "required": true
+        },
+        "showControls": {
+          "type": "boolean",
+          "pos": 3
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "VideoPlayerResponsive",
+      "component_group_uuid": "all",
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null,
+      "component_group_name": ""
     }
   ],
   "component_groups": [
