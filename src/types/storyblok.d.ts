@@ -62,55 +62,6 @@ export interface HeroSlideStoryblok {
   [k: string]: any;
 }
 
-export interface PageStoryblok {
-  body?: (
-    | GalleryStoryblok
-    | GallerySlideStoryblok
-    | HeadlineStoryblok
-    | HeroSlideStoryblok
-    | PageStoryblok
-    | ProjectStoryblok
-    | ProjectCarouselStoryblok
-    | SiteConfigurationStoryblok
-    | StorefrontStoryblok
-    | StorefrontProjectStoryblok
-    | StoreProductStoryblok
-    | TextStoryblok
-    | VideoPlayerStoryblok
-  )[];
-  _uid: string;
-  component: "Page";
-  [k: string]: any;
-}
-
-export interface ProjectStoryblok {
-  title?: string;
-  subtitle?: string;
-  heroSlides: HeroSlideStoryblok[];
-  information?: (
-    | GalleryStoryblok
-    | HeadlineStoryblok
-    | TextStoryblok
-    | VideoPlayerStoryblok
-    | StorefrontProjectStoryblok
-  )[];
-  _uid: string;
-  component: "Project";
-  [k: string]: any;
-}
-
-export interface ProjectCarouselStoryblok {
-  _uid: string;
-  component: "ProjectCarousel";
-  [k: string]: any;
-}
-
-export interface SiteConfigurationStoryblok {
-  _uid: string;
-  component: "SiteConfiguration";
-  [k: string]: any;
-}
-
 export type MultilinkStoryblok =
   | {
       id?: string;
@@ -134,6 +85,89 @@ export type MultilinkStoryblok =
       target?: "_self" | "_blank";
       [k: string]: any;
     };
+
+export interface NavigationLinkStoryblok {
+  label: string;
+  link: Exclude<MultilinkStoryblok, {linktype?: "email"} | {linktype?: "asset"}>;
+  _uid: string;
+  component: "NavigationLink";
+  [k: string]: any;
+}
+
+export interface PageStoryblok {
+  body?: (RichTextStoryblok | GalleryStoryblok | TextWriteOnStoryblok)[];
+  metaTitle?: string;
+  metaDescription?: string;
+  metaImage?: AssetStoryblok;
+  _uid: string;
+  component: "Page";
+  [k: string]: any;
+}
+
+export interface ProjectStoryblok {
+  title?: string;
+  subtitle?: string;
+  heroSlides: HeroSlideStoryblok[];
+  information?: (
+    | GalleryStoryblok
+    | HeadlineStoryblok
+    | TextStoryblok
+    | VideoPlayerStoryblok
+    | StorefrontProjectStoryblok
+  )[];
+  metaTitle?: string;
+  metaDescription?: string;
+  metaImage?: AssetStoryblok;
+  _uid: string;
+  component: "Project";
+  [k: string]: any;
+}
+
+export interface ProjectCarouselStoryblok {
+  _uid: string;
+  component: "ProjectCarousel";
+  [k: string]: any;
+}
+
+export interface RichTextStoryblok {
+  textSize: "" | "normal" | "large";
+  headline?: string;
+  headingOrder: string;
+  headlineAsBadge?: boolean;
+  subline?: string;
+  text?: RichtextStoryblok;
+  _uid: string;
+  component: "RichText";
+  [k: string]: any;
+}
+
+export interface RichTextBadgeStoryblok {
+  label: string;
+  headingOrder?: string;
+  _uid: string;
+  component: "RichTextBadge";
+  [k: string]: any;
+}
+
+export interface RichTextButtonStoryblok {
+  label: string;
+  link: Exclude<MultilinkStoryblok, {linktype?: "asset"}>;
+  _uid: string;
+  component: "RichTextButton";
+  [k: string]: any;
+}
+
+export interface SiteConfigurationStoryblok {
+  tagline?: string;
+  navigation?: NavigationLinkStoryblok[];
+  socialLinks?: NavigationLinkStoryblok[];
+  legalLinks?: NavigationLinkStoryblok[];
+  contact?: RichtextStoryblok;
+  copyright: string;
+  _uid: string;
+  component: "SiteConfiguration";
+  [k: string]: any;
+}
 
 export interface StorefrontStoryblok {
   headline?: string;
@@ -169,6 +203,15 @@ export interface TextStoryblok {
   textSize: "" | "normal" | "large";
   _uid: string;
   component: "Text";
+  [k: string]: any;
+}
+
+export interface TextWriteOnStoryblok {
+  headline?: string;
+  headingOrder: string;
+  text?: RichtextStoryblok;
+  _uid: string;
+  component: "TextWriteOn";
   [k: string]: any;
 }
 

@@ -135,6 +135,11 @@
 }
 
 @layer components {
+  .clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
   [x-cloak] {
     visibility: hidden !important;
   }

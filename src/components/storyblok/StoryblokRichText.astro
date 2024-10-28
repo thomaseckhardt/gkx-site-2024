@@ -9,6 +9,7 @@ import { isRichTextField } from '@/utils/storyblok'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
 import type { RichTextType } from 'storyblok-rich-text-astro-renderer'
 import RichTextRenderer from 'storyblok-rich-text-astro-renderer/RichTextRenderer.astro'
+import RichTextHeading from '../blocks/RichTextHeading.astro'
 
 export interface Props {
   content?: RichtextStoryblok
@@ -32,10 +33,17 @@ const hasContent = isRichTextField(content)
       content={content as RichTextType}
       schema={{
         nodes: {
-          // heading: ({ attrs }) => ({
-          //   component: StoryblokRichTextHeading,
-          //   props: attrs,
-          // }),
+          heading: ({ attrs, ...props }) => {
+            console.log('heading', attrs, props)
+            return {
+              component: RichTextHeading,
+              // component: `<h1 class="my-component-class"><span>${content?.[0].text}</span></h1>`,
+              props: {
+                headingOrder: attrs.level,
+                ...props,
+              },
+            }
+          },
           image: ({ attrs }) => ({
             component: StoryblokRichTextImage,
             props: attrs,
@@ -57,7 +65,6 @@ const hasContent = isRichTextField(content)
         },
       }}
       resolver={(blok) => {
-        // console.log('blok.component', blok.component, blok)
         return {
           component: StoryblokComponent,
           props: { blok, isRichTextEmbed: true },

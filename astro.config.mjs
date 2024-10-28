@@ -44,15 +44,17 @@ export default defineConfig({
       },
       components: {
         // Blocks
-        // HeadlineBlock: 'components/shared/HeadlineBlock',
+        RichTextButton: 'components/blocks/RichTextButton',
         // Sections
         Text: 'components/sections/Text',
+        TextWriteOn: 'components/sections/TextWriteOn',
         Headline: 'components/sections/Headline',
         VideoPlayer: 'components/sections/VideoPlayer',
         Gallery: 'components/sections/Gallery',
         Storefront: 'components/sections/Storefront',
         StorefrontProject: 'components/sections/StorefrontProject',
         ProjectCarousel: 'components/sections/ProjectCarousel',
+        RichText: 'components/sections/RichText',
         // Content Types
         Project: 'components/pages/Project',
         Page: 'components/pages/Page',
@@ -67,7 +69,7 @@ export default defineConfig({
   ],
   output,
   adapter: netlify({
-    imageCDN: false,
+    imageCDN: true,
   }),
   image: {
     domains: ["a.storyblok.com"],

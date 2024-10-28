@@ -30,7 +30,7 @@ const site = setDefaults(
     ogTitle: blok.ogTitle,
     ogDescription: blok.ogDescription,
     ogImage: blok.ogImage,
-    lang: story.lang,
+    lang: story?.lang,
     canonicalUrl: new URL(Astro.url.pathname, Astro.site),
     datePublished,
     dateModified,

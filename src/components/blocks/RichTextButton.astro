@@ -1,0 +1,15 @@
+---
+import type { RichTextButtonStoryblok } from '@/types/storyblok'
+import Button from '../shared/Button.astro'
+import { applyLinkAttrs } from '@/utils/link'
+
+export type Props = {
+  blok: RichTextButtonStoryblok
+}
+
+const { blok } = Astro.props
+---
+
+<div class="not-prose">
+  <Button {...applyLinkAttrs(blok.link)}>{blok.label}</Button>
+</div>

@@ -1,0 +1,50 @@
+---
+import Section from '@/components/sections/Section.astro'
+import type { TextWriteOnStoryblok } from '@/types/storyblok'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import clsx from 'clsx'
+import HtmlHeading from '../shared/HtmlHeading.astro'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+
+export type Props = {
+  class?: string
+  blok: TextWriteOnStoryblok
+}
+
+const { class: className, blok, ...props } = Astro.props
+
+const hasHeading = blok.headline || blok.subline
+const hasText = isRichTextField(blok.text)
+---
+
+<Section
+  class={clsx('relative', className)}
+  blok={blok}
+  spacing="md"
+  {...props}
+>
+  {
+    blok.headline && (
+      <HtmlHeading
+        class={clsx(
+          'mx-page-mx max-w-text font-sans text-42 font-bold uppercase tracking-wide lg:text-45',
+        )}
+        order={blok.headingOrder}
+      >
+        {blok.headline}
+      </HtmlHeading>
+    )
+  }
+  {
+    hasText && (
+      <StoryblokRichText
+        content={blok.text}
+        class={clsx(
+          'richtext mx-page-mx max-w-text',
+          'font-serif text-32 lg:text-35',
+          hasHeading && 'mt-3',
+        )}
+      />
+    )
+  }
+</Section>

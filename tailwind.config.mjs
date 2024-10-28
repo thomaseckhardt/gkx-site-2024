@@ -36,6 +36,7 @@ export default {
       },
       spacing: {
         'page-mx': 'var(--page-mx)',
+        '15': rem(60),
         '18': rem(72),
         '19': rem(74),
         '0.25': rem(1),
@@ -213,7 +214,9 @@ export default {
       typography: {
         // https://github.com/tailwindlabs/tailwindcss-typography/blob/master/src/styles.js
         DEFAULT: {
-          css: {},
+          css: {
+
+          },
         },
         compact: {
           css: {
