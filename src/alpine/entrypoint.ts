@@ -5,6 +5,7 @@ import { carousel } from '@/alpine/carousel'
 import { hero } from '@/alpine/hero'
 import { home } from '@/alpine/home'
 import { project } from '@/alpine/project'
+import { videoPlayer } from '@/alpine/videoPlayer'
 import imageState from './directives/image-state'
 // import * as bodyScrollLock from 'body-scroll-lock'
 
@@ -44,6 +45,7 @@ export default (Alpine: Alpine) => {
   Alpine.data('hero', hero)
   Alpine.data('home', home)
   Alpine.data('project', project)
+  Alpine.data('videoPlayer', videoPlayer)
 
   Alpine.store('ui', {
     navOpen: false,

@@ -2,6 +2,7 @@
 import Meta from '@/components/meta/Meta.astro'
 import SiteVerification from '@/components/meta/SiteVerification.astro'
 import '@/styles/index.css'
+import 'plyr/dist/plyr.css'
 
 const { site } = Astro.props
 ---
@@ -29,3 +30,6 @@ https://blog.wesleyac.com/posts/why-not-javascript-cdn
   src="https://unpkg.com/htmx.org@1.9.12"
   integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
   crossorigin="anonymous"></script>
+<script
+  src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"
+  is:inline></script>

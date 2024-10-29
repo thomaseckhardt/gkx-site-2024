@@ -251,12 +251,13 @@
       "name": "InterviewItem",
       "display_name": null,
       "created_at": "2024-10-28T14:35:06.494Z",
-      "updated_at": "2024-10-28T14:37:13.321Z",
+      "updated_at": "2024-10-28T14:50:22.885Z",
       "id": 6483130,
       "schema": {
         "question": {
           "type": "textarea",
-          "pos": 0
+          "pos": 0,
+          "required": true
         },
         "answerOne": {
           "type": "richtext",
@@ -269,7 +270,9 @@
             "italic",
             "redo",
             "undo"
-          ]
+          ],
+          "display_name": "Answer Mick",
+          "translatable": true
         },
         "answerTwo": {
           "type": "richtext",
@@ -282,7 +285,9 @@
             "link",
             "redo",
             "undo"
-          ]
+          ],
+          "display_name": "Answer Oli",
+          "translatable": true
         }
       },
       "image": null,
@@ -341,7 +346,7 @@
       "name": "Page",
       "display_name": null,
       "created_at": "2024-08-14T09:32:15.503Z",
-      "updated_at": "2024-10-28T14:21:46.443Z",
+      "updated_at": "2024-10-28T14:49:37.849Z",
       "id": 6166872,
       "schema": {
         "body": {
@@ -352,7 +357,8 @@
             "RichText",
             "Gallery",
             "TextWriteOn",
-            "VideoPlayerResponsive"
+            "VideoPlayerResponsive",
+            "Interview"
           ]
         },
         "tab-dcfe4355-d630-4383-af48-ddcec44e95fc": {
@@ -1097,6 +1103,71 @@
       "all_presets": [],
       "preset_id": null,
       "real_name": "VideoPlayerResponsive",
+      "component_group_uuid": "all",
+      "color": "#00b3b0",
+      "icon": null,
+      "internal_tags_list": [],
+      "internal_tag_ids": [],
+      "content_type_asset_preview": null,
+      "component_group_name": ""
+    },
+    {
+      "name": "VideoTextOvrlay",
+      "display_name": null,
+      "created_at": "2024-10-28T15:03:01.576Z",
+      "updated_at": "2024-10-28T15:05:22.660Z",
+      "id": 6483461,
+      "schema": {
+        "columnOne": {
+          "type": "richtext",
+          "pos": 0,
+          "customize_toolbar": true,
+          "toolbar": [
+            "link",
+            "italic",
+            "bold",
+            "undo",
+            "redo",
+            "unset"
+          ],
+          "translatable": true
+        },
+        "columnTwo": {
+          "type": "richtext",
+          "pos": 1,
+          "required": false,
+          "translatable": true,
+          "customize_toolbar": true,
+          "toolbar": [
+            "link",
+            "italic",
+            "bold",
+            "undo",
+            "redo",
+            "unset"
+          ]
+        },
+        "videoIdLandscape": {
+          "type": "text",
+          "pos": 2,
+          "required": true
+        },
+        "videoIdPortrait": {
+          "type": "text",
+          "pos": 3,
+          "description": "Bunny.net video ID",
+          "required": false,
+          "display_name": ""
+        }
+      },
+      "image": null,
+      "preview_field": null,
+      "is_root": false,
+      "preview_tmpl": null,
+      "is_nestable": true,
+      "all_presets": [],
+      "preset_id": null,
+      "real_name": "VideoTextOvrlay",
       "component_group_uuid": "all",
       "color": "#00b3b0",
       "icon": null,

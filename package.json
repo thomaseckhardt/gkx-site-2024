@@ -38,6 +38,7 @@
     "lodash": "^4.17.21",
     "normalize-url": "^8.0.1",
     "player.js": "^0.1.0",
+    "plyr": "^3.7.8",
     "slugify": "^1.6.6",
     "storyblok-rich-text-astro-renderer": "^2.2.0",
     "swiper": "^11.1.12",

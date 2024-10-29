@@ -64,6 +64,7 @@ export default {
         // '3/2': '3/2', // 1.5
         '16/9': '16/9', // 1.7777777778
         // '2/1': '2/1', // 2
+        '16/7': '16/7', // 2.28571429
         // '21/9': '21/9', // 2.3333333333
         // '5/2': '5/2', // 2.5
       },
@@ -193,6 +194,7 @@ export default {
         '2xlmax': { 'max': '1535px' },
         'hovers': { raw: '(hover: hover)' },
         'hoversnot': { raw: '(hover: none)' },
+        'wide': { raw: '(min-aspect-ratio: 1)' },
       },
       cursor: {
         // TODO: Add PNG versions as fallback

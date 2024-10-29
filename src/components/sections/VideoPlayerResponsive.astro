@@ -1,0 +1,43 @@
+---
+import Section from '@/components/sections/Section.astro'
+import type { VideoPlayerResponsiveStoryblok } from '@/types/storyblok'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import clsx from 'clsx'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+
+export type Props = {
+  class?: string
+  blok: VideoPlayerResponsiveStoryblok
+}
+
+const { class: className, blok, ...props } = Astro.props
+
+const aspectRatioConfigs = {
+  '16:7': {
+    className: 'w-full aspect-9/16 wide:aspect-16/7',
+  },
+  '16:9': {
+    className: 'w-full aspect-9/16 wide:aspect-16/9',
+  },
+  'fullscreen': {
+    className: 'w-sw h-sh',
+  },
+}
+
+const aspectRatioConfig =
+  aspectRatioConfigs[blok.aspectRatio ?? '16:7'] ?? aspectRatioConfigs['16:7']
+---
+
+<Section
+  class={clsx(
+    'relative overflow-hidden bg-black',
+    aspectRatioConfig.className,
+    className,
+  )}
+  blok={blok}
+  spacing="md"
+  x-data={`videoPlayer({ videoIdLandscape: '${blok.videoIdLandscape}', videoIdPortrait: '${blok.videoIdPortrait}', showControls: ${blok.showControls} })`}
+  {...props}
+>
+  <div x-ref="player" class="plyr__video-embed"></div>
+</Section>

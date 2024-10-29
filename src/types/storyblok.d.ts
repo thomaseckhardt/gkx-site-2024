@@ -72,7 +72,7 @@ export interface InterviewStoryblok {
 }
 
 export interface InterviewItemStoryblok {
-  question?: string;
+  question: string;
   answerOne?: RichtextStoryblok;
   answerTwo?: RichtextStoryblok;
   _uid: string;
@@ -113,7 +113,13 @@ export interface NavigationLinkStoryblok {
 }
 
 export interface PageStoryblok {
-  body?: (RichTextStoryblok | GalleryStoryblok | TextWriteOnStoryblok | VideoPlayerResponsiveStoryblok)[];
+  body?: (
+    | RichTextStoryblok
+    | GalleryStoryblok
+    | TextWriteOnStoryblok
+    | VideoPlayerResponsiveStoryblok
+    | InterviewStoryblok
+  )[];
   metaTitle?: string;
   metaDescription?: string;
   metaImage?: AssetStoryblok;
@@ -248,5 +254,15 @@ export interface VideoPlayerResponsiveStoryblok {
   showControls?: boolean;
   _uid: string;
   component: "VideoPlayerResponsive";
+  [k: string]: any;
+}
+
+export interface VideoTextOvrlayStoryblok {
+  columnOne?: RichtextStoryblok;
+  columnTwo?: RichtextStoryblok;
+  videoIdLandscape: string;
+  videoIdPortrait?: string;
+  _uid: string;
+  component: "VideoTextOvrlay";
   [k: string]: any;
 }

@@ -56,6 +56,7 @@ export default defineConfig({
         ProjectCarousel: 'components/sections/ProjectCarousel',
         RichText: 'components/sections/RichText',
         Interview: 'components/sections/Interview',
+        VideoPlayerResponsive: 'components/sections/VideoPlayerResponsive',
         // Content Types
         Project: 'components/pages/Project',
         Page: 'components/pages/Page',
