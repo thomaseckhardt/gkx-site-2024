@@ -1,0 +1,50 @@
+---
+import Section from '@/components/sections/Section.astro'
+import type { VideoTextOvrlayStoryblok } from '@/types/storyblok'
+import { isRichTextField } from '@/utils/storyblok/richtext'
+import clsx from 'clsx'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+
+export type Props = {
+  class?: string
+  blok: VideoTextOvrlayStoryblok
+}
+
+const { class: className, blok, ...props } = Astro.props
+---
+
+<Section
+  class={clsx('relative h-screen w-screen overflow-hidden', className)}
+  blok={blok}
+  spacing="none"
+  defaultSpacing="none"
+  x-data={`videoPlayer({ videoIdLandscape: '${blok.videoIdLandscape}', videoIdPortrait: '${blok.videoIdPortrait}', showControls: false })`}
+  {...props}
+>
+  <div
+    class="absolute inset-0 z-10 grid items-end gap-x-10 gap-y-10 px-page-mx py-10 lg:grid-cols-2"
+  >
+    {
+      isRichTextField(blok.columnOne) && (
+        <div>
+          <StoryblokRichText
+            class="richtext max-w-full text-32 uppercase tracking-wide lg:text-35"
+            content={blok.columnOne}
+          />
+        </div>
+      )
+    }
+    {
+      isRichTextField(blok.columnTwo) && (
+        <div class="lg:col-start-2">
+          <StoryblokRichText
+            class="richtext max-w-full text-32 uppercase tracking-wide lg:text-right lg:text-35"
+            content={blok.columnTwo}
+          />
+        </div>
+      )
+    }
+  </div>
+  <div x-ref="player" class="plyr__video-embed absolute inset-0 h-full w-full">
+  </div>
+</Section>

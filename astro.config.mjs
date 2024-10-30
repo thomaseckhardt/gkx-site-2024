@@ -57,6 +57,7 @@ export default defineConfig({
         RichText: 'components/sections/RichText',
         Interview: 'components/sections/Interview',
         VideoPlayerResponsive: 'components/sections/VideoPlayerResponsive',
+        VideoTextOverlay: 'components/sections/VideoTextOverlay',
         // Content Types
         Project: 'components/pages/Project',
         Page: 'components/pages/Page',

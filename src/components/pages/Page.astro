@@ -18,8 +18,12 @@ const sections = blok.body
 <EntryLayout site={site} story={story}>
   <main>
     {
-      sections?.map((section) => (
-        <StoryblokComponent blok={section} story={story} />
+      sections?.map((section, index) => (
+        <StoryblokComponent
+          blok={section}
+          story={story}
+          spacing={index === 0 ? 'none' : undefined}
+        />
       ))
     }
   </main>
