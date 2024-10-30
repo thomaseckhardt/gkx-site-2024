@@ -1,0 +1,111 @@
+---
+import { applyLinkAttrs } from '@/utils/link'
+import { useSiteConfig } from '@/utils/useSiteConfig'
+import clsx from 'clsx'
+import Logo from './Logo.astro'
+import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
+import { isRichTextField } from '@/utils/storyblok'
+
+const { lang } = Astro.props
+const blok = await useSiteConfig(lang)
+
+const copyright = (blok.copyright ?? '').replace(
+  /\[{year}\]/g,
+  new Date().getFullYear().toString(),
+)
+
+const sectionHeadingClass =
+  'whitespace-nowrap font-narrow text-18 leading-none uppercase tracking-wide md:text-20 mb-2'
+---
+
+<footer class="max-w-page relative mx-page-mx pb-10 pt-15 md:pt-20">
+  <p class="max-w-text font-serif text-22 md:text-25">
+    <Logo class="inline-block w-[5.61rem] md:w-[6.375rem]" />
+    <span set:html={blok.tagline} />
+  </p>
+  <div
+    class="mt-10 grid grid-cols-[repeat(2,max-content)] justify-between gap-y-10 md:grid-cols-[repeat(3,max-content)]"
+  >
+    {
+      isRichTextField(blok.contact) && (
+        <div class="col-span-2 md:col-span-1">
+          <p class={clsx(sectionHeadingClass)}>Connect</p>
+          <StoryblokRichText
+            content={blok.contact}
+            class={clsx('richtext mt-3 text-22 uppercase lg:text-25')}
+          />
+        </div>
+      )
+    }
+    {
+      blok.socialLinks && blok.socialLinks?.length > 0 && (
+        <div class="col-span-2 md:col-span-1">
+          <p class={clsx(sectionHeadingClass)}>Follow</p>
+          <ul class="">
+            {blok.socialLinks?.map((item) => (
+              <li class="flex-shrink-0">
+                <a
+                  {...applyLinkAttrs(item.link)}
+                  class={clsx(
+                    'block py-2 text-22 uppercase leading-none md:text-25',
+                  )}
+                >
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+    {
+      blok.navigation && blok.navigation?.length > 0 && (
+        <div class="col-span-2 md:col-span-1 md:col-start-1 md:row-start-1">
+          <p class={clsx(sectionHeadingClass)}>Discover</p>
+          <ul class="">
+            {blok.navigation?.map((item) => (
+              <li class="flex-shrink-0">
+                <a
+                  {...applyLinkAttrs(item.link)}
+                  class={clsx(
+                    'block py-2 text-22 uppercase leading-none md:text-25',
+                  )}
+                >
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+    {
+      (
+        <div class="whitespace-pre-line text-13 leading-none md:text-15">
+          {copyright}
+        </div>
+      )
+    }
+    <div class={clsx('whitespace-pre-line text-13 md:col-start-3 md:text-15')}>
+      {
+        blok.legalLinks && blok.legalLinks?.length > 0 && (
+          <div>
+            <p class={clsx('sr-only')}>Legal</p>
+            <ul class="">
+              {blok.legalLinks?.map((item) => (
+                <li class="flex-shrink-0">
+                  <a
+                    {...applyLinkAttrs(item.link)}
+                    class={clsx('block uppercase')}
+                  >
+                    <span>{item.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</footer>
