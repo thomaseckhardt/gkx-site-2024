@@ -13,17 +13,14 @@ export type Props = {
 const { site, story, blok } = Astro.props
 
 const sections = blok.body
+// const firstSectionSpacing
 ---
 
 <EntryLayout site={site} story={story}>
   <main>
     {
       sections?.map((section, index) => (
-        <StoryblokComponent
-          blok={section}
-          story={story}
-          spacing={index === 0 ? 'none' : undefined}
-        />
+        <StoryblokComponent blok={section} story={story} />
       ))
     }
   </main>
