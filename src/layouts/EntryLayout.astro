@@ -7,7 +7,7 @@ const { site, story } = Astro.props
 ---
 
 <BaseLayout {...Astro.props}>
-  <SiteHeader site={site} />
+  <SiteHeader site={site} lang={story?.lang} />
   <slot />
   <SiteFooter site={site} lang={story?.lang} />
 </BaseLayout>

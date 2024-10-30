@@ -7,6 +7,7 @@ import { home } from '@/alpine/home'
 import { project } from '@/alpine/project'
 import { videoPlayer } from '@/alpine/videoPlayer'
 import imageState from './directives/image-state'
+import focus from '@alpinejs/focus'
 // import * as bodyScrollLock from 'body-scroll-lock'
 
 /* The following plugin is a Club GSAP perk */
@@ -39,6 +40,7 @@ export default (Alpine: Alpine) => {
 
   // Alpine.plugin(collapse)
   Alpine.plugin(persist)
+  Alpine.plugin(focus)
   Alpine.plugin(imageState)
 
   Alpine.data('carousel', carousel)
@@ -51,6 +53,7 @@ export default (Alpine: Alpine) => {
     navOpen: false,
     toggleNav(force: boolean) {
       this.navOpen = force ?? !this.navOpen
+      console.log('toggleNav', this.navOpe)
     },
     infoOpen: false,
     toggleInfo(force: boolean) {

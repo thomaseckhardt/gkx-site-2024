@@ -1,0 +1,62 @@
+---
+import type { NavigationLinkStoryblok } from '@/types/storyblok'
+import { applyLinkAttrs } from '@/utils/link'
+import clsx from 'clsx'
+
+export type Props = {
+  navigation?: NavigationLinkStoryblok[]
+  socialLinks?: NavigationLinkStoryblok[]
+}
+
+const { navigation = [], socialLinks = [] } = Astro.props
+---
+
+<div
+  class={clsx(
+    'ease-out-power2 z-header-menu fixed left-0 top-0 h-screen w-lvw -translate-y-full pb-5 pt-20 transition-transform duration-300',
+    'bg-white',
+  )}
+  x-cloak
+  x-data
+  x-bind:style="$store.ui.navOpen ? { transitionDelay: '100ms', transform: 'translateY(0)'} : undefined"
+  x-trap.noscroll.noautofocus="$store.ui.navOpen"
+>
+  <div class="pt-header h-full stack">
+    <div class="relative flex flex-col">
+      {
+        navigation && navigation?.length > 0 && (
+          <nav>
+            <ul>
+              {navigation?.map((item) => (
+                <li class="flex-shrink-0">
+                  <a
+                    {...applyLinkAttrs(item.link)}
+                    class={clsx(
+                      'block px-page-mx py-2 text-45 uppercase leading-none',
+                    )}
+                  >
+                    <span>{item.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+      <ul class="mt-auto pt-10">
+        {
+          socialLinks?.map((metaItem) => (
+            <li class="block">
+              <a
+                {...applyLinkAttrs(metaItem.link)}
+                class="block px-page-mx py-3 text-18 uppercase leading-none"
+              >
+                {metaItem.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>

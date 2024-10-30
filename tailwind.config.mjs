@@ -210,7 +210,8 @@ export default {
       },
       zIndex: {
         'hero': 5000,
-        'header': 6000,
+        'header': 6010,
+        'header-menu': 6000,
         'project-back': 6050,
       },
       typography: {

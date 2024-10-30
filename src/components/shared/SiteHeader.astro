@@ -1,9 +1,31 @@
 ---
+import { useSiteConfig } from '@/utils/useSiteConfig'
 import Logo from './Logo.astro'
+import SiteHeaderMenu from './SiteHeaderMenu.astro'
+
+const { lang } = Astro.props
+const blok = await useSiteConfig(lang)
 ---
 
-<header class="fixed left-0 top-0 z-header">
-  <a href="/" class="absolute left-4 top-3 block">
+<header class="fixed left-0 right-0 top-0 z-header">
+  <a
+    href="/"
+    class="absolute left-page-mx top-3 block"
+    x-cloak
+    x-data
+    x-on:click="$store.ui.toggleNav(false)"
+  >
     <Logo class="block w-[6.375rem]" />
   </a>
+  <button
+    type="button"
+    class="absolute right-page-mx top-3 block"
+    x-cloak
+    x-data
+    x-on:click="$store.ui.toggleNav()"
+  >
+    <span x-show="!$store.ui.navOpen">MENU</span>
+    <span x-show="$store.ui.navOpen">CLOSE</span>
+  </button>
 </header>
+<SiteHeaderMenu navigation={blok?.navigation} socialLinks={blok?.socialLinks} />
