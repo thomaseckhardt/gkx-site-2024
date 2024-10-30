@@ -4,12 +4,17 @@
       "name": "Gallery",
       "display_name": null,
       "created_at": "2024-08-16T08:05:05.677Z",
-      "updated_at": "2024-08-16T08:20:33.727Z",
+      "updated_at": "2024-10-30T09:33:42.131Z",
       "id": 6174276,
       "schema": {
+        "headline": {
+          "type": "textarea",
+          "pos": 0,
+          "translatable": true
+        },
         "slides": {
           "type": "bloks",
-          "pos": 0,
+          "pos": 1,
           "restrict_type": "",
           "restrict_components": true,
           "component_whitelist": [
@@ -105,7 +110,7 @@
       "name": "HeroSlide",
       "display_name": null,
       "created_at": "2024-08-14T14:04:11.521Z",
-      "updated_at": "2024-10-24T08:30:01.084Z",
+      "updated_at": "2024-10-30T09:31:45.179Z",
       "id": 6167970,
       "schema": {
         "title": {
@@ -122,18 +127,9 @@
             "link"
           ]
         },
-        "imagePortrait": {
-          "type": "asset",
-          "pos": 2,
-          "filetypes": [
-            "images"
-          ],
-          "key": "imagePortrait",
-          "asset_folder_id": 628032
-        },
         "imageLandscape": {
           "type": "asset",
-          "pos": 3,
+          "pos": 2,
           "filetypes": [
             "images"
           ],
@@ -141,19 +137,42 @@
           "asset_folder_id": 628032,
           "description": "Preferred as background in the Hero Carousel (if option \"Variant\" is \"Background Image\"). Also the preferred aspect ratio as cover on the start page."
         },
-        "videoPortraitID": {
+        "imagePortrait": {
+          "type": "asset",
+          "pos": 3,
+          "filetypes": [
+            "images"
+          ],
+          "key": "imagePortrait",
+          "asset_folder_id": 628032
+        },
+        "hlsLandscape": {
           "type": "text",
           "pos": 4,
-          "display_name": "Video ID Portrait"
+          "display_name": "Video (Landscape Format)",
+          "description": "Vimeo HLS link"
+        },
+        "hlsPortrait": {
+          "type": "text",
+          "pos": 5,
+          "display_name": "Video (Portrait Format)",
+          "description": "Vimeo HLS link, like https://player.vimeo.com/external/1022789505.m3u8?s=0f17855a1a8d90616110b8afecd7a0070c77f670&logging=false"
         },
         "videoLandscapeID": {
           "type": "text",
-          "pos": 5,
-          "display_name": "Video ID Landscape"
+          "pos": 6,
+          "display_name": "Video ID Landscape",
+          "description": "DEPRECATED: Will be removed. Use Vimeo HLS link instead."
+        },
+        "videoPortraitID": {
+          "type": "text",
+          "pos": 7,
+          "display_name": "Video ID Portrait",
+          "description": "DEPRECATED: Will be removed. Use Vimeo HLS link instead."
         },
         "variant": {
           "type": "option",
-          "pos": 6,
+          "pos": 8,
           "use_uuid": true,
           "options": [
             {
@@ -178,7 +197,7 @@
         },
         "backgroundColor": {
           "type": "custom",
-          "pos": 7,
+          "pos": 9,
           "field_type": "storyblok-colorpicker",
           "options": [],
           "key": "backgroundColor",
@@ -346,7 +365,7 @@
       "name": "Page",
       "display_name": null,
       "created_at": "2024-08-14T09:32:15.503Z",
-      "updated_at": "2024-10-28T14:49:37.849Z",
+      "updated_at": "2024-10-29T13:53:50.773Z",
       "id": 6166872,
       "schema": {
         "body": {
@@ -358,7 +377,8 @@
             "Gallery",
             "TextWriteOn",
             "VideoPlayerResponsive",
-            "Interview"
+            "Interview",
+            "VideoTextOverlay"
           ]
         },
         "tab-dcfe4355-d630-4383-af48-ddcec44e95fc": {
@@ -1002,19 +1022,26 @@
       "name": "VideoPlayer",
       "display_name": null,
       "created_at": "2024-08-16T08:05:53.547Z",
-      "updated_at": "2024-08-19T08:23:20.848Z",
+      "updated_at": "2024-10-30T09:29:44.479Z",
       "id": 6174278,
       "schema": {
-        "videoID": {
+        "hls": {
           "type": "text",
           "pos": 0,
-          "description": "Bunny.net video ID",
-          "required": true,
+          "required": false,
+          "description": "Vimeo HLS link, like:\nhttps://player.vimeo.com/external/1022789505.m3u8?s=0f17855a1a8d90616110b8afecd7a0070c77f670&logging=false",
+          "display_name": "Video"
+        },
+        "videoID": {
+          "type": "text",
+          "pos": 1,
+          "description": "DEPRECATED: Will be removed. Use Vimeo HLS Link instead.",
+          "required": false,
           "display_name": "Video ID"
         },
         "aspectRatio": {
           "type": "option",
-          "pos": 1,
+          "pos": 2,
           "use_uuid": true,
           "options": [
             {
@@ -1051,24 +1078,25 @@
       "name": "VideoPlayerResponsive",
       "display_name": null,
       "created_at": "2024-10-28T14:19:23.842Z",
-      "updated_at": "2024-10-28T14:22:16.087Z",
+      "updated_at": "2024-10-30T09:26:36.250Z",
       "id": 6482931,
       "schema": {
-        "videoIdLandscape": {
+        "hlsLandscape": {
           "type": "text",
           "pos": 0,
+          "description": "Vimeo HLS link, like https://player.vimeo.com/external/1022789505.m3u8?s=0f17855a1a8d90616110b8afecd7a0070c77f670&logging=false",
+          "display_name": "Video (Landscape Format)",
           "required": true
         },
-        "videoIdPortrait": {
+        "hlsPortrait": {
           "type": "text",
           "pos": 1,
-          "description": "Bunny.net video ID",
-          "required": false,
-          "display_name": ""
+          "description": "Vimeo HLS link",
+          "display_name": "Video (Portrait Format)"
         },
         "aspectRatio": {
           "type": "option",
-          "pos": 2,
+          "pos": 4,
           "use_uuid": true,
           "options": [
             {
@@ -1092,7 +1120,7 @@
         },
         "showControls": {
           "type": "boolean",
-          "pos": 3
+          "pos": 5
         }
       },
       "image": null,
@@ -1112,10 +1140,10 @@
       "component_group_name": ""
     },
     {
-      "name": "VideoTextOvrlay",
+      "name": "VideoTextOverlay",
       "display_name": null,
       "created_at": "2024-10-28T15:03:01.576Z",
-      "updated_at": "2024-10-28T15:05:22.660Z",
+      "updated_at": "2024-10-30T09:27:47.493Z",
       "id": 6483461,
       "schema": {
         "columnOne": {
@@ -1147,17 +1175,18 @@
             "unset"
           ]
         },
-        "videoIdLandscape": {
+        "hlsLandscape": {
           "type": "text",
           "pos": 2,
+          "description": "Vimeo HLS link, like https://player.vimeo.com/external/1022789505.m3u8?s=0f17855a1a8d90616110b8afecd7a0070c77f670&logging=false",
+          "display_name": "Video (Landscape Format)",
           "required": true
         },
-        "videoIdPortrait": {
+        "hlsPortrait": {
           "type": "text",
           "pos": 3,
-          "description": "Bunny.net video ID",
-          "required": false,
-          "display_name": ""
+          "display_name": "Video (Portrait Format)",
+          "description": "Vimeo HLS link"
         }
       },
       "image": null,
@@ -1167,7 +1196,7 @@
       "is_nestable": true,
       "all_presets": [],
       "preset_id": null,
-      "real_name": "VideoTextOvrlay",
+      "real_name": "VideoTextOverlay",
       "component_group_uuid": "all",
       "color": "#00b3b0",
       "icon": null,

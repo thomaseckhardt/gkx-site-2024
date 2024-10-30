@@ -12,13 +12,13 @@ const { class: className, blok, ...props } = Astro.props
 
 const aspectRatioConfigs = {
   '16:7': {
-    className: 'w-full aspect-9/16 wide:aspect-16/7',
+    className: 'relative w-full aspect-9/16 wide:aspect-16/7',
   },
   '16:9': {
-    className: 'w-full aspect-9/16 wide:aspect-16/9',
+    className: 'relative w-full aspect-9/16 wide:aspect-16/9',
   },
   'fullscreen': {
-    className: 'w-screen h-screen',
+    className: 'relative w-screen h-screen',
   },
 }
 
@@ -27,15 +27,13 @@ const aspectRatioConfig =
 ---
 
 <Section
-  class={clsx(
-    'relative overflow-hidden bg-black',
-    aspectRatioConfig.className,
-    className,
-  )}
+  class={clsx('relative overflow-hidden bg-black', className)}
   blok={blok}
   spacing="md"
-  x-data={`videoPlayer({ videoIdLandscape: '${blok.videoIdLandscape}', videoIdPortrait: '${blok.videoIdPortrait}', showControls: ${blok.showControls} })`}
+  x-data={`videoPlayer({ showControls: ${blok.showControls}, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}' })`}
   {...props}
 >
-  <div x-ref="player" class="plyr__video-embed"></div>
+  <video
+    x-ref="player"
+    class={clsx('object-cover', aspectRatioConfig.className)}></video>
 </Section>

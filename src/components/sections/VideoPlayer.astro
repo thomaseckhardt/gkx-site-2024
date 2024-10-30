@@ -2,7 +2,6 @@
 import Section from '@/components/sections/Section.astro'
 import type { VideoPlayerStoryblok } from '@/types/storyblok'
 import clsx from 'clsx'
-import VideoIframe from '../shared/VideoIframe.astro'
 
 export type Props = {
   class?: string
@@ -12,8 +11,8 @@ export type Props = {
 const { class: className, blok, ...props } = Astro.props
 
 const aspectRatioClasses = {
-  '16:9': '',
-  '9:16': 'lg:mx-page-mx',
+  '16:9': 'aspect-16/9',
+  '9:16': 'lgmax:aspect-9/16 lg:h-svh lg:w-[56.25svh]',
 }
 const aspectRatioClass =
   aspectRatioClasses[blok.aspectRatio || '16:9'] ?? aspectRatioClasses['16:9']
@@ -23,7 +22,8 @@ const aspectRatioClass =
   class={clsx('relative', aspectRatioClass, className)}
   blok={blok}
   spacing="paragraph"
+  x-data={`videoPlayer({ showControls: true, hls: '${blok.hls}', ratio: '${blok.aspectRatio}' })`}
   {...props}
 >
-  <VideoIframe videoID={blok.videoID} aspectRatio={blok.aspectRatio} />
+  <video x-ref="player" class={clsx('object-cover', aspectRatioClass)}></video>
 </Section>

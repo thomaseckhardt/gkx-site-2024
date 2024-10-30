@@ -1,6 +1,7 @@
 import {StoryblokStory} from 'storyblok-generate-ts'
 
 export interface GalleryStoryblok {
+  headline?: string;
   slides?: GallerySlideStoryblok[];
   _uid: string;
   component: "Gallery";
@@ -52,10 +53,12 @@ export interface HeadlineStoryblok {
 export interface HeroSlideStoryblok {
   title?: string;
   description?: RichtextStoryblok;
-  imagePortrait?: AssetStoryblok;
   imageLandscape?: AssetStoryblok;
-  videoPortraitID?: string;
+  imagePortrait?: AssetStoryblok;
+  hlsLandscape?: string;
+  hlsPortrait?: string;
   videoLandscapeID?: string;
+  videoPortraitID?: string;
   variant: "" | "fullscreen" | "backgroundColor" | "backgroundImage";
   _uid: string;
   component: "HeroSlide";
@@ -119,6 +122,7 @@ export interface PageStoryblok {
     | TextWriteOnStoryblok
     | VideoPlayerResponsiveStoryblok
     | InterviewStoryblok
+    | VideoTextOverlayStoryblok
   )[];
   metaTitle?: string;
   metaDescription?: string;
@@ -240,7 +244,8 @@ export interface TextWriteOnStoryblok {
 }
 
 export interface VideoPlayerStoryblok {
-  videoID: string;
+  hls?: string;
+  videoID?: string;
   aspectRatio: "" | "16:9" | "9:16";
   _uid: string;
   component: "VideoPlayer";
@@ -248,8 +253,8 @@ export interface VideoPlayerStoryblok {
 }
 
 export interface VideoPlayerResponsiveStoryblok {
-  videoIdLandscape: string;
-  videoIdPortrait?: string;
+  hlsLandscape: string;
+  hlsPortrait?: string;
   aspectRatio: "" | "16:7" | "16:9" | "fullscreen";
   showControls?: boolean;
   _uid: string;
@@ -257,12 +262,12 @@ export interface VideoPlayerResponsiveStoryblok {
   [k: string]: any;
 }
 
-export interface VideoTextOvrlayStoryblok {
+export interface VideoTextOverlayStoryblok {
   columnOne?: RichtextStoryblok;
   columnTwo?: RichtextStoryblok;
-  videoIdLandscape: string;
-  videoIdPortrait?: string;
+  hlsLandscape: string;
+  hlsPortrait?: string;
   _uid: string;
-  component: "VideoTextOvrlay";
+  component: "VideoTextOverlay";
   [k: string]: any;
 }

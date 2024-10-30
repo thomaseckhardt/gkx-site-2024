@@ -18,7 +18,7 @@ const { class: className, blok, ...props } = Astro.props
   blok={blok}
   spacing="none"
   defaultSpacing="none"
-  x-data={`videoPlayer({ videoIdLandscape: '${blok.videoIdLandscape}', videoIdPortrait: '${blok.videoIdPortrait}', showControls: false })`}
+  x-data={`videoPlayer({ showControls: false, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}'})`}
   {...props}
 >
   <div
@@ -45,6 +45,5 @@ const { class: className, blok, ...props } = Astro.props
       )
     }
   </div>
-  <div x-ref="player" class="plyr__video-embed absolute inset-0 h-full w-full">
-  </div>
+  <video x-ref="player" class={clsx('h-screen w-screen object-cover')}></video>
 </Section>
