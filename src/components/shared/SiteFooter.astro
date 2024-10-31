@@ -5,17 +5,20 @@ import clsx from 'clsx'
 import Logo from './Logo.astro'
 import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
 import { isRichTextField } from '@/utils/storyblok'
+import { getDefinedString } from '@/utils/string'
 
 const { lang } = Astro.props
 const blok = await useSiteConfig(lang)
 
-const copyright = (blok.copyright ?? '').replace(
+const copyright = getDefinedString(blok.copyright).replace(
   /\{year\}/g,
   new Date().getFullYear().toString(),
 )
 
 const sectionHeadingClass =
   'whitespace-nowrap font-narrow text-18 leading-none uppercase tracking-wide md:text-20 mb-2'
+const linkClass =
+  'link-hover block py-2 text-22 uppercase leading-none md:text-25'
 ---
 
 <footer class="max-w-page relative mx-page-mx pb-10 pt-15 md:pt-20">
@@ -32,7 +35,9 @@ const sectionHeadingClass =
           <p class={clsx(sectionHeadingClass)}>Connect</p>
           <StoryblokRichText
             content={blok.contact}
-            class={clsx('richtext mt-4 text-22 uppercase lg:text-25')}
+            class={clsx(
+              'richtext richtext--shy-links mt-4 text-22 uppercase lg:text-25',
+            )}
           />
         </div>
       )
@@ -44,12 +49,7 @@ const sectionHeadingClass =
           <ul class="">
             {blok.socialLinks?.map((item) => (
               <li class="flex-shrink-0">
-                <a
-                  {...applyLinkAttrs(item.link)}
-                  class={clsx(
-                    'block py-2 text-22 uppercase leading-none md:text-25',
-                  )}
-                >
+                <a {...applyLinkAttrs(item.link)} class={clsx(linkClass)}>
                   <span>{item.label}</span>
                 </a>
               </li>
@@ -65,12 +65,7 @@ const sectionHeadingClass =
           <ul class="">
             {blok.navigation?.map((item) => (
               <li class="flex-shrink-0">
-                <a
-                  {...applyLinkAttrs(item.link)}
-                  class={clsx(
-                    'block py-2 text-22 uppercase leading-none md:text-25',
-                  )}
-                >
+                <a {...applyLinkAttrs(item.link)} class={clsx(linkClass)}>
                   <span>{item.label}</span>
                 </a>
               </li>
@@ -96,7 +91,7 @@ const sectionHeadingClass =
                 <li class="flex-shrink-0">
                   <a
                     {...applyLinkAttrs(item.link)}
-                    class={clsx('block uppercase')}
+                    class={clsx('link-hover block uppercase')}
                   >
                     <span>{item.label}</span>
                   </a>

@@ -1,4 +1,4 @@
 export const isNotEmpty = (str: string) => typeof str === 'string' && str !== ''
 
-export const setDefinedString = (str: string, defaultStr: string) =>
+export const getDefinedString = (str: string, defaultStr: string = '') =>
   isNotEmpty(str) ? str : defaultStr

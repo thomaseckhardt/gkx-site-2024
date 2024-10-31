@@ -156,4 +156,14 @@
   .richtext-link {
     @apply underline decoration-1 underline-offset-2;
   }
+
+  .richtext--shy-links a {
+    @apply no-underline;
+    @apply hovers:hover:underline;
+  }
+
+  .link-hover {
+    @apply decoration-1 underline-offset-2;
+    @apply hovers:hover:underline;
+  }
 }
