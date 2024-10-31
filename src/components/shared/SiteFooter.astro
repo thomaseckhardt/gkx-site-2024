@@ -10,7 +10,7 @@ const { lang } = Astro.props
 const blok = await useSiteConfig(lang)
 
 const copyright = (blok.copyright ?? '').replace(
-  /\[{year}\]/g,
+  /\{year\}/g,
   new Date().getFullYear().toString(),
 )
 
@@ -32,7 +32,7 @@ const sectionHeadingClass =
           <p class={clsx(sectionHeadingClass)}>Connect</p>
           <StoryblokRichText
             content={blok.contact}
-            class={clsx('richtext mt-3 text-22 uppercase lg:text-25')}
+            class={clsx('richtext mt-4 text-22 uppercase lg:text-25')}
           />
         </div>
       )
