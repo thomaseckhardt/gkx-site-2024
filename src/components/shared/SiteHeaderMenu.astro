@@ -9,11 +9,14 @@ export type Props = {
 }
 
 const { navigation = [], socialLinks = [] } = Astro.props
+
+const navigationHoverClass =
+  'hovers:transition-transform hovers:duration-500 hovers:ease-out-power2 hovers:hover:translate-x-5'
 ---
 
 <div
   class={clsx(
-    'ease-out-power2 z-header-menu fixed left-0 top-0 h-screen w-lvw -translate-y-full pb-5 pt-20 transition-transform duration-300',
+    'ease-out-power2 fixed left-0 top-0 z-header-menu h-screen w-lvw -translate-y-full pb-5 pt-20 transition-transform duration-300',
     'bg-white',
   )}
   x-cloak
@@ -33,6 +36,7 @@ const { navigation = [], socialLinks = [] } = Astro.props
                     {...applyLinkAttrs(item.link)}
                     class={clsx(
                       'block px-page-mx py-2 text-45 uppercase leading-none',
+                      navigationHoverClass,
                     )}
                   >
                     <span>{item.label}</span>
@@ -49,7 +53,10 @@ const { navigation = [], socialLinks = [] } = Astro.props
             <li class="block">
               <a
                 {...applyLinkAttrs(metaItem.link)}
-                class="block px-page-mx py-3 text-18 uppercase leading-none"
+                class={clsx(
+                  'block px-page-mx py-3 text-18 uppercase leading-none',
+                  navigationHoverClass,
+                )}
               >
                 {metaItem.label}
               </a>
