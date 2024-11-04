@@ -6,9 +6,10 @@ import clsx from 'clsx'
 export type Props = {
   class?: string
   blok: VideoPlayerResponsiveStoryblok
+  index?: number
 }
 
-const { class: className, blok, ...props } = Astro.props
+const { class: className, blok, index = -1, ...props } = Astro.props
 
 const aspectRatioConfigs = {
   '16:7': {
@@ -29,7 +30,7 @@ const aspectRatioConfig =
 <Section
   class={clsx('relative overflow-hidden bg-black', className)}
   blok={blok}
-  spacing="md"
+  defaultSpacing={index === 0 ? 'none' : 'md'}
   x-data={`videoPlayer({ showControls: ${blok.showControls}, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}' })`}
   {...props}
 >

@@ -69,6 +69,8 @@ export function videoPlayer({
         autopause: !isBackgroundVideo,
         muted: isBackgroundVideo,
         loop: { active: isBackgroundVideo },
+        iconUrl: '/plyr-icons.svg',
+        iconPrefix: 'player',
         ratio,
       })
 

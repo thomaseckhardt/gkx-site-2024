@@ -7,6 +7,17 @@
   --offset-wide: 0;
   --offset-content: 1rem;
   --gap: 1rem;
+
+  /* --plyr-color-main: #cdff50; */
+  --plyr-color-main: #000;
+  --plyr-video-background: #ffffff;
+  --plyr-badge-background: #000;
+  --plyr-audio-control-color: #000;
+  --plyr-menu-color: #000;
+  --plyr-menu-item-arrow-color: #000;
+  --plyr-progress-loading-background: rgba(0, 0, 0, 0.6);
+  --plyr-tooltip-color: #000;
+  --plyr-control-icon-size: 1rem;
 }
 @screen md {
   :root {

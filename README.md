@@ -1,5 +1,15 @@
 # Astro Starter Kit: Minimal
 
+## Plyr
+
+### Icons
+
+Icon sprite is generated via route `src/pages/plyr-icons.svg.js` (@see <https://til.jakelazaroff.com/astro/generate-a-static-svg-sprite-sheet/>), which creates the SVG at buildtime. The loading of the sprite is handled by plyr.
+
+- The generated sprite file is located here: <http://localhost:4321/plyr-icons.svg>
+- List of all Plyr icon names: <https://github.com/sampotts/plyr/tree/master/src/sprite>
+- The plyr player is configured here `src/alpine/videoPlayer.ts`
+
 ```sh
 npm create astro@latest -- --template minimal
 ```
