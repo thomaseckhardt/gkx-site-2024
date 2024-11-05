@@ -146,6 +146,12 @@
 }
 
 @layer components {
+  @screen lg {
+    .HeroSlide__video-portrait .plyr {
+      @apply rounded-xl bg-transparent;
+    }
+  }
+
   .clearfix::after {
     content: '';
     display: table;

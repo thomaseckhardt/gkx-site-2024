@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
 import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
 import { getMP4 } from '@/utils/bunny'
+import { vpRatio } from '@/utils/viewport'
 
 export type Props = {
   as?: string
@@ -22,7 +23,7 @@ const {
   animateText = false,
 } = Astro.props
 
-const isVideo = blok.videoPortraitID || blok.videoLandscapeID
+const isVideo = blok.hlsLandscape || blok.hlsPortrait
 const variant = blok.variant || 'fullscreen'
 const isFullscreen = variant === 'fullscreen'
 const mainImage = blok.imageLandscape?.filename
@@ -42,17 +43,6 @@ const style =
     : undefined
 
 const videoSrcPortrait = getMP4(blok.videoPortraitID, 720)
-const videoSrcLandscape = getMP4(blok.videoLandscapeID, 720)
-const videoSourcesLandscape = [
-  {
-    media: '(min-width: 1920px)',
-    src: getMP4(blok.videoLandscapeID || blok.videoPortraitID, 1080),
-  },
-  {
-    media: '',
-    src: getMP4(blok.videoLandscapeID || blok.videoPortraitID, 720),
-  },
-].filter((source) => Boolean(source.src))
 
 const alpineProps = isVideo
   ? undefined
@@ -157,33 +147,29 @@ const alpineProps = isVideo
     isVideo && (
       <Fragment>
         {isFullscreen && (
-          <div>
+          <div
+            class="HeroSlide__video-landscape"
+            x-data={`videoPlayer({ showControls: false, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}'})`}
+          >
             <video
-              class="pointer-events-none h-svh w-svw object-cover"
+              x-ref="player"
+              class="pointer-events-none block !h-svh !w-svw object-cover"
               muted
               playsinline
-            >
-              {/* TODO: Add via JS beacuse Chrome does not respects media attribute */}
-              {videoSourcesLandscape.map((source) => (
-                <source
-                  src={source.src}
-                  media={source.media}
-                  type="video/mp4"
-                />
-              ))}
-            </video>
+            />
           </div>
         )}
         {!isFullscreen && (
-          <div class="relative h-full w-full lg:aspect-9/16 lg:w-auto lg:rounded-xl">
+          <div
+            class="HeroSlide__video-portrait relative flex h-full w-full lg:aspect-9/16 lg:w-auto lg:rounded-xl"
+            x-data={`videoPlayer({ showControls: false, hls: '${blok.hlsPortrait || blok.hlsLandscape}'})`}
+          >
             <video
-              class="absolute inset-0 h-full w-full object-cover lg:rounded-xl"
+              class="object-cover lg:rounded-xl"
+              x-ref="player"
               muted
               playsinline
-              autoplay="false"
-            >
-              <source src={videoSrcPortrait} type="video/mp4" />
-            </video>
+            />
           </div>
         )}
       </Fragment>
