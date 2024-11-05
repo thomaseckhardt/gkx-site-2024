@@ -1,13 +1,13 @@
 ---
 import Section from '@/components/sections/Section.astro'
-import type { VideoTextOvrlayStoryblok } from '@/types/storyblok'
+import type { VideoTextOverlayStoryblok } from '@/types/storyblok'
 import { isRichTextField } from '@/utils/storyblok/richtext'
 import clsx from 'clsx'
 import StoryblokRichText from '../storyblok/StoryblokRichText.astro'
 
 export type Props = {
   class?: string
-  blok: VideoTextOvrlayStoryblok
+  blok: VideoTextOverlayStoryblok
 }
 
 const { class: className, blok, ...props } = Astro.props

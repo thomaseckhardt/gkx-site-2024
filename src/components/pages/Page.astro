@@ -20,7 +20,7 @@ const sections = blok.body
   <main>
     {
       sections?.map((section, index) => (
-        <StoryblokComponent blok={section} story={story} />
+        <StoryblokComponent blok={section} story={story} index={index} />
       ))
     }
   </main>

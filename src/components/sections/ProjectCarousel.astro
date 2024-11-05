@@ -142,8 +142,8 @@ const half = total / 2
         type="button"
         class={clsx(
           'x-home__arrow',
-          'absolute left-0 top-0 z-10 block h-[var(--carousel-height)] w-[20vw] cursor-left',
-          'hidden lg:block',
+          'absolute left-0 top-0 z-10 block h-[var(--carousel-height)] w-[20vw] cursor-left lg:h-full',
+          'lg:block',
         )}
         x-on:click="prev"
       >
@@ -153,8 +153,8 @@ const half = total / 2
         type="button"
         class={clsx(
           'x-home__arrow',
-          'absolute right-0 top-0 z-10 block h-[var(--carousel-height)] w-[20vw] cursor-right',
-          'hidden lg:block',
+          'absolute right-0 top-0 z-10 block h-[var(--carousel-height)] w-[20vw] cursor-right lg:h-full',
+          'lg:block',
         )}
         x-on:click="next"
       >

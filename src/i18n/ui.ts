@@ -6,6 +6,6 @@ export const defaultLang = 'de'
 
 export const ui = {
   de: {
-    'meta.titleSuffix': ' - Ziegler',
+    'meta.titleSuffix': ' - g-kx mediaHOUSE',
   },
 } as const
