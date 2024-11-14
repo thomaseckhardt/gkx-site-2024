@@ -133,6 +133,11 @@ export function hero(): AlpineComponent<HeroComponent> {
       }
     },
     init() {
+      console.log('heroActive', this.$store.heroActive)
+      this.$watch('$store.ui.heroActive', (value, oldValue) =>
+        console.log('heroActive changed', value, oldValue),
+      )
+
       const allVideos = this.$refs.carousel?.querySelectorAll('video') ?? []
       allVideos.forEach((video) => {
         video.muted = true
@@ -214,8 +219,10 @@ export function hero(): AlpineComponent<HeroComponent> {
           const allVideos = document.querySelectorAll(
             '.x-hero video',
           ) as unknown as HTMLVideoElement[]
+          console.log('allVideos', allVideos)
           allVideos.forEach((video) => {
-            video.pause()
+            console.log('pause video', video.src, video.player)
+            video.player?.pause()
           })
           this.stopAutoPlay()
         } else if (!this.waitForTransition) {

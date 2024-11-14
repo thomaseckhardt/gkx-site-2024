@@ -11,12 +11,10 @@ interface ProjectComponent {
   openInfo: () => void
   closeInfo: () => void
   handleScroll: () => void
-  heroActive: boolean
 }
 
 export function project(): AlpineComponent<ProjectComponent> {
   const component: AlpineComponent<ProjectComponent> = {
-    heroActive: true,
     openInfo: function () {
       if (this.$refs.info) {
         this.$refs.info.scrollIntoView({
@@ -68,9 +66,13 @@ export function project(): AlpineComponent<ProjectComponent> {
       })
     },
     handleScroll() {
+      const scrollTop = window.scrollY
       const ui = Alpine.store('ui') as UiStore
-      if (ui.heroActive) {
+      if (scrollTop > 10 && ui.heroActive) {
         ui.toggleHeroActive(false)
+      }
+      if (scrollTop < 10 && !ui.heroActive) {
+        ui.toggleHeroActive(true)
       }
     },
   }

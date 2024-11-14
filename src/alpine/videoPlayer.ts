@@ -13,6 +13,7 @@ export function videoPlayer({
   hlsLandscape,
   hlsPortrait,
   showControls = false,
+  playerConfig,
 }): AlpineComponent<VideoPlayerComponent> {
   const component: AlpineComponent<VideoPlayerComponent> = {
     video: null,
@@ -56,13 +57,13 @@ export function videoPlayer({
               'progress',
               'current-time',
               'mute',
-              'volume',
+              // 'volume',
               'settings',
               'pip',
               'airplay',
               'fullscreen',
             ]
-          : ['mute'],
+          : [],
         settings: ['quality', 'speed'],
         // iconUrl,
         autoplay: isBackgroundVideo,
@@ -72,6 +73,7 @@ export function videoPlayer({
         iconUrl: '/plyr-icons.svg',
         iconPrefix: 'player',
         ratio,
+        ...playerConfig,
       })
 
       if (!Hls.isSupported()) {
@@ -84,6 +86,7 @@ export function videoPlayer({
       }
 
       this.player = player
+      this.video.player = player
     },
   }
   return component

@@ -149,7 +149,7 @@ const alpineProps = isVideo
         {isFullscreen && (
           <div
             class="HeroSlide__video-landscape"
-            x-data={`videoPlayer({ showControls: false, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}'})`}
+            x-data={`videoPlayer({ showControls: false, playerConfig: { autoplay: false }, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}'})`}
           >
             <video
               x-ref="player"
@@ -162,7 +162,7 @@ const alpineProps = isVideo
         {!isFullscreen && (
           <div
             class="HeroSlide__video-portrait relative flex h-full w-full lg:aspect-9/16 lg:w-auto lg:rounded-xl"
-            x-data={`videoPlayer({ showControls: false, hls: '${blok.hlsPortrait || blok.hlsLandscape}'})`}
+            x-data={`videoPlayer({ showControls: false, playerConfig: { autoplay: false }, hls: '${blok.hlsPortrait || blok.hlsLandscape}'})`}
           >
             <video
               class="object-cover lg:rounded-xl"

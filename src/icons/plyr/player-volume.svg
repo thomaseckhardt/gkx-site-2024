@@ -1,35 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Ebene_1" data-name="Ebene 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-  <defs>
-    <style>
-      .cls-1 {
-        clip-path: url(#clippath);
-      }
-
-      .cls-2, .cls-3 {
-        fill: none;
-      }
-
-      .cls-2, .cls-4 {
-        stroke-width: 0px;
-      }
-
-      .cls-3 {
-        stroke: #ffffff;
-      }
-
-      .cls-4 {
-        fill: #ffffff;
-      }
-    </style>
-    <clipPath id="clippath">
-      <rect class="cls-2" x="0" width="16.01" height="16"/>
-    </clipPath>
-  </defs>
-  <polygon class="cls-4" points="9 0 3.37 5 0 5 0 11 3.37 11 9 16 9 0"/>
-  <g class="cls-1">
-    <path class="cls-3" d="M11.66,4.91s3.63,3.09,0,6.19"/>
-    <path class="cls-3" d="M10.24,6.4s1.68,1.6,0,3.2"/>
-    <path class="cls-3" d="M12.84,3.21s5.99,4.79,0,9.58"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <polygon points="0 5 0 11 3.37 11 9 16 9 0 3.37 5 0 5"/>
+  <path d="M10.49,4.9l-.71.71c.73.55,1.21,1.41,1.21,2.39s-.48,1.85-1.21,2.39l.71.71c.91-.73,1.51-1.84,1.51-3.1s-.59-2.37-1.51-3.1Z"/>
+  <path d="M11.92,3.47l-.72.72c1.09.92,1.8,2.28,1.8,3.81s-.71,2.89-1.8,3.81l.72.72c1.27-1.1,2.08-2.72,2.08-4.53s-.81-3.43-2.08-4.53Z"/>
+  <path d="M13.33,2.06l-.71.71c1.45,1.28,2.37,3.15,2.37,5.24s-.92,3.95-2.37,5.24l.71.71c1.63-1.47,2.66-3.58,2.66-5.94s-1.03-4.48-2.66-5.94Z"/>
 </svg>
