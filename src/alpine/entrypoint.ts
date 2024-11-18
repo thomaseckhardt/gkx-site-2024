@@ -65,6 +65,31 @@ export default (Alpine: Alpine) => {
     },
   } as UiStore)
 
+  Alpine.store('sound', {
+    muted: true,
+    verified: false,
+    verify() {
+      this.verified = true
+    },
+    toggleMuted(force: boolean) {
+      this.muted = force ?? !this.muted
+      this.verify()
+      const videos = document.querySelectorAll('video')
+      videos.forEach((video) => {
+        // @ts-ignore
+        const player = video.player
+        if (player) {
+          // player.volume = this.muted ? 0 : 1
+          player.muted = this.muted
+        }
+      })
+    },
+    onVideoVolumeChange(muted: boolean) {
+      this.muted = muted
+      this.verify()
+    },
+  })
+
   Alpine.store('session', {
     // @ts-ignore
     sessionActive: Alpine.$persist(false).using(sessionStorage),

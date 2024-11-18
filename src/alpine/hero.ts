@@ -133,10 +133,10 @@ export function hero(): AlpineComponent<HeroComponent> {
       }
     },
     init() {
-      console.log('heroActive', this.$store.heroActive)
-      this.$watch('$store.ui.heroActive', (value, oldValue) =>
-        console.log('heroActive changed', value, oldValue),
-      )
+      // console.log('heroActive', this.$store.heroActive)
+      // this.$watch('$store.ui.heroActive', (value, oldValue) =>
+      //   console.log('heroActive changed', value, oldValue),
+      // )
 
       const allVideos = this.$refs.carousel?.querySelectorAll('video') ?? []
       allVideos.forEach((video) => {
@@ -221,7 +221,7 @@ export function hero(): AlpineComponent<HeroComponent> {
           ) as unknown as HTMLVideoElement[]
           console.log('allVideos', allVideos)
           allVideos.forEach((video) => {
-            console.log('pause video', video.src, video.player)
+            // @ts-ignore
             video.player?.pause()
           })
           this.stopAutoPlay()

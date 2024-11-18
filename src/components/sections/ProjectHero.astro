@@ -4,6 +4,7 @@ import type { HeroSlideStoryblok } from '@/types/storyblok'
 import clsx from 'clsx'
 import HeroSlide from '../blocks/HeroSlide.astro'
 import CircularProgress from '../shared/CircularProgress.astro'
+import MuteButton from '../shared/MuteButton.astro'
 
 export type Props = {
   class?: string
@@ -37,11 +38,12 @@ const { class: className, slides = [], ...props } = Astro.props
               ))}
             </ul>
           </div>
-          <div class="absolute bottom-5 left-page-mx right-page-mx z-20 flex animate-project-controls-in items-center justify-between">
+          <div class="z-project-controls absolute bottom-5 left-page-mx right-page-mx flex animate-project-controls-in items-center justify-between">
             <div class="flex-none">
               <slot name="infoButton" />
             </div>
             <div class="ml-auto flex flex-none items-center gap-x-2">
+              <MuteButton class="mr-8 text-white" />
               <div class="whitespace-nowrap font-narrow text-18 leading-none tracking-wide text-white lg:text-20">
                 <span x-text="index" />/<span x-text="total" />
               </div>

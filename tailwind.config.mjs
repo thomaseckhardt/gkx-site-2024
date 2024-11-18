@@ -213,6 +213,7 @@ export default {
         'header': 6010,
         'header-menu': 6000,
         'project-back': 6050,
+        'project-controls': 6050,
       },
       typography: {
         // https://github.com/tailwindlabs/tailwindcss-typography/blob/master/src/styles.js

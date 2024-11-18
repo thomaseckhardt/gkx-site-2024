@@ -6,6 +6,8 @@ import netlify from '@astrojs/netlify'
 import storyblok from '@storyblok/astro'
 import tailwind from '@astrojs/tailwind'
 
+import icon from 'astro-icon';
+
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), '')
 
 const isPublished = env.STORYBLOK_VERSION === 'published'
@@ -29,47 +31,43 @@ export default defineConfig({
       },
     },
   },
-  integrations: [
-    storyblok({
-      accessToken: env.STORYBLOK_TOKEN,
-      // Using the Storyblok Bridge
-      // https://github.com/storyblok/storyblok-astro?tab=readme-ov-file#using-the-storyblok-bridge
-      bridge: storyblokBridge
-        ? {
-          preventClicks: true,
-        }
-        : undefined,
-      apiOptions: {
-        region: 'eu',
-      },
-      components: {
-        // Blocks
-        RichTextButton: 'components/blocks/RichTextButton',
-        // Sections
-        Text: 'components/sections/Text',
-        TextWriteOn: 'components/sections/TextWriteOn',
-        Headline: 'components/sections/Headline',
-        VideoPlayer: 'components/sections/VideoPlayer',
-        Gallery: 'components/sections/Gallery',
-        Storefront: 'components/sections/Storefront',
-        StorefrontProject: 'components/sections/StorefrontProject',
-        ProjectCarousel: 'components/sections/ProjectCarousel',
-        RichText: 'components/sections/RichText',
-        Interview: 'components/sections/Interview',
-        VideoPlayerResponsive: 'components/sections/VideoPlayerResponsive',
-        VideoTextOverlay: 'components/sections/VideoTextOverlay',
-        // Content Types
-        Project: 'components/pages/Project',
-        Page: 'components/pages/Page',
-      },
-      componentsDir: 'src',
-      enableFallbackComponent: true,
-      useCustomApi: false,
-    }),
-    tailwind({ applyBaseStyles: false }),
-    // icon(),
-    alpine({ entrypoint: '/src/alpine/entrypoint' }),
-  ],
+  integrations: [storyblok({
+    accessToken: env.STORYBLOK_TOKEN,
+    // Using the Storyblok Bridge
+    // https://github.com/storyblok/storyblok-astro?tab=readme-ov-file#using-the-storyblok-bridge
+    bridge: storyblokBridge
+      ? {
+        preventClicks: true,
+      }
+      : undefined,
+    apiOptions: {
+      region: 'eu',
+    },
+    components: {
+      // Blocks
+      RichTextButton: 'components/blocks/RichTextButton',
+      // Sections
+      Text: 'components/sections/Text',
+      TextWriteOn: 'components/sections/TextWriteOn',
+      Headline: 'components/sections/Headline',
+      VideoPlayer: 'components/sections/VideoPlayer',
+      Gallery: 'components/sections/Gallery',
+      Storefront: 'components/sections/Storefront',
+      StorefrontProject: 'components/sections/StorefrontProject',
+      ProjectCarousel: 'components/sections/ProjectCarousel',
+      RichText: 'components/sections/RichText',
+      Interview: 'components/sections/Interview',
+      VideoPlayerResponsive: 'components/sections/VideoPlayerResponsive',
+      VideoTextOverlay: 'components/sections/VideoTextOverlay',
+      // Content Types
+      Project: 'components/pages/Project',
+      Page: 'components/pages/Page',
+    },
+    componentsDir: 'src',
+    enableFallbackComponent: true,
+    useCustomApi: false,
+  }), tailwind({ applyBaseStyles: false }), // icon(),
+  alpine({ entrypoint: '/src/alpine/entrypoint' }), icon()],
   output,
   adapter: netlify({
     imageCDN: true,

@@ -5,6 +5,7 @@ interface VideoPlayerComponent {
   video: HTMLVideoElement | null
   source: string | null
   initPlayer(): void
+  initObserver(): void
 }
 
 export function videoPlayer({
@@ -43,6 +44,7 @@ export function videoPlayer({
 
       this.video = video
       this.initPlayer()
+      this.initObserver()
     },
     initPlayer() {
       const isBackgroundVideo = !showControls
@@ -68,12 +70,18 @@ export function videoPlayer({
         // iconUrl,
         autoplay: isBackgroundVideo,
         autopause: !isBackgroundVideo,
-        muted: isBackgroundVideo,
+        muted: true,
         loop: { active: isBackgroundVideo },
         iconUrl: '/plyr-icons.svg',
         iconPrefix: 'player',
         ratio,
         ...playerConfig,
+      })
+      player.on('ready', () => {
+        this.$store.sound.onVideoVolumeChange(player.muted)
+      })
+      player.on('volumechange', () => {
+        this.$store.sound.onVideoVolumeChange(player.muted)
       })
 
       if (!Hls.isSupported()) {
@@ -87,6 +95,25 @@ export function videoPlayer({
 
       this.player = player
       this.video.player = player
+    },
+    initObserver() {
+      // Auto play/pause video, when in viewport
+      const config = {
+        rootMargin: '0px -200px',
+        threshold: 0,
+      }
+      const callback = (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            entry.target.player?.pause()
+          } else {
+            // entry.target.__player?.play()
+          }
+        })
+      }
+
+      const observer = new IntersectionObserver(callback, config)
+      observer.observe(this.video)
     },
   }
   return component

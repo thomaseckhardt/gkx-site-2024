@@ -33,7 +33,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "alpinejs": "^3.14.1",
     "astro": "^4.15.2",
-    "astro-icon": "^1.1.1",
+    "astro-icon": "^1.1.2",
     "clsx": "^2.1.1",
     "gsap": "npm:@gsap/shockingly@^3.12.5",
     "lodash": "^4.17.21",

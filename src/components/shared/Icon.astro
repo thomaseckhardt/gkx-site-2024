@@ -1,0 +1,19 @@
+---
+import { Icon as AstroIcon } from 'astro-icon/components'
+import type { HTMLAttributes } from 'astro/types'
+import clsx from 'clsx'
+
+interface Props extends HTMLAttributes<'svg'> {
+  class?: string
+  name: string
+  'is:inline'?: boolean
+  title?: string
+  size?: number | string
+  width?: number | string
+  height?: number | string
+}
+
+const { name, class: className, ...props } = Astro.props
+---
+
+<AstroIcon name={name} class={clsx(className)} {...props} />
