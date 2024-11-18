@@ -6,6 +6,39 @@ import { SplitText } from 'gsap/SplitText'
 interface WriteOnComponent {}
 
 export function writeOn(): AlpineComponent<WriteOnComponent> {
+  // We use a workaround for nested elements by Jack Doyle himself
+  // https://gsap.com/community/forums/topic/18243-split-text-confused/?do=findComment&comment=189997
+  function nestedLinesSplit(target, vars) {
+    target = gsap.utils.toArray(target)
+    if (target.length > 1) {
+      let splits = target.map((t) => nestedLinesSplit(t, vars)),
+        result = splits[0],
+        resultRevert = result.revert
+      result.lines = splits.reduce((acc, cur) => acc.concat(cur.lines), [])
+      result.revert = () =>
+        splits.forEach((s) => (s === result ? resultRevert() : s.revert()))
+      return result
+    }
+    target = target[0]
+    let contents = target.innerHTML
+    gsap.utils.toArray(target.children).forEach((child: HTMLElement) => {
+      let split = new SplitText(child, { type: 'lines' })
+      split.lines.forEach((line) => {
+        let clone = child.cloneNode(false) as HTMLElement
+        clone.innerHTML = line.innerHTML
+        target.insertBefore(clone, child)
+      })
+      target.removeChild(child)
+    })
+    let split = new SplitText(target, vars),
+      originalRevert = split.revert
+    split.revert = () => {
+      originalRevert.call(split)
+      target.innerHTML = contents
+    }
+    return split
+  }
+
   const component: AlpineComponent<WriteOnComponent> = {
     init() {
       if (!this.$refs.writeOnText || !this.$refs.writeOnTarget) return
@@ -31,10 +64,7 @@ export function writeOn(): AlpineComponent<WriteOnComponent> {
         },
       })
       children.map((child) => {
-        const split = new SplitText(child, {
-          type: 'lines',
-          wordsClass: 'word++',
-        })
+        const split = nestedLinesSplit(child, { type: 'lines' })
         const lines = split.lines as HTMLElement[]
         lines.forEach((line) => {
           line.style.overflow = 'hidden'
