@@ -104,16 +104,25 @@ export function videoPlayer({
       }
       const callback = (entries) => {
         entries.forEach((entry) => {
+          const player = entry.target.player
+          if (!player) return
+
           if (!entry.isIntersecting) {
-            entry.target.player?.pause()
-          } else {
-            // entry.target.__player?.play()
+            player.pause()
+          } else if (player.autoplay && !player.playing) {
+            player.play()
           }
         })
       }
 
       const observer = new IntersectionObserver(callback, config)
       observer.observe(this.video)
+
+      // Check initial intersection
+      const initialEntries = observer.takeRecords()
+      if (initialEntries.length > 0) {
+        callback(initialEntries)
+      }
     },
   }
   return component

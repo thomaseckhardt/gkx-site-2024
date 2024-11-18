@@ -37,14 +37,20 @@ const hasText = isRichTextField(blok.text)
   }
   {
     hasText && (
-      <StoryblokRichText
-        content={blok.text}
-        class={clsx(
-          'richtext mx-page-mx max-w-text',
-          'font-serif text-32 lg:text-35',
-          hasHeading && 'mt-3',
-        )}
-      />
+      <div
+        class={clsx('relative text-neutral-200', hasHeading && 'mt-3')}
+        x-data="writeOn"
+      >
+        <StoryblokRichText
+          content={blok.text}
+          class={clsx(
+            'richtext relative mx-page-mx max-w-text',
+            'font-serif text-32 lg:text-35',
+          )}
+          x-ref="writeOnText"
+        />
+        <div x-ref="writeOnTarget" class="absolute left-0 top-0 text-black" />
+      </div>
     )
   }
 </Section>

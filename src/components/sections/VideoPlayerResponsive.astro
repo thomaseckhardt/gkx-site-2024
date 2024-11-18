@@ -31,10 +31,13 @@ const aspectRatioConfig =
   class={clsx('relative overflow-hidden bg-black', className)}
   blok={blok}
   defaultSpacing={index === 0 ? 'none' : 'md'}
-  x-data={`videoPlayer({ showControls: ${blok.showControls}, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}' })`}
+  x-data={`videoPlayer({ showControls: ${blok.showControls}, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}', autoShowMute: true })`}
   {...props}
 >
   <video
     x-ref="player"
+    muted={blok.showControls ? undefined : ''}
+    loop={!blok.showControls}
+    playsinline
     class={clsx('object-cover', aspectRatioConfig.className)}></video>
 </Section>

@@ -6,6 +6,7 @@ import { hero } from '@/alpine/hero'
 import { home } from '@/alpine/home'
 import { project } from '@/alpine/project'
 import { videoPlayer } from '@/alpine/videoPlayer'
+import { writeOn } from '@/alpine/write-on'
 import imageState from './directives/image-state'
 import focus from '@alpinejs/focus'
 // import * as bodyScrollLock from 'body-scroll-lock'
@@ -48,6 +49,7 @@ export default (Alpine: Alpine) => {
   Alpine.data('home', home)
   Alpine.data('project', project)
   Alpine.data('videoPlayer', videoPlayer)
+  Alpine.data('writeOn', writeOn)
 
   Alpine.store('ui', {
     navOpen: false,
