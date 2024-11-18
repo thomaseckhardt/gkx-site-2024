@@ -199,7 +199,7 @@ export function hero(): AlpineComponent<HeroComponent> {
         })
       splide.on('move', () => {
         this.index = splide.index + 1
-        allVideos.forEach((video) => video.pause())
+        allVideos.forEach((video) => video.player?.pause())
       })
       splide.on('autoplay:playing', (rate) => {
         this.ratio = rate as number
