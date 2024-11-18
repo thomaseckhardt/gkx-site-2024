@@ -15,6 +15,7 @@ export function videoPlayer({
   hlsPortrait,
   showControls = false,
   playerConfig,
+  autoShowMute = false,
 }): AlpineComponent<VideoPlayerComponent> {
   const component: AlpineComponent<VideoPlayerComponent> = {
     video: null,
@@ -65,7 +66,11 @@ export function videoPlayer({
               'airplay',
               'fullscreen',
             ]
-          : [],
+          : autoShowMute
+            ? ['mute']
+            : [],
+
+        hideControls: showControls || (!showControls && !autoShowMute),
         settings: ['quality', 'speed'],
         // iconUrl,
         autoplay: isBackgroundVideo,
