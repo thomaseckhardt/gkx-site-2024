@@ -49,6 +49,8 @@ export function videoPlayer({
     },
     initPlayer() {
       const isBackgroundVideo = !showControls
+      const autoplay = isBackgroundVideo
+      const muted = isBackgroundVideo && !autoShowMute
       // For more options see: https://github.com/sampotts/plyr/#options
       // captions.update is required for captions to work with hls.js
       const player = new Plyr(this.video, {
@@ -66,16 +68,14 @@ export function videoPlayer({
               'airplay',
               'fullscreen',
             ]
-          : autoShowMute
-            ? ['mute']
-            : [],
+          : [],
 
         hideControls: showControls || (!showControls && !autoShowMute),
         settings: ['quality', 'speed'],
         // iconUrl,
-        autoplay: isBackgroundVideo,
+        autoplay,
+        muted,
         autopause: !isBackgroundVideo,
-        muted: true,
         loop: { active: isBackgroundVideo },
         iconUrl: '/plyr-icons.svg',
         iconPrefix: 'player',
@@ -115,7 +115,12 @@ export function videoPlayer({
           if (!entry.isIntersecting) {
             player.pause()
           } else if (player.autoplay && !player.playing) {
-            player.play()
+            player.muted = this.$store.sound.muted
+            player.play().catch(() => {
+              console.log('Not able to start muted')
+              player.muted = true
+              player.play()
+            })
           }
         })
       }
