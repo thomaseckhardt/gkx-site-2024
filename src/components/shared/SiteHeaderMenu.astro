@@ -16,7 +16,7 @@ const navigationHoverClass =
 
 <div
   class={clsx(
-    'ease-out-power2 fixed left-0 top-0 z-header-menu h-screen w-lvw -translate-y-full pb-5 pt-20 transition-transform duration-300',
+    'fixed left-0 top-0 z-header-menu h-screen w-screen -translate-y-full transition-transform duration-300 ease-out-power2',
     'bg-white',
   )}
   x-cloak
@@ -24,8 +24,8 @@ const navigationHoverClass =
   x-bind:style="$store.ui.navOpen ? { transitionDelay: '100ms', transform: 'translateY(0)'} : undefined"
   x-trap.noscroll.noautofocus="$store.ui.navOpen"
 >
-  <div class="pt-header h-full stack">
-    <div class="relative flex flex-col">
+  <div class="min-h-svh stack">
+    <div class="relative flex flex-col pb-5 pt-20">
       {
         navigation && navigation?.length > 0 && (
           <nav>
