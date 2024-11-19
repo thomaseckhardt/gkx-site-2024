@@ -1,13 +1,8 @@
 import type { AlpineComponent } from 'alpinejs'
-import { gsap, Power2, Power3, Power4, Back, Linear } from 'gsap'
-import { CustomEase } from 'gsap/CustomEase'
+import { gsap, Power2, Power3, Back, Linear } from 'gsap'
 import { Draggable } from 'gsap/Draggable'
 import { InertiaPlugin } from 'gsap/InertiaPlugin'
-
-const Power2InOutBack = CustomEase.create(
-  'custom',
-  'M0,0 C0.173,0 0.242,0.036 0.322,0.13 0.401,0.223 0.449,0.367 0.502,0.506 0.546,0.622 0.62,0.824 0.726,0.916 0.799,0.98 0.869,1.041 1,1 ',
-)
+import { doc } from 'prettier'
 
 interface HomeComponent {
   initCarousel: () => void
@@ -37,6 +32,19 @@ export function home(): AlpineComponent<HomeComponent> {
   let projectSlug: undefined | string = undefined
   let projectContainer: HTMLElement | null = document.getElementById('project')
 
+  function stopAllVideos() {
+    const videos = document.querySelectorAll('video')
+    videos.forEach((video) => {
+      // @ts-ignore
+      if (video.player) {
+        // @ts-ignore
+        video.player.pause()
+      } else {
+        video.pause()
+      }
+    })
+  }
+
   function updateRotation() {
     // console.log('rotation', this.rotation)
     // let p = startProgress + (this.startX - this.x) / dragDistancePerRotation
@@ -64,11 +72,13 @@ export function home(): AlpineComponent<HomeComponent> {
       projectContainer?.classList.add('pointer-events-none')
       // this.$refs.hero?.classList.add('pointer-events-none')
       console.log('closeProject', projectContainer)
+      stopAllVideos()
 
       const startDelay = 0.3
       const tl = gsap.timeline({
         onComplete: () => {
           console.log('closeProject completed')
+
           htmx.ajax('GET', '/partials/clear-project/', {
             target: '#project',
             swap: 'innerHTML',

@@ -250,16 +250,6 @@ const half = total / 2
                       class="x-home__thumb-link relative"
                       x-on:click.prevent={`() => navigateTo('${project.link}', false)`}
                     >
-                      {/*
-                      <div class="absolute left-1 top-1 z-10 rounded-lg bg-white px-1">
-                        {index}
-                      </div>
-                      */}
-                      {/* <img
-                        src={project.cover.filename}
-                        alt=""
-                        class="absolute inset-0 h-full w-full rounded-lg object-cover"
-                      /> */}
                       {project.coverPortrait?.filename && (
                         <Image
                           src={project.coverPortrait.filename}
@@ -293,7 +283,7 @@ const half = total / 2
       hx-trigger="loadProject"
       hx-get="/partials/project/"
       hx-vals="js:{ slug: event.detail.slug }"
-      class="pointer-events-none absolute left-0 top-0 h-full w-full"
+      class="pointer-events-none absolute left-0 top-0 z-10 w-full bg-white"
     >
     </div>
     <button

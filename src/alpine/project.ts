@@ -14,7 +14,24 @@ interface ProjectComponent {
 }
 
 export function project(): AlpineComponent<ProjectComponent> {
+  // const beforeCleanupElementHandler = (event) => {
+  //   console.log('htmx:beforeCleanupElement', event.target)
+  //   // this.$root.querySelectorAll('video').forEach((video) => {
+  //   //   if (video.player) {
+  //   //     video.player.pause()
+  //   //     video.player.destroy()
+  //   //     video.player = null
+  //   //   } else {
+  //   //     video.pause()
+  //   //   }
+  //   // })
+  // }
+
   const component: AlpineComponent<ProjectComponent> = {
+    destroy() {
+      console.log('destroy project', this.$root.dataset.slug, this.handleScroll)
+      window.removeEventListener('scroll', this.handleScroll)
+    },
     openInfo: function () {
       if (this.$refs.info) {
         this.$refs.info.scrollIntoView({
@@ -57,13 +74,10 @@ export function project(): AlpineComponent<ProjectComponent> {
       const ui = Alpine.store('ui') as UiStore
       this.ui = ui
 
-      this.$root.addEventListener('htmx:beforeCleanupElement', (event) => {
-        console.log('htmx:beforeCleanupElement', this.$root.dataset.slug)
-        // TODO: cleanup before remove element
-        this.$root.querySelectorAll('video').forEach((video) => {
-          video.pause()
-        })
-      })
+      // this.$root.addEventListener(
+      //   'htmx:beforeCleanupElement',
+      //   beforeCleanupElementHandler,
+      // )
     },
     handleScroll() {
       const scrollTop = window.scrollY

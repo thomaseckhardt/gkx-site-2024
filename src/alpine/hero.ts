@@ -36,6 +36,10 @@ interface HeroComponent {
   pointerDownStart: number
   onTimeUpdateVideo: (event: Event) => void
   waitForTransition: boolean
+  pointerdownHandler: (event: PointerEvent) => void
+  pointerupHandler: (event: PointerEvent) => void
+  mousemoveHandler: (event: PointerEvent) => void
+  clickHandler: (event: PointerEvent) => void
 }
 
 export function hero(): AlpineComponent<HeroComponent> {
@@ -46,6 +50,28 @@ export function hero(): AlpineComponent<HeroComponent> {
     total: 0,
     pointerDownStart: 0,
     waitForTransition: true,
+    destroy() {
+      console.log('destroy hero')
+      if (this.splide) {
+        this.splide.destroy(true)
+        this.splide = undefined
+      }
+      const allVideos = this.$refs.carousel?.querySelectorAll('video') ?? []
+      allVideos.forEach((video) => {
+        video.removeEventListener('timeupdate', this.onTimeUpdateVideo)
+        if (video.player) {
+          video.player.pause()
+          video.player.destroy()
+          video.player = null
+        } else {
+          video.pause()
+        }
+      })
+      this.$root.addEventListener('pointerdown', this.pointerdownHandler)
+      this.$root.addEventListener('pointerup', this.pointerupHandler)
+      this.$root.addEventListener('mousemove', this.mousemoveHandler)
+      this.$root.addEventListener('click', this.clickHandler)
+    },
     getCurrentSlide() {
       return this.splide?.Components?.Elements?.slides[this.splide?.index ?? 0]
     },
@@ -70,54 +96,61 @@ export function hero(): AlpineComponent<HeroComponent> {
       this.splide?.Components?.Autoplay?.pause()
       this.ratio = 0
     },
+    pointerdownHandler(event) {
+      this.pointerDownStart = event.timeStamp
+
+      const slide = this.getCurrentSlide()
+      const video = slide?.querySelector('video')
+      if (video) {
+        video.pause()
+      } else {
+        this.pauseAutoPlay()
+      }
+    },
+    pointerupHandler(event) {
+      this.$root.classList.replace('cursor-wait', 'cursor-left')
+
+      const slide = this.getCurrentSlide()
+      const video = slide?.querySelector('video')
+      if (video) {
+        video.play()
+      } else {
+        this.playAutoPlay()
+      }
+    },
+    mousemoveHandler(event) {
+      if (event.clientX > this.$root.clientWidth / 2) {
+        this.$root.classList.replace('cursor-left', 'cursor-right')
+      } else {
+        this.$root.classList.replace('cursor-right', 'cursor-left')
+      }
+    },
+    clickHandler(event) {
+      const clickDuration = event.timeStamp - this.pointerDownStart
+      if (clickDuration > 300) {
+        return
+      }
+
+      const target = event.target as HTMLElement
+      if (target.tagName === 'BUTTON' || target.tagName === 'A') {
+        return
+      }
+
+      if (event.clientX > this.$root.clientWidth / 2) {
+        this.next()
+      } else {
+        this.prev()
+      }
+    },
     enableMouseControls() {
       this.$root.classList.add('cursor-left')
-      this.$root.addEventListener('pointerdown', (event) => {
-        this.pointerDownStart = event.timeStamp
-
-        const slide = this.getCurrentSlide()
-        const video = slide?.querySelector('video')
-        if (video) {
-          video.pause()
-        } else {
-          this.pauseAutoPlay()
-        }
-      })
-      this.$root.addEventListener('pointerup', (event) => {
-        this.$root.classList.replace('cursor-wait', 'cursor-left')
-
-        const slide = this.getCurrentSlide()
-        const video = slide?.querySelector('video')
-        if (video) {
-          video.play()
-        } else {
-          this.playAutoPlay()
-        }
-      })
-      this.$root.addEventListener('mousemove', (event) => {
-        if (event.clientX > this.$root.clientWidth / 2) {
-          this.$root.classList.replace('cursor-left', 'cursor-right')
-        } else {
-          this.$root.classList.replace('cursor-right', 'cursor-left')
-        }
-      })
-      this.$root.addEventListener('click', (event) => {
-        const clickDuration = event.timeStamp - this.pointerDownStart
-        if (clickDuration > 300) {
-          return
-        }
-
-        const target = event.target as HTMLElement
-        if (target.tagName === 'BUTTON' || target.tagName === 'A') {
-          return
-        }
-
-        if (event.clientX > this.$root.clientWidth / 2) {
-          this.next()
-        } else {
-          this.prev()
-        }
-      })
+      this.$root.addEventListener(
+        'pointerdown',
+        this.pointerdownHandler.bind(this),
+      )
+      this.$root.addEventListener('pointerup', this.pointerupHandler.bind(this))
+      this.$root.addEventListener('mousemove', this.mousemoveHandler.bind(this))
+      this.$root.addEventListener('click', this.clickHandler.bind(this))
     },
     onTimeUpdateVideo(event) {
       const video = event.target as HTMLVideoElement
@@ -142,7 +175,11 @@ export function hero(): AlpineComponent<HeroComponent> {
       allVideos.forEach((video) => {
         video.muted = true
         video.currentTime = 0
-        video.pause()
+        if (video.player) {
+          video.player.pause()
+        } else {
+          video.pause()
+        }
       })
 
       const splide = new Splide(this.$refs.carousel, {
