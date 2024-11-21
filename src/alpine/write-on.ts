@@ -59,8 +59,8 @@ export function writeOn(): AlpineComponent<WriteOnComponent> {
           trigger: this.$el,
           scrub: 1.5,
           start: 'top center',
-          // end: 'bottom center+=100px',
-          end: 'bottom center',
+          // end: 'bottom center-=60px',
+          end: 'bottom center+=60px',
         },
       })
       children.map((child) => {
