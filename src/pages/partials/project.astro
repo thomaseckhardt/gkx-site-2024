@@ -1,7 +1,8 @@
 ---
 import ProjectDetail from '@/components/shared/ProjectDetail.astro'
 import type { ProjectStoryblok } from '@/types/storyblok'
-import { fetchStory } from '@/utils/storyblok/fetchStories'
+import { loadNextProjects } from '@/utils/app/projects'
+import { fetchStories, fetchStory } from '@/utils/storyblok/fetchStories'
 import { addSlashed } from '@/utils/url'
 
 export const partial = true
@@ -19,9 +20,18 @@ const blok = story?.content ?? {}
 if (Astro.request.headers.get('HX-Request') === 'true' && slug) {
   Astro.response.headers.set('HX-Push-Url', url)
 }
+
+const nextStory: any =
+  story?.content?.component === 'Project'
+    ? await loadNextProjects(story)
+    : undefined
 ---
 
-{story && blok && <ProjectDetail story={story} blok={blok} />}
+{
+  story && blok && (
+    <ProjectDetail story={story} blok={blok} nextStory={nextStory} />
+  )
+}
 {
   !slug && (
     <div>

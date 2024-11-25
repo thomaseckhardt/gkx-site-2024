@@ -11,9 +11,10 @@ export type Props = {
   site: Object
   story: StoryblokStory<ProjectStoryblok>
   blok: ProjectStoryblok
+  nextStory?: any
 }
 
-const { site, story, blok } = Astro.props
+const { site, story, blok, nextStory } = Astro.props
 
 let headlineCount = 0
 const body =
@@ -34,19 +35,12 @@ const body =
 
 <EntryLayout site={site} story={story}>
   <main class={clsx('x-main', 'text-22 lg:text-25')} x-data="project">
-    <!-- <div class={clsx('sticky top-0 h-svh snap-start overflow-hidden')}>
-      <HeroSlide
-        blok={blok.heroSlides?.[0]}
-        class="absolute inset-0"
-        imageTransitionName={`project-cover/${story.slug}`}
-        showText={false}
-      />
-    </div> -->
     <ProjectHero
       as="header"
       spacing="none"
       slides={blok.heroSlides}
       class={clsx('x-hero sticky top-0 h-svh')}
+      nextStory={nextStory}
     >
       <div slot="infoButton" class="x-info-open">
         <Button as="button" x-on:click="() => openInfo()">Info</Button>

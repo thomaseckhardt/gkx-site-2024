@@ -7,7 +7,7 @@ import { Image } from 'astro:assets'
 const projectStories = (await fetchStories({
   by_slugs: 'projects/*',
   content_type: 'Project',
-  sort_by: 'sort_by_date:asc,published_at:asc,created_at:asc',
+  sort_by: 'content.date:asc',
 })) as unknown as ProjectStoryblok[]
 
 const projectSamples = [

@@ -46,6 +46,7 @@ export async function fetchStory(
   try {
     const response = await storyblokApi.getStory(slug, {
       version: storyblokEntryVersion,
+      resolve_links: 'url' as const,
       ...query,
     })
     return response.data.story

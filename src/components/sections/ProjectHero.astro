@@ -1,18 +1,30 @@
 ---
 import Section from '@/components/sections/Section.astro'
-import type { HeroSlideStoryblok } from '@/types/storyblok'
+import type { HeroSlideStoryblok, ProjectStoryblok } from '@/types/storyblok'
 import clsx from 'clsx'
 import HeroSlide from '../blocks/HeroSlide.astro'
 import CircularProgress from '../shared/CircularProgress.astro'
 import MuteButton from '../shared/MuteButton.astro'
+import HeroSlideNext from '../blocks/HeroSlideNext.astro'
 
 export type Props = {
   class?: string
   slides: HeroSlideStoryblok[]
   as?: string
+  nextStory?: ProjectStoryblok
 }
 
-const { class: className, slides = [], ...props } = Astro.props
+const { class: className, slides = [], nextStory, ...props } = Astro.props
+
+const nextStorySlide = nextStory?.content?.heroSlides?.[0]
+const nextProjectBlok = nextStorySlide
+  ? {
+      ...nextStorySlide,
+      title: nextStory?.content?.title,
+      subtitle: nextStory?.content?.subtitle,
+      link: nextStory.full_slug ? `/${nextStory.full_slug}` : undefined,
+    }
+  : undefined
 ---
 
 <Section
@@ -36,9 +48,16 @@ const { class: className, slides = [], ...props } = Astro.props
                   animateText={index === 0}
                 />
               ))}
+              {nextProjectBlok && (
+                <HeroSlideNext
+                  as="li"
+                  class="splide__slide h-svh w-svw"
+                  blok={nextProjectBlok}
+                />
+              )}
             </ul>
           </div>
-          <div class="z-project-controls absolute bottom-5 left-page-mx right-page-mx flex animate-project-controls-in items-center justify-between">
+          <div class="absolute bottom-5 left-page-mx right-page-mx z-project-controls flex animate-project-controls-in items-center justify-between">
             <div class="flex-none">
               <slot name="infoButton" />
             </div>

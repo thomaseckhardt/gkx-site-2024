@@ -1,0 +1,55 @@
+---
+import HeroSlideNext from '@/components/blocks/HeroSlideNext.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+
+const blok = {
+  _uid: '3bdbcc41-1480-4505-8e6f-25a32e7bbb49',
+  title: 'GENESIS REPORT',
+  variant: 'fullscreen',
+  component: 'HeroSlide',
+  description: { type: 'doc', content: [[Object]] },
+  hlsPortrait: '',
+  hlsLandscape: '',
+  imagePortrait: {
+    id: null,
+    alt: null,
+    name: '',
+    focus: null,
+    title: null,
+    source: null,
+    filename: '',
+    copyright: null,
+    fieldtype: 'asset',
+    meta_data: {},
+  },
+  imageLandscape: {
+    id: 18212241,
+    alt: '',
+    name: '',
+    focus: '',
+    title: '',
+    source: '',
+    filename:
+      'https://a.storyblok.com/f/300625/2126x1196/219a8830bb/large-brigher-8_169.jpg',
+    copyright: '',
+    fieldtype: 'asset',
+    meta_data: {},
+    is_external_url: false,
+  },
+  backgroundColor: {
+    _uid: 'c687f396-6f43-4b29-a4f1-011328dd2de8',
+    color: '',
+    plugin: 'official-colorpicker',
+  },
+  videoPortraitID: '',
+  videoLandscapeID: '',
+  _editable:
+    '<!--#storyblok#{"name": "HeroSlide", "space": "300625", "uid": "3bdbcc41-1480-4505-8e6f-25a32e7bbb49", "id": "550757737"}-->',
+}
+---
+
+<BaseLayout>
+  <div class="relative h-svh">
+    <HeroSlideNext blok={{ ...blok, subtitle: 'Fraunhofer', link: '#' }} />
+  </div>
+</BaseLayout>

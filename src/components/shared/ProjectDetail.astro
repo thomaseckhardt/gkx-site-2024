@@ -7,12 +7,13 @@ import clsx from 'clsx'
 import type { StoryblokStory } from 'storyblok-generate-ts'
 
 export type Props = {
+  as?: string
   story: any
   blok: ProjectStoryblok
-  as?: string
+  nextStory?: any
 }
 
-const { story, blok, as: Component = 'div' } = Astro.props
+const { story, blok, as: Component = 'div', nextStory } = Astro.props
 
 let headlineCount = 0
 const body =
@@ -40,6 +41,7 @@ const body =
     as="header"
     spacing="none"
     slides={blok.heroSlides}
+    nextStory={nextStory}
     class={clsx('x-hero sticky top-0 h-svh')}
   >
     <div slot="infoButton" class="x-info-open">

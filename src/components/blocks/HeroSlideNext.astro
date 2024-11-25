@@ -1,0 +1,200 @@
+---
+import type { HeroSlideStoryblok } from '@/types/storyblok'
+import { getMP4 } from '@/utils/bunny'
+import clsx from 'clsx'
+import StoryblokPicture from '../storyblok/StoryblokPicture.astro'
+
+export type Props = {
+  as?: string
+  class?: string
+  blok: HeroSlideStoryblok & { subtitle?: string; link?: string }
+  showText?: boolean
+  animateText?: boolean
+}
+
+const {
+  as: Component = 'div',
+  class: className,
+  blok,
+  showText = true,
+  animateText = false,
+} = Astro.props
+
+const isVideo = blok.hlsLandscape || blok.hlsPortrait
+const variant = blok.variant || 'fullscreen'
+const isFullscreen = variant === 'fullscreen'
+const mainImage = blok.imageLandscape?.filename
+  ? blok.imageLandscape
+  : blok.imagePortrait
+const portrait = blok.imagePortrait?.filename
+  ? blok.imagePortrait
+  : blok.imageLandscape
+const backgroundImage =
+  variant === 'backgroundImage' && mainImage?.filename ? mainImage : undefined
+const backgroundColor = blok.backgroundColor?.color || '#ffffff'
+const style =
+  !isFullscreen && backgroundColor
+    ? {
+        backgroundColor,
+      }
+    : undefined
+
+const alpineProps = isVideo
+  ? undefined
+  : {
+      'x-cloak': true,
+      'x-data': '{imageState: {isRendered: false}}',
+      'x-image-state': 'imageState',
+      'x-bind:class': "imageState.isRendered ? 'animate-fade-in' : 'opacity-0'",
+    }
+---
+
+<Component
+  class={clsx(
+    'HeroSlideNext relative',
+    !isFullscreen && 'flex items-center justify-center lg:py-19',
+    'after:absolute after:bottom-0 after:left-0 after:right-0 after:z-10 after:h-full after:w-full after:bg-gradient-to-t after:from-black/100 after:to-neutral-400/60 after:opacity-0 after:mix-blend-multiply',
+    className,
+  )}
+  {...alpineProps}
+  style={style}
+>
+  {/* Text */}
+  {
+    showText && (
+      <div
+        class={clsx(
+          'absolute inset-0 z-30 flex h-full w-full items-center justify-center text-white',
+          'HeroSlideNext__text',
+        )}
+      >
+        <a
+          href={blok.link}
+          class="grid max-w-text items-center justify-center gap-y-2 px-page-mx text-center"
+          x-data
+          x-on:click.stop="() => {}"
+        >
+          <div class="h-18 whitespace-nowrap font-sans text-18 font-normal uppercase leading-none lg:text-20">
+            Next Project
+          </div>
+          {blok.title && (
+            <div class="text-45 font-bold tracking-wide lg:text-50">
+              {blok.title}
+            </div>
+          )}
+          {blok.subtitle && (
+            <div class="h-18 font-serif text-22 lg:text-25">
+              {blok.subtitle}
+            </div>
+          )}
+        </a>
+      </div>
+    )
+  }
+  {/* Background Image */}
+  {
+    backgroundImage && (
+      <StoryblokPicture
+        classPicture="absolute inset-0 hidden lg:block"
+        class={clsx('absolute inset-0 h-full w-full object-cover')}
+        image={backgroundImage}
+        sizes="100vw"
+      />
+    )
+  }
+  {
+    !isVideo && (
+      <Fragment>
+        {/* Image */}
+        {isFullscreen && (
+          <Fragment>
+            {blok?.imagePortrait?.filename && (
+              <StoryblokPicture
+                classPicture={clsx(
+                  blok.imageLandscape?.filename &&
+                    'absolute inset-0 h-full w-full lg:hidden',
+                )}
+                class={clsx('h-svh w-svw object-cover')}
+                image={blok.imagePortrait}
+                sizes="100vw"
+              />
+            )}
+            {blok.imageLandscape?.filename && (
+              <StoryblokPicture
+                classPicture={clsx(
+                  blok.imagePortrait?.filename &&
+                    'absolute inset-0 hidden h-full w-full lg:block',
+                )}
+                class={clsx('h-svh w-svw object-cover')}
+                image={blok.imageLandscape}
+                sizes="100vw"
+              />
+            )}
+          </Fragment>
+        )}
+        {!isFullscreen && (
+          <Fragment>
+            {portrait?.filename && (
+              <StoryblokPicture
+                classPicture="relative w-full h-full lg:w-auto lg:aspect-9/16 lg:rounded-xl"
+                class={clsx(
+                  'absolute inset-0 h-full w-full object-cover lg:rounded-xl',
+                )}
+                image={portrait}
+                sizes="(min-width: 1024px) 800px, 100vw"
+              />
+            )}
+          </Fragment>
+        )}
+      </Fragment>
+    )
+  }
+  {
+    isVideo && (
+      <Fragment>
+        {isFullscreen && (
+          <div
+            class="HeroSlide__video-landscape"
+            x-data={`videoPlayer({ showControls: false, playerConfig: { autoplay: false }, hlsLandscape: '${blok.hlsLandscape}', hlsPortrait: '${blok.hlsPortrait}'})`}
+          >
+            <video
+              x-ref="player"
+              class="pointer-events-none block !h-svh !w-svw object-cover"
+              muted
+              playsinline
+            />
+          </div>
+        )}
+        {!isFullscreen && (
+          <div
+            class="HeroSlide__video-portrait relative flex h-full w-full lg:aspect-9/16 lg:w-auto lg:rounded-xl"
+            x-data={`videoPlayer({ showControls: false, playerConfig: { autoplay: false }, hls: '${blok.hlsPortrait || blok.hlsLandscape}'})`}
+          >
+            <video
+              class="object-cover lg:rounded-xl"
+              x-ref="player"
+              muted
+              playsinline
+            />
+          </div>
+        )}
+      </Fragment>
+    )
+  }
+</Component>
+
+<style is:global>
+  .HeroSlideNext {
+    @apply after:transition-opacity after:duration-1000;
+  }
+  .HeroSlideNext.is-active {
+    @apply after:opacity-100;
+  }
+
+  .HeroSlideNext__text {
+    @apply translate-y-10 opacity-0 transition duration-1000 ease-out-power3;
+  }
+  .HeroSlideNext.is-active .HeroSlideNext__text {
+    @apply translate-y-0 opacity-100;
+  }
+</style>

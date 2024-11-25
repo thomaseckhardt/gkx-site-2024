@@ -1,13 +1,14 @@
 ---
 import { storyblokEditable } from '@storyblok/astro'
 import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro'
-import type { PageStoryblok } from '@/types/storyblok'
+import type { PageStoryblok, ProjectStoryblok } from '@/types/storyblok'
 import { useSiteConfig } from '@/utils/useSiteConfig'
 import setDefaults from 'lodash/defaults'
 import { getStoryDates } from '@/utils/storyblok/date'
-import { fetchStory } from '@/utils/storyblok/fetchStories'
+import { fetchStories, fetchStory } from '@/utils/storyblok/fetchStories'
 import { isSSR } from '@/utils/env'
 import { generateStaticPaths, parseUrl } from '@/utils/storyblok/paths'
+import { loadNextProjects } from '@/utils/app/projects'
 
 export async function getStaticPaths() {
   return await generateStaticPaths()
@@ -37,6 +38,11 @@ const site = setDefaults(
   },
   siteConfig,
 )
+
+const nextStory: any =
+  story?.content?.component === 'Project'
+    ? await loadNextProjects(story)
+    : undefined
 ---
 
 {
@@ -45,6 +51,7 @@ const site = setDefaults(
       site={site}
       story={story}
       blok={story.content}
+      nextStory={nextStory}
       {...storyblokEditable(story)}
     />
   )
