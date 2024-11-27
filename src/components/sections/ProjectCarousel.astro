@@ -118,8 +118,8 @@ const projects = [
   // ...realProjects,
   // ...projectSamples,
 ].filter(Boolean)
-const navItems = [...projects]
-const total = navItems.length
+const navItems = [...projects, ...projects, ...projects]
+const total = projects.length
 const half = total / 2
 
 // GSAP 3D Carousel Demo
@@ -242,7 +242,7 @@ const half = total / 2
                   <li
                     class="x-home__thumb"
                     style={{
-                      '--i': index,
+                      '--i': index % total,
                     }}
                   >
                     <a
@@ -297,31 +297,6 @@ const half = total / 2
 </div>
 
 <style is:global>
-  .x-thumbnails .splide:not(.is-overflow) .splide__arrows {
-    display: none;
-  }
-
-  .x-thumbnails .splide:not(.is-overflow) .splide__list {
-    justify-content: center;
-    transform: translateX(0) !important;
-  }
-
-  .x-thumbnails .splide:not(.is-overflow) .splide__slide:last-child {
-    margin: 0 !important;
-  }
-
-  .x-thumbnails .splide__slide {
-    @apply flex items-center transition duration-300 ease-in-out;
-
-    height: var(--nav-h);
-  }
-
-  .x-thumbnails .splide__slide:hover,
-  .x-thumbnails .splide__slide.is-active {
-    /* transform: scale(1.2); */
-    transform: translateY(-0.25rem);
-  }
-
   .x-home__container {
     /* Original from design
     --mt: 6rem;
@@ -443,13 +418,15 @@ const half = total / 2
   }
 
   .x-home__thumb {
+    --scale: 0.9;
+    --scaleAbs: 0.9;
     will-change: transform;
     transform: scale(calc(1 - 0.1 * var(--scaleAbs)))
       translateX(calc((0.1 * var(--nav-item-w) / 2) * var(--scale)));
   }
 
   .x-home__thumb-link {
-    @apply flex flex-none items-center justify-center overflow-hidden rounded-lg bg-sky-500/50;
+    @apply flex flex-none items-center justify-center overflow-hidden rounded-lg bg-neutral-100;
 
     width: var(--nav-item-w);
     height: var(--nav-item-h);

@@ -31,6 +31,8 @@ export function home(): AlpineComponent<HomeComponent> {
   let thumbs: HTMLElement[] = []
   let projectSlug: undefined | string = undefined
   let projectContainer: HTMLElement | null = document.getElementById('project')
+  let thumbsContainer: HTMLElement | null =
+    document.querySelector('.x-home__nav')
 
   function stopAllVideos() {
     const videos = document.querySelectorAll('video')
@@ -71,14 +73,11 @@ export function home(): AlpineComponent<HomeComponent> {
 
       projectContainer?.classList.add('pointer-events-none')
       // this.$refs.hero?.classList.add('pointer-events-none')
-      console.log('closeProject', projectContainer)
       stopAllVideos()
 
       const startDelay = 0.3
       const tl = gsap.timeline({
         onComplete: () => {
-          console.log('closeProject completed')
-
           htmx.ajax('GET', '/partials/clear-project/', {
             target: '#project',
             swap: 'innerHTML',
@@ -139,7 +138,6 @@ export function home(): AlpineComponent<HomeComponent> {
       }
       const heroText = hero.querySelector('.x-home__text')
       const heroImage = hero.querySelector('img')
-      console.log('heroImage', heroImage)
 
       const cardRect = card.getBoundingClientRect()
       const startDelay = 0.12
@@ -148,7 +146,6 @@ export function home(): AlpineComponent<HomeComponent> {
 
       const tl = gsap.timeline({
         onComplete: () => {
-          console.log('transition completed', url)
           htmx.trigger('#project', 'loadProject', {
             slug: url,
           })
@@ -301,9 +298,6 @@ export function home(): AlpineComponent<HomeComponent> {
       const thumbs: HTMLElement[] = gsap.utils.toArray(
         document.querySelectorAll('.x-home__thumb'),
       )
-      const thumbsContainer: HTMLElement[] = gsap.utils.toArray(
-        document.querySelectorAll('.x-home__nav'),
-      )
 
       // thumbsTween = gsap.to(thumbs, {
       //   x: '-100%',
@@ -330,7 +324,9 @@ export function home(): AlpineComponent<HomeComponent> {
             })
           })
 
-          thumbs.forEach((elem, index) => {
+          thumbs.forEach((elem, listIndex) => {
+            const index = listIndex % total
+            // const index = listIndex
             const indexDiff = parseFloat((index - progress * total).toFixed(4))
             // Clamp indexDiff between -1 and 1
             const scale = Math.max(-1, Math.min(1, indexDiff))
@@ -341,9 +337,11 @@ export function home(): AlpineComponent<HomeComponent> {
             elem.style.setProperty('--index', `${Math.round(indexDiff)}`)
           })
 
-          gsap.set(thumbsContainer, {
-            x: `${-progress * 100}%`,
-          })
+          if (thumbsContainer) {
+            gsap.set(thumbsContainer, {
+              x: `${(1 / 3) * -100 + (-progress / 3) * 100}%`,
+            })
+          }
         },
       })
       // TODO: Recommendation: pre-render for performance. Does it make sense? Check also other timelines
@@ -400,6 +398,7 @@ export function home(): AlpineComponent<HomeComponent> {
           console.log('timeline completed')
           component.initCarousel()
           component.$root.classList.add('is-ready')
+          // gsap.set('.x-home__thumb', { x: 0, scale: 1, opacity: 1 })
         },
       })
       tl.to(
@@ -450,11 +449,12 @@ export function home(): AlpineComponent<HomeComponent> {
           },
           {
             x: 0,
-            scale: 1,
+            scale: 0.9,
             opacity: 1,
             duration: 0.6,
             ease: Back.easeOut,
             stagger: 0.05,
+            clearProps: 'all',
           },
           '-=1',
         )
@@ -496,7 +496,9 @@ export function home(): AlpineComponent<HomeComponent> {
       const endZ = radius * -1
       gsap.set('.x-home__canvas', { rotationX: 0, z: endZ })
 
-      thumbs.forEach((elem, index) => {
+      thumbs.forEach((elem, listIndex) => {
+        const index = listIndex % total
+        // const index = listIndex
         const indexDiff = parseFloat((index - progress * total).toFixed(4))
         // Clamp indexDiff between -1 and 1
         const scale = Math.max(-1, Math.min(1, indexDiff))
@@ -526,6 +528,12 @@ export function home(): AlpineComponent<HomeComponent> {
         document.querySelectorAll('.x-home__thumb') ?? [],
       )
 
+      if (thumbsContainer) {
+        gsap.set(thumbsContainer, {
+          x: `${(1 / 3) * -100}%`,
+        })
+      }
+
       total = cards.length
       totalHalf = total / 2
       angle = 360 / total
@@ -533,11 +541,13 @@ export function home(): AlpineComponent<HomeComponent> {
       const sessionActive = this.$store.session.checkSession()
       console.log('sessionActive', sessionActive)
 
-      if (sessionActive) {
-        this.restored()
-      } else {
-        this.initIntroAnimation()
-      }
+      // if (sessionActive) {
+      //   this.restored()
+      // } else {
+      //   this.initIntroAnimation()
+      // }
+
+      this.initIntroAnimation()
     },
   }
 
