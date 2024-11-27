@@ -539,15 +539,12 @@ export function home(): AlpineComponent<HomeComponent> {
       angle = 360 / total
 
       const sessionActive = this.$store.session.checkSession()
-      console.log('sessionActive', sessionActive)
 
-      // if (sessionActive) {
-      //   this.restored()
-      // } else {
-      //   this.initIntroAnimation()
-      // }
-
-      this.initIntroAnimation()
+      if (sessionActive) {
+        this.restored()
+      } else {
+        this.initIntroAnimation()
+      }
     },
   }
 
