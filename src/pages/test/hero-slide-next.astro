@@ -1,5 +1,5 @@
 ---
-import HeroSlideNext from '@/components/blocks/HeroSlideNext.astro'
+import HeroSlideNextComponent from '@/components/blocks/HeroSlideNext.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
 const blok = {
@@ -50,6 +50,8 @@ const blok = {
 
 <BaseLayout>
   <div class="relative h-svh">
-    <HeroSlideNext blok={{ ...blok, subtitle: 'Fraunhofer', link: '#' }} />
+    <HeroSlideNextComponent
+      blok={{ ...blok, subtitle: 'Fraunhofer', link: '#' }}
+    />
   </div>
 </BaseLayout>

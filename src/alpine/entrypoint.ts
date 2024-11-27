@@ -4,6 +4,7 @@ import type { Alpine } from 'alpinejs'
 import { carousel } from '@/alpine/carousel'
 import { hero } from '@/alpine/hero'
 import { home } from '@/alpine/home'
+import { projectThumbnails } from '@/alpine/projectThumbnails'
 import { project } from '@/alpine/project'
 import { videoPlayer } from '@/alpine/videoPlayer'
 import { writeOn } from '@/alpine/write-on'
@@ -47,6 +48,7 @@ export default (Alpine: Alpine) => {
   Alpine.data('carousel', carousel)
   Alpine.data('hero', hero)
   Alpine.data('home', home)
+  Alpine.data('projectThumbnails', projectThumbnails)
   Alpine.data('project', project)
   Alpine.data('videoPlayer', videoPlayer)
   Alpine.data('writeOn', writeOn)

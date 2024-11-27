@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets'
+
+const { projects } = Astro.props
+---
+
+<div>
+  <div class="x-thumbnails lg:hidden">
+    <div x-ref="thumbnails" class="splide">
+      <nav class="splide__track">
+        <ul class="splide__list x-home__nav">
+          {
+            projects.map((project, index) => (
+              <li
+                class="splide__slide x-home__thumb"
+                style={{
+                  '--i': index,
+                }}
+              >
+                <a
+                  href={project.link}
+                  class="x-home__thumb-link relative"
+                  x-on:click.prevent={`() => navigateTo('${project.link}', false)`}
+                >
+                  {project.coverPortrait?.filename && (
+                    <Image
+                      src={project.coverPortrait.filename}
+                      alt=""
+                      width="96"
+                      height="168"
+                      widths={[96]}
+                      sizes="96px"
+                      class="absolute inset-0 h-full w-full rounded-lg object-cover"
+                      format="webp"
+                      inferSize
+                    />
+                  )}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .x-thumbnails {
+    --mt: 4.5rem;
+    --nav-h: 4.5rem;
+    --nav-item-h: 3.5rem;
+    --nav-item-w: calc(var(--nav-item-h) / 16 * 9);
+    --nav-gap: 2rem;
+    --mb: 1rem;
+    --carousel-height: calc(
+      100svh - var(--nav-h) - var(--nav-gap) - var(--mt) - var(--mb)
+    );
+  }
+
+  .x-home__thumb {
+    will-change: transform;
+    transform: scale(calc(1 - 0.1 * var(--scaleAbs)))
+      translateX(calc((0.1 * var(--nav-item-w) / 2) * var(--scale)));
+  }
+
+  .x-home__thumb-link {
+    @apply flex flex-none items-center justify-center overflow-hidden rounded-lg bg-sky-500/50;
+
+    width: var(--nav-item-w);
+    height: var(--nav-item-h);
+  }
+</style>

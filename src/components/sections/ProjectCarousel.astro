@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { fetchStories } from '@/utils/storyblok'
 import type { ProjectStoryblok } from '@/types/storyblok'
 import { Image } from 'astro:assets'
+import ProjectThumbnails from './ProjectThumbnails.astro'
 
 const projectStories = (await fetchStories({
   by_slugs: 'projects/*',
@@ -118,8 +119,8 @@ const projects = [
   // ...realProjects,
   // ...projectSamples,
 ].filter(Boolean)
-const navItems = [...projects]
-const total = navItems.length
+const thumbnails = [...projects]
+const total = thumbnails.length
 const half = total / 2
 
 // GSAP 3D Carousel Demo
@@ -182,7 +183,7 @@ const half = total / 2
           {
             projects.map((project, index) => (
               <li
-                class="x-home__carousel-item overflow-hidden rounded-3xl"
+                class="x-home__carousel-item overflow-hidden rounded-3xl bg-white"
                 style={{
                   '--i': index,
                 }}
@@ -233,44 +234,7 @@ const half = total / 2
           }
         </ul>
       </div>
-      <div class="x-thumbnails lg:hidden">
-        <div x-ref="thumbnails">
-          <nav>
-            <ul class="x-home__nav">
-              {
-                navItems.map((project, index) => (
-                  <li
-                    class="x-home__thumb"
-                    style={{
-                      '--i': index,
-                    }}
-                  >
-                    <a
-                      href={project.link}
-                      class="x-home__thumb-link relative"
-                      x-on:click.prevent={`() => navigateTo('${project.link}', false)`}
-                    >
-                      {project.coverPortrait?.filename && (
-                        <Image
-                          src={project.coverPortrait.filename}
-                          alt=""
-                          width="96"
-                          height="168"
-                          widths={[96]}
-                          sizes="96px"
-                          class="absolute inset-0 h-full w-full rounded-lg object-cover"
-                          format="webp"
-                          inferSize
-                        />
-                      )}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
-          </nav>
-        </div>
-      </div>
+      <ProjectThumbnails projects={thumbnails} />
     </div>
     <div
       x-ref="hero"
@@ -297,31 +261,6 @@ const half = total / 2
 </div>
 
 <style is:global>
-  .x-thumbnails .splide:not(.is-overflow) .splide__arrows {
-    display: none;
-  }
-
-  .x-thumbnails .splide:not(.is-overflow) .splide__list {
-    justify-content: center;
-    transform: translateX(0) !important;
-  }
-
-  .x-thumbnails .splide:not(.is-overflow) .splide__slide:last-child {
-    margin: 0 !important;
-  }
-
-  .x-thumbnails .splide__slide {
-    @apply flex items-center transition duration-300 ease-in-out;
-
-    height: var(--nav-h);
-  }
-
-  .x-thumbnails .splide__slide:hover,
-  .x-thumbnails .splide__slide.is-active {
-    /* transform: scale(1.2); */
-    transform: translateY(-0.25rem);
-  }
-
   .x-home__container {
     /* Original from design
     --mt: 6rem;
@@ -428,14 +367,12 @@ const half = total / 2
     opacity: clamp(0, calc(var(--depth)), 0.8);
   }
 
-  .x-thumbnails {
+  /* .x-thumbnails {
     @apply w-full flex-none;
     height: var(--nav-h);
-  }
+  } */
 
-  /* DEPRECATED: */
-
-  .x-home__nav {
+  /* .x-home__nav {
     @apply inline-flex flex-none items-center gap-x-0.5;
 
     margin-left: calc(50% - var(--nav-item-w) / 2);
@@ -453,7 +390,7 @@ const half = total / 2
 
     width: var(--nav-item-w);
     height: var(--nav-item-h);
-  }
+  } */
 
   .x-home__circle {
     --size: calc(var(--r) * 2.05);
@@ -472,10 +409,4 @@ const half = total / 2
   .x-home:not(.is-ready) .x-home__arrow {
     display: none !important;
   }
-  /* .x-home__circle circle {
-    --circ: calc(var(--pi) * var(--size));
-    --ratio: 0.5;
-    stroke-dasharray: var(--circ);
-    stroke-dashoffset: calc((1 - var(--ratio)) * var(--circ));
-  } */
 </style>

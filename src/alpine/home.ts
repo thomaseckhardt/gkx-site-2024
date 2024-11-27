@@ -2,8 +2,7 @@ import type { AlpineComponent } from 'alpinejs'
 import { gsap, Power2, Power3, Back, Linear } from 'gsap'
 import { Draggable } from 'gsap/Draggable'
 import { InertiaPlugin } from 'gsap/InertiaPlugin'
-import { doc } from 'prettier'
-
+import { Splide } from '@splidejs/splide'
 interface HomeComponent {
   initCarousel: () => void
   navigateTo: (slug: string) => void
@@ -31,6 +30,7 @@ export function home(): AlpineComponent<HomeComponent> {
   let thumbs: HTMLElement[] = []
   let projectSlug: undefined | string = undefined
   let projectContainer: HTMLElement | null = document.getElementById('project')
+  let thumbsSplide: Splide | undefined = undefined
 
   function stopAllVideos() {
     const videos = document.querySelectorAll('video')
@@ -191,7 +191,7 @@ export function home(): AlpineComponent<HomeComponent> {
         startDelay,
       )
     },
-    navigateTo: function (url, open = true) {
+    navigateTo: function (url, open = false) {
       console.log('navigate to', url, open)
       const component = this
       const card = document.querySelector(`[data-card="${url}"]`) as HTMLElement
@@ -239,19 +239,34 @@ export function home(): AlpineComponent<HomeComponent> {
 
       const targetRotation = rotationChange + currentRotation
       const duration = Math.max(0.6, Math.min(0.2 * indexDiff, 2))
-      console.log('spinToIndex', {
-        index,
-        indexDiff,
-        indexOfRotation,
-        rotationChange,
-        currentRotation,
-        rotationRest,
-        targetRotation,
-      })
+
+      const clockwiseDistance = (index - indexOfRotation + total) % total
+      const counterClockwiseDistance = (indexOfRotation - index + total) % total
+      const shortestDistance = Math.min(
+        clockwiseDistance,
+        counterClockwiseDistance,
+      )
+      const direction = clockwiseDistance <= counterClockwiseDistance ? 1 : -1
+      const targetPosition =
+        shortestDistance * direction * angle + currentRotation
+
+      // console.log('spinToIndex', {
+      //   index,
+      //   indexDiff,
+      //   indexOfRotation,
+      //   rotationChange,
+      //   currentRotation,
+      //   rotationRest,
+      //   targetRotation,
+      //   clockwiseDistance,
+      //   counterClockwiseDistance,
+      //   direction,
+      //   targetPosition,
+      // })
 
       gsap.killTweensOf(proxy)
       gsap.to(proxy, {
-        rotation: targetRotation,
+        rotation: targetPosition,
         duration: duration,
         ease: 'sine.inOut',
         onUpdate: updateRotation,
@@ -341,9 +356,15 @@ export function home(): AlpineComponent<HomeComponent> {
             elem.style.setProperty('--index', `${Math.round(indexDiff)}`)
           })
 
-          gsap.set(thumbsContainer, {
-            x: `${-progress * 100}%`,
-          })
+          const index = Math.round(progress * total)
+
+          if (thumbsSplide && index !== thumbsSplide?.index) {
+            thumbsSplide.go(index)
+          }
+
+          // gsap.set(thumbsContainer, {
+          //   x: `${-progress * 100}%`,
+          // })
         },
       })
       // TODO: Recommendation: pre-render for performance. Does it make sense? Check also other timelines
@@ -525,6 +546,17 @@ export function home(): AlpineComponent<HomeComponent> {
       thumbs = gsap.utils.toArray(
         document.querySelectorAll('.x-home__thumb') ?? [],
       )
+
+      const thumbsSplideElem = this.$refs.thumbnails
+      if (thumbsSplideElem) {
+        thumbsSplide = new Splide(thumbsSplideElem, {
+          type: 'loop',
+          fixedWidth: 'var(--nav-item-w)',
+          gap: '0.125rem',
+          pagination: false,
+          focus: 'center',
+        }).mount()
+      }
 
       total = cards.length
       totalHalf = total / 2
