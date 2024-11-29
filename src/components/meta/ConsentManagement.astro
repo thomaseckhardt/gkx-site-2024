@@ -2,23 +2,36 @@
 import { isProduction } from '@/utils/env'
 ---
 
-<!-- {
+{
   // Google Consent Mode
-
-  isProduction && (
+  isProduction() && (
     <script
       is:inline
       data-cookieconsent="ignore"
       src="/scripts/google-consent-mode.js"
     />
   )
-} --><!-- {
+}
+{
   // Google Tag Manager
-  isProduction && (
+  isProduction() && (
     <script
       is:inline
       data-cookieconsent="ignore"
       src="/scripts/google-tag-manager.js"
     />
   )
-} -->
+}
+
+{
+  // Cookiebot CMP
+  isProduction() && (
+    <script
+      id="Cookiebot"
+      src="https://consent.cookiebot.com/uc.js"
+      data-cbid="bc80fdc0-c9fc-4575-973f-a38242bfa640"
+      data-blockingmode="auto"
+      type="text/javascript"
+    />
+  )
+}
